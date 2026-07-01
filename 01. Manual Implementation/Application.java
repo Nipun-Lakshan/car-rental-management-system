@@ -102,7 +102,7 @@ class Application {
                         break;
 
                     case 3:
-                        //
+                        searchVehicle();
                         break;
 
                     case 4:
@@ -1523,6 +1523,200 @@ class Application {
         System.out.print("\n");
 
         askWantToExit();
+
+    }
+
+    // Method to Search a Vehicle
+    public static void searchVehicle() {
+
+        clearConsole();
+        heading();
+        System.out.println("01. Search a Car");
+        System.out.println("02. Search a Van");
+        System.out.println("03. Search a Motorcycle\n");
+        System.out.println("04. Exit\n");
+
+        L1:
+        while (true) {
+
+            Scanner scanner2 = new Scanner(System.in);
+
+            System.out.print("Enter your choice: ");
+            try {
+                int choice = scanner2.nextInt();
+                if (choice > 4 || choice < 1) {
+                    System.out.println("Invalid choice!\n");
+                    scanner2.nextLine();
+                } else {
+                    switch (choice) {
+                        case 1:
+                            clearConsole();
+                            heading();
+                            searchCar();
+                            break L1;
+                        case 2:
+                            clearConsole();
+                            heading();
+                            searchVan();
+                            break L1;
+                        case 3:
+                            clearConsole();
+                            heading();
+                            searchMotorcycle();
+                            break L1;
+                        case 4:
+                            clearConsole();
+                            heading();
+                            System.out.println("Programme terminated successfully!\n");
+                            break L1;
+                    }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input!\n");
+                scanner2.nextLine();
+            }
+        }
+    }
+
+    // Method to Search a Car by ID
+    public static void searchCar() {
+        clearConsole();
+        heading();
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        String vehicleId;
+
+        while (true) {
+            System.out.print("Enter Vehicle ID             : ");
+            vehicleId = scanner1.nextLine().trim();
+            if (vehicleId.matches("^V\\d{3}$")) {
+
+                boolean exists = false;
+                int index = -1;
+
+                for (Car car : cars) {
+                    if (car.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = cars.indexOf(car);
+                    }
+                }
+                if (exists) {
+                    clearConsole();
+                    heading();
+                    System.out.println("Vehicle found!\n");
+                    System.out.println("01. Car ID             : " + cars.get(index).getVehicleId());
+                    System.out.println("02. Car Name           : " + cars.get(index).getVehicleName());
+                    System.out.println("03. Daily Rental Rate  : Rs. " + cars.get(index).getDailyRentalRate());
+                    System.out.println("04. Availablity Status : " + cars.get(index).getAvailabilityStatus());
+                    System.out.println("05. Number of Seats    : " + cars.get(index).getNumberOfSeats());
+                    System.out.println("06. Fuel Type          : " + cars.get(index).getFuelType());
+
+                    askWantToExit();
+
+                    break;
+
+                } else {
+                    System.out.println("Vehicle isn't registered yet!\n");
+                }
+            } else {
+                System.out.println("Invalid Vehicle ID (Ex: - V001)\n");
+            }
+        }
+
+    }
+
+    // Method to Search a Van by ID
+    public static void searchVan() {
+        clearConsole();
+        heading();
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        String vehicleId;
+
+        while (true) {
+            System.out.print("Enter Vehicle ID             : ");
+            vehicleId = scanner1.nextLine().trim();
+            if (vehicleId.matches("^V\\d{3}$")) {
+
+                boolean exists = false;
+                int index = -1;
+
+                for (Van van : vans) {
+                    if (van.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = vans.indexOf(van);
+                    }
+                }
+                if (exists) {
+                    clearConsole();
+                    heading();
+                    System.out.println("Vehicle found!\n");
+                    System.out.println("01. Van ID             : " + vans.get(index).getVehicleId());
+                    System.out.println("02. Van Name           : " + vans.get(index).getVehicleName());
+                    System.out.println("03. Daily Rental Rate  : Rs. " + vans.get(index).getDailyRentalRate());
+                    System.out.println("04. Availablity Status : " + vans.get(index).getAvailabilityStatus());
+                    System.out.println("05. Cargo Capacity     : " + vans.get(index).getCargoCapacity() + "Kg");
+
+                    askWantToExit();
+
+                    break;
+
+                } else {
+                    System.out.println("Vehicle isn't registered yet!\n");
+                }
+            } else {
+                System.out.println("Invalid Vehicle ID (Ex: - V001)\n");
+            }
+        }
+
+    }
+
+    // Method to Search a Motorcycle by ID
+    public static void searchMotorcycle() {
+        clearConsole();
+        heading();
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        String vehicleId;
+
+        while (true) {
+            System.out.print("Enter Vehicle ID             : ");
+            vehicleId = scanner1.nextLine().trim();
+            if (vehicleId.matches("^V\\d{3}$")) {
+
+                boolean exists = false;
+                int index = -1;
+
+                for (Motorcycle motorcycle : motorcycles) {
+                    if (motorcycle.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = motorcycles.indexOf(motorcycle);
+                    }
+                }
+                if (exists) {
+                    clearConsole();
+                    heading();
+                    System.out.println("Vehicle found!\n");
+                    System.out.println("01. Motorcycle ID      : " + motorcycles.get(index).getVehicleId());
+                    System.out.println("02. Motorcycle Name    : " + motorcycles.get(index).getVehicleName());
+                    System.out.println("03. Daily Rental Rate  : Rs. " + motorcycles.get(index).getDailyRentalRate());
+                    System.out.println("04. Availablity Status : " + motorcycles.get(index).getAvailabilityStatus());
+                    System.out.println("05. Engine Capacity    : " + motorcycles.get(index).getEngineCapacity() + "CC");
+
+                    askWantToExit();
+
+                    break;
+
+                } else {
+                    System.out.println("Vehicle isn't registered yet!\n");
+                }
+            } else {
+                System.out.println("Invalid Vehicle ID (Ex: - V001)\n");
+            }
+        }
 
     }
 
