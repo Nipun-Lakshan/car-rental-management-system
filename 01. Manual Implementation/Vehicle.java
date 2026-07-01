@@ -52,7 +52,7 @@ public abstract class Vehicle {
         this.dailyRentalRate = dailyRentalRate;
     }
 
-    public boolean isAvailabilityStatus() {
+    public boolean getAvailabilityStatus() {
         return availabilityStatus;
     }
 
