@@ -6,6 +6,7 @@ public class Rental {
     private String rentalDate;
     private int numberOfRentalDays;
     private int rentalCost;
+    private String rentalStatus;
 
     public Rental() {
         this("Unknown");
@@ -86,6 +87,14 @@ public class Rental {
 
     public void setRentalCost(int dailyRentalCost, int numberOfRentalDays) {
         this.rentalCost = dailyRentalCost * numberOfRentalDays;
+    }
+
+    public String getRentalStatus() {
+        return rentalStatus;
+    }
+
+    public void setRentalStatus(String rentalStatus) {
+        this.rentalStatus = rentalStatus;
     }
 
 }

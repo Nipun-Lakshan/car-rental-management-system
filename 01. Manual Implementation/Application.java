@@ -106,11 +106,11 @@ class Application {
                         break;
 
                     case 4:
-                        //
+                        removeVehicle();
                         break;
 
                     case 5:
-                        //
+                        registerCustomer();
                         break;
 
                     case 6:
@@ -265,91 +265,139 @@ class Application {
                 boolean exists = false;
 
                 for (Car car : cars) {
+
                     if (car.getVehicleId().equalsIgnoreCase(vehicleId)) {
                         exists = true;
                         break;
                     }
+
                 }
 
                 if (exists) {
+
                     System.out.println("Vehicle ID is already in use!\n");
+
                 } else {
+
                     break;
+
                 }
 
             } else {
+
                 System.out.println("Invalid Vehicle ID (Ex: - V001)\n");
+
             }
+
         }
 
         System.out.print("\nEnter Vehicle Name        : ");
         vehicleName = ((scanner1.nextLine()).trim());
 
         while (true) {
+
             try {
+
                 System.out.print("\nEnter Daily Rental Rate   : Rs. ");
                 dailyRentalRate = scanner1.nextInt();
+
                 if (dailyRentalRate < 0) {
                     System.out.println("Invalid Daily Rental Rate!");
+
                 } else {
+
                     scanner1.nextLine();
                     break;
+
                 }
+
             } catch (InputMismatchException e) {
+
                 System.out.println("Invalid Daily Rental Rate!");
                 scanner1.nextLine();
+
             }
+
         }
 
         while (true) {
+
             try {
+
                 System.out.print("\nEnter availability status : ");
                 availabilityStatus = scanner1.nextBoolean();
                 break;
+
             } catch (InputMismatchException e) {
+
                 System.out.println("Invalid availability status!\n");
                 scanner1.nextLine();
+
             }
+
         }
 
         while (true) {
+
             try {
+
                 System.out.print("\nEnter Number of Seats     : ");
                 numberOfSeats = scanner1.nextInt();
+
                 if (numberOfSeats < 3 || numberOfSeats > 5) {
                     System.out.println("Invalid Number of Seats!");
+
                 } else {
+
                     scanner1.nextLine();
                     break;
+
                 }
+
             } catch (InputMismatchException e) {
+
                 System.out.println("Invalid Input!");
                 scanner1.nextLine();
+
             }
+
         }
 
         while (true) {
+
             try {
+
                 System.out.print("\nEnter Fuel Type           : ");
                 fuelType = scanner1.nextLine().trim();
+
                 if (fuelType.equalsIgnoreCase("Diesel") || fuelType.equalsIgnoreCase("Petrol") || fuelType.equalsIgnoreCase("Hybrid")) {
+
                     break;
+
                 } else {
+
                     System.out.println("Invalid Fuel Type!");
+
                 }
+
             } catch (InputMismatchException e) {
+
                 System.out.println("Invalid Input!");
                 scanner1.nextLine();
+
             }
+
         }
 
         cars.add(new Car(vehicleId, vehicleName, dailyRentalRate, availabilityStatus, numberOfSeats, fuelType));
 
         askWantToExit();
+
     }
 
     // Method to Register a Van
     public static void registerVan() {
+
         clearConsole();
         heading();
 
@@ -362,81 +410,124 @@ class Application {
         int cargoCapacity;
 
         while (true) {
+
             System.out.print("Enter Vehicle ID             : ");
             vehicleId = scanner1.nextLine().trim();
+
             if (vehicleId.matches("^V\\d{3}$")) {
 
                 boolean exists = false;
 
                 for (Van van : vans) {
+
                     if (van.getVehicleId().equalsIgnoreCase(vehicleId)) {
                         exists = true;
                         break;
                     }
+
                 }
+
                 if (exists) {
+
                     System.out.println("Vehicle ID is already in use!\n");
+
                 } else {
+
                     break;
+
                 }
+
             } else {
+
                 System.out.println("Invalid Vehicle ID (Ex: - V001)\n");
+
             }
+
         }
 
         System.out.print("\nEnter Vehicle Name           : ");
         vehicleName = ((scanner1.nextLine()).trim());
 
         while (true) {
+
             try {
+
                 System.out.print("\nEnter Daily Rental Rate      : Rs. ");
                 dailyRentalRate = scanner1.nextInt();
+
                 if (dailyRentalRate < 0) {
+
                     System.out.println("Invalid Daily Rental Rate!");
+
                 } else {
+
                     scanner1.nextLine();
                     break;
+
                 }
+
             } catch (InputMismatchException e) {
+
                 System.out.println("Invalid Daily Rental Rate!");
                 scanner1.nextLine();
+
             }
+
         }
 
         while (true) {
+
             try {
+
                 System.out.print("\nEnter availability status    : ");
                 availabilityStatus = scanner1.nextBoolean();
                 break;
+
             } catch (InputMismatchException e) {
+
                 System.out.println("Invalid availability status!\n");
                 scanner1.nextLine();
+
             }
+
         }
 
         while (true) {
+
             try {
+
                 System.out.print("\nEnter Cargo Capacity (In Kg) : ");
                 cargoCapacity = scanner1.nextInt();
+
                 if (cargoCapacity < 0 || cargoCapacity > 1000) {
+
                     System.out.println("Invalid Cargo Capacity!");
+
                 } else {
+
                     scanner1.nextLine();
                     break;
+
                 }
+
             } catch (InputMismatchException e) {
+
                 System.out.println("Invalid Input!");
                 scanner1.nextLine();
+
             }
+
         }
 
         vans.add(new Van(vehicleId, vehicleName, dailyRentalRate, availabilityStatus, cargoCapacity));
 
         askWantToExit();
+
     }
 
     // Method to Register a Motorcycle
     public static void registerMotorCycle() {
+
         clearConsole();
         heading();
 
@@ -449,77 +540,118 @@ class Application {
         int engineCapacity;
 
         while (true) {
+
             System.out.print("Enter Vehicle ID              : ");
             vehicleId = scanner1.nextLine().trim();
+
             if (vehicleId.matches("^V\\d{3}$")) {
 
                 boolean exists = false;
 
                 for (Motorcycle motorcycle : motorcycles) {
+
                     if (motorcycle.getVehicleId().equalsIgnoreCase(vehicleId)) {
                         exists = true;
                         break;
                     }
+
                 }
+
                 if (exists) {
+
                     System.out.println("Vehicle ID is already in use!\n");
+
                 } else {
+
                     break;
+
                 }
             } else {
+
                 System.out.println("Invalid Vehicle ID (Ex: - V001)\n");
+
             }
+
         }
 
         System.out.print("\nEnter Vehicle Name           : ");
         vehicleName = ((scanner1.nextLine()).trim());
 
         while (true) {
+
             try {
+
                 System.out.print("\nEnter Daily Rental Rate       : Rs. ");
                 dailyRentalRate = scanner1.nextInt();
+
                 if (dailyRentalRate < 0) {
+
                     System.out.println("Invalid Daily Rental Rate!");
+
                 } else {
+
                     scanner1.nextLine();
                     break;
+
                 }
+
             } catch (InputMismatchException e) {
+
                 System.out.println("Invalid Daily Rental Rate!");
                 scanner1.nextLine();
+
             }
+
         }
 
         while (true) {
+
             try {
+
                 System.out.print("\nEnter availability status     : ");
                 availabilityStatus = scanner1.nextBoolean();
                 break;
+
             } catch (InputMismatchException e) {
+
                 System.out.println("Invalid availability status!\n");
                 scanner1.nextLine();
+
             }
+
         }
 
         while (true) {
+
             try {
+
                 System.out.print("\nEnter Engine Capacity (In CC) : ");
                 engineCapacity = scanner1.nextInt();
+
                 if (engineCapacity < 100 || engineCapacity > 2000) {
+
                     System.out.println("Invalid Engine Capacity!");
+
                 } else {
+
                     scanner1.nextLine();
                     break;
+
                 }
+
             } catch (InputMismatchException e) {
+
                 System.out.println("Invalid Input!");
                 scanner1.nextLine();
+
             }
+
         }
 
         motorcycles.add(new Motorcycle(vehicleId, vehicleName, dailyRentalRate, availabilityStatus, engineCapacity));
 
         askWantToExit();
+
     }
 
     // Clear Console Method
@@ -528,14 +660,22 @@ class Application {
         final String os = System.getProperty("os.name");
 
         try {
+
             if (os.contains("Windows")) {
+
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+
             } else {
+
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
+
             }
+
         } catch (final Exception e) {
+
             System.out.println("Error : " + e);
+
         }
 
     }
@@ -545,11 +685,14 @@ class Application {
 
         clearConsole();
         heading();
+
         System.out.println("01. View all Cars");
         System.out.println("02. View all Vans");
         System.out.println("03. View all Motorcycle");
-        System.out.println("04. View all Vehicles\n");
-        System.out.println("05. Exit\n");
+        System.out.println("04. View all Vehicles");
+        System.out.println("05. Main Menu\n");
+
+        System.out.println("06. Exit\n");
 
         L1:
         while (true) {
@@ -557,45 +700,68 @@ class Application {
             Scanner scanner2 = new Scanner(System.in);
 
             System.out.print("Enter your choice: ");
+
             try {
+
                 int choice = scanner2.nextInt();
-                if (choice > 5 || choice < 1) {
+
+                if (choice > 6 || choice < 1) {
+
                     System.out.println("Invalid choice!\n");
                     scanner2.nextLine();
+
                 } else {
+
                     switch (choice) {
+
                         case 1:
                             clearConsole();
                             heading();
                             viewAllCars();
                             break L1;
+
                         case 2:
                             clearConsole();
                             heading();
                             viewAllVans();
                             break L1;
+
                         case 3:
                             clearConsole();
                             heading();
                             viewAllMotorcycles();
                             break L1;
+
                         case 4:
                             clearConsole();
                             heading();
                             viewAllVehicles();
                             break L1;
+
                         case 5:
+                            clearConsole();
+                            mainMenu();
+                            break L1;
+
+                        case 6:
                             clearConsole();
                             heading();
                             System.out.println("Programme terminated successfully!\n");
                             break L1;
+
                     }
+
                 }
+
             } catch (InputMismatchException e) {
+
                 System.out.println("Invalid input!\n");
                 scanner2.nextLine();
+
             }
+
         }
+
     }
 
     // Method to View All Cars
@@ -642,6 +808,7 @@ class Application {
             if (!(car.getFuelType().equals("Unknown"))) {
                 maxFuelType = Math.max(maxFuelType, String.valueOf(car.getFuelType()).length());
             }
+
         }
 
         int vehicleIdWidth =
@@ -669,8 +836,11 @@ class Application {
         for (int i = 0; i < totalColumnWidth; i++) {
             System.out.print("=");
         }
+
         System.out.print("\n|");
+
         for (int i = 0; i < columnNames.length; i++) {
+
             if (columnNamesLength[i] >= maxColumnWidth[i]) {
                 System.out.print(columnNames[i] + "|");
             } else {
@@ -682,6 +852,7 @@ class Application {
             }
         }
         System.out.print("\n");
+
         for (int i = 0; i < totalColumnWidth; i++) {
             System.out.print("=");
         }
@@ -825,6 +996,7 @@ class Application {
             System.out.print("=");
         }
         System.out.print("\n|");
+
         for (int i = 0; i < columnNames.length; i++) {
             if (columnNamesLength[i] >= maxColumnWidth[i]) {
                 System.out.print(columnNames[i] + "|");
@@ -837,6 +1009,7 @@ class Application {
             }
         }
         System.out.print("\n");
+
         for (int i = 0; i < totalColumnWidth; i++) {
             System.out.print("=");
         }
@@ -971,6 +1144,7 @@ class Application {
             System.out.print("=");
         }
         System.out.print("\n|");
+
         for (int i = 0; i < columnNames.length; i++) {
             if (columnNamesLength[i] >= maxColumnWidth[i]) {
                 System.out.print(columnNames[i] + "|");
@@ -983,6 +1157,7 @@ class Application {
             }
         }
         System.out.print("\n");
+
         for (int i = 0; i < totalColumnWidth; i++) {
             System.out.print("=");
         }
@@ -1059,8 +1234,10 @@ class Application {
 
         System.out.print("\nDo you want to exit (Y/N): ");
         String input = scanner2.nextLine();
+
         if ((input.equalsIgnoreCase("Y")) || (input.equalsIgnoreCase("N"))) {
             if (input.equalsIgnoreCase("N")) {
+                clearConsole();
                 mainMenu();
             } else {
                 clearConsole();
@@ -1152,6 +1329,7 @@ class Application {
             System.out.print("=");
         }
         System.out.print("\n|");
+
         for (int i = 0; i < columnNames.length; i++) {
             if (columnNamesLength[i] >= maxColumnWidth[i]) {
                 System.out.print(columnNames[i] + "|");
@@ -1164,6 +1342,7 @@ class Application {
             }
         }
         System.out.print("\n");
+
         for (int i = 0; i < totalColumnWidth; i++) {
             System.out.print("=");
         }
@@ -1303,6 +1482,7 @@ class Application {
             System.out.print("=");
         }
         System.out.print("\n|");
+
         for (int i = 0; i < columnNames.length; i++) {
             if (columnNamesLength[i] >= maxColumnWidth[i]) {
                 System.out.print(columnNames[i] + "|");
@@ -1315,6 +1495,7 @@ class Application {
             }
         }
         System.out.print("\n");
+
         for (int i = 0; i < totalColumnWidth; i++) {
             System.out.print("=");
         }
@@ -1445,6 +1626,7 @@ class Application {
             System.out.print("=");
         }
         System.out.print("\n|");
+
         for (int i = 0; i < columnNames.length; i++) {
             if (columnNamesLength[i] >= maxColumnWidth[i]) {
                 System.out.print(columnNames[i] + "|");
@@ -1457,6 +1639,7 @@ class Application {
             }
         }
         System.out.print("\n");
+
         for (int i = 0; i < totalColumnWidth; i++) {
             System.out.print("=");
         }
@@ -1533,8 +1716,10 @@ class Application {
         heading();
         System.out.println("01. Search a Car");
         System.out.println("02. Search a Van");
-        System.out.println("03. Search a Motorcycle\n");
-        System.out.println("04. Exit\n");
+        System.out.println("03. Search a Motorcycle");
+        System.out.println("04. Main Menu\n");
+
+        System.out.println("05. Exit\n");
 
         L1:
         while (true) {
@@ -1542,9 +1727,10 @@ class Application {
             Scanner scanner2 = new Scanner(System.in);
 
             System.out.print("Enter your choice: ");
+
             try {
                 int choice = scanner2.nextInt();
-                if (choice > 4 || choice < 1) {
+                if (choice > 5 || choice < 1) {
                     System.out.println("Invalid choice!\n");
                     scanner2.nextLine();
                 } else {
@@ -1565,6 +1751,10 @@ class Application {
                             searchMotorcycle();
                             break L1;
                         case 4:
+                            clearConsole();
+                            mainMenu();
+                            break L1;
+                        case 5:
                             clearConsole();
                             heading();
                             System.out.println("Programme terminated successfully!\n");
@@ -1720,6 +1910,300 @@ class Application {
 
     }
 
+    // Method to Remove a Vehicle
+    public static void removeVehicle() {
+
+        clearConsole();
+        heading();
+
+        System.out.println("01. Remove a Car");
+        System.out.println("02. Remove a Van");
+        System.out.println("03. Remove a Motorcycle");
+        System.out.println("04. Main Menu\n");
+
+        System.out.println("05. Exit\n");
+
+        L1:
+        while (true) {
+
+            Scanner scanner2 = new Scanner(System.in);
+
+            System.out.print("Enter your choice: ");
+
+            try {
+
+                int choice = scanner2.nextInt();
+
+                if (choice > 5 || choice < 1) {
+
+                    System.out.println("Invalid choice!\n");
+                    scanner2.nextLine();
+
+                } else {
+
+                    switch (choice) {
+
+                        case 1:
+                            clearConsole();
+                            heading();
+                             removeCar();
+                            break L1;
+
+                        case 2:
+                            clearConsole();
+                            heading();
+                            removeVan();
+                            break L1;
+
+                        case 3:
+                            clearConsole();
+                            heading();
+                            removeMotorcycle();
+                            break L1;
+
+                        case 4:
+                            clearConsole();
+                            mainMenu();
+                            break L1;
+
+                        case 5:
+                            clearConsole();
+                            heading();
+                            System.out.println("Programme terminated successfully!\n");
+                            break L1;
+
+                    }
+
+                }
+
+            } catch (InputMismatchException e) {
+
+                System.out.println("Invalid input!\n");
+                scanner2.nextLine();
+
+            }
+
+        }
+
+    }
+
+    // Method to Remove a Car
+    public static void removeCar() {
+
+        clearConsole();
+        heading();
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        String vehicleId;
+
+        while (true) {
+            System.out.print("Enter Vehicle ID             : ");
+            vehicleId = scanner1.nextLine().trim();
+            if (vehicleId.matches("^V\\d{3}$")) {
+
+                boolean exists = false;
+                int index = -1;
+
+                for (Car car : cars) {
+                    if (car.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = cars.indexOf(car);
+                    }
+                }
+                if (exists) {
+                    clearConsole();
+                    heading();
+                    cars.remove(index);
+                    System.out.println("Car removed from the system!");
+
+                    askWantToExit();
+
+                    break;
+
+                } else {
+                    System.out.println("Vehicle isn't registered yet!\n");
+                }
+            } else {
+                System.out.println("Invalid Vehicle ID (Ex: - V001)\n");
+            }
+        }
+
+    }
+
+    // Method to Remove a Motorcycle
+    public static void removeMotorcycle() {
+
+        clearConsole();
+        heading();
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        String vehicleId;
+
+        while (true) {
+            System.out.print("Enter Vehicle ID             : ");
+            vehicleId = scanner1.nextLine().trim();
+            if (vehicleId.matches("^V\\d{3}$")) {
+
+                boolean exists = false;
+                int index = -1;
+
+                for (Motorcycle motorcycle : motorcycles) {
+                    if (motorcycle.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = motorcycles.indexOf(motorcycle);
+                    }
+                }
+                if (exists) {
+                    clearConsole();
+                    heading();
+                    motorcycles.remove(index);
+                    System.out.println("Motorcycle removed from the system!");
+
+                    askWantToExit();
+
+                    break;
+
+                } else {
+                    System.out.println("Vehicle isn't registered yet!\n");
+                }
+            } else {
+                System.out.println("Invalid Vehicle ID (Ex: - V001)\n");
+            }
+        }
+
+    }
+
+    // Method to Remove a Van
+    public static void removeVan() {
+
+        clearConsole();
+        heading();
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        String vehicleId;
+
+        while (true) {
+            System.out.print("Enter Vehicle ID             : ");
+            vehicleId = scanner1.nextLine().trim();
+            if (vehicleId.matches("^V\\d{3}$")) {
+
+                boolean exists = false;
+                int index = -1;
+
+                for (Van van : vans) {
+                    if (van.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = vans.indexOf(van);
+                    }
+                }
+                if (exists) {
+                    clearConsole();
+                    heading();
+                    vans.remove(index);
+                    System.out.println("Van removed from the system!");
+
+                    askWantToExit();
+
+                    break;
+
+                } else {
+                    System.out.println("Vehicle isn't registered yet!\n");
+                }
+            } else {
+                System.out.println("Invalid Vehicle ID (Ex: - V001)\n");
+            }
+        }
+
+    }
+
+    // Method to Register a Customer
+    public static void registerCustomer() {
+
+        clearConsole();
+        heading();
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        String customerId;
+        String customerName;
+        String contactNo;
+        String licenseNumber;
+
+        while (true) {
+            System.out.print("Enter Customer ID               : ");
+            customerId = scanner1.nextLine().trim();
+
+            if (customerId.matches("^C\\d{3}$")) {
+
+                boolean exists = false;
+
+                for (Customer customer : customers) {
+
+                    if (customer.getCustomerId().equalsIgnoreCase(customerId)) {
+                        exists = true;
+                        break;
+                    }
+
+                }
+
+                if (exists) {
+
+                    System.out.println("Customer ID is already in use!");
+
+                } else {
+
+                    break;
+
+                }
+
+            } else {
+
+                System.out.println("Invalid Customer ID (Ex: - C001)");
+
+            }
+
+        }
+
+        System.out.print("\nEnter Customer Name             : ");
+        customerName = ((scanner1.nextLine()).trim());
+
+        while (true) {
+            System.out.print("\nEnter Customer Contact Number   : ");
+            contactNo = scanner1.nextLine().trim();
+
+            if (contactNo.matches("^07\\d{8}$")) {
+                break;
+
+            } else {
+                System.out.println("Invalid Contact Number (Ex: - 0742515014)");
+
+            }
+
+        }
+
+        while (true) {
+            System.out.print("\nEnter Customer License's Number : ");
+            licenseNumber = scanner1.nextLine().trim();
+
+            if (licenseNumber.matches("^[A-Z]{2}\\d{6}$")) {
+                break;
+
+            } else {
+                System.out.println("Invalid License Number (Ex: - AB123456)");
+
+            }
+
+        }
+
+        customers.add(new Customer(customerId, customerName, contactNo, licenseNumber));
+
+        askWantToExit();
+
+    }
+
     // Main Method
     public static void main(String[] args) {
 
@@ -1758,6 +2242,18 @@ class Application {
         motorcycles.add(new Motorcycle("V008", "Yamaha MT-15", 1700, true, 155));
         motorcycles.add(new Motorcycle("V009", "Honda Dio", 800, true, 110));
         motorcycles.add(new Motorcycle("V010", "Hero Hunk", 900, true, 150));
+
+        // Load Some Demo Data to Customers
+        customers.add(new Customer("C001", "Shashini Weerasinghe", "0777425425", "AB123456"));
+        customers.add(new Customer("C002", "Nimal Perera", "0712345678", "BC234567"));
+        customers.add(new Customer("C003", "Kavindu Fernando", "0763456789", "CD345678"));
+        customers.add(new Customer("C004", "Dinithi Silva", "0754567890", "DE456789"));
+        customers.add(new Customer("C005", "Kasun Jayawardena", "0785678901", "EF567890"));
+        customers.add(new Customer("C006", "Tharushi Gunawardena", "0706789012", "FG678901"));
+        customers.add(new Customer("C007", "Chamod Wijesinghe", "0727890123", "GH789012"));
+        customers.add(new Customer("C008", "Piumi Ranasinghe", "0748901234", "HJ890123"));
+        customers.add(new Customer("C009", "Isuru Senanayake", "0779012345", "JK901234"));
+        customers.add(new Customer("C010", "Malsha Karunaratne", "0750123456", "KL012345"));
 
         // Clear Console
         clearConsole();
