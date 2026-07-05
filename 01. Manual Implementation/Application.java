@@ -114,15 +114,15 @@ class Application {
                         break;
 
                     case 6:
-                        //
+                        viewCusomers();
                         break;
 
                     case 7:
-                        //
+                        searchCustomer();
                         break;
 
                     case 8:
-                        //
+                        removeCustomer();
                         break;
 
                     case 9:
@@ -2151,7 +2151,7 @@ class Application {
 
                 if (exists) {
 
-                    System.out.println("Customer ID is already in use!");
+                    System.out.println("Customer ID is already in use!\n");
 
                 } else {
 
@@ -2161,7 +2161,7 @@ class Application {
 
             } else {
 
-                System.out.println("Invalid Customer ID (Ex: - C001)");
+                System.out.println("Invalid Customer ID (Ex: - C001)\n");
 
             }
 
@@ -2204,6 +2204,223 @@ class Application {
 
     }
 
+    // Method to View Customers
+    public static void  viewCusomers(){
+
+        clearConsole();
+        heading();
+
+        String[] columnNames = {"Customer ID", "Customer Name", "Contact No", "License Number"};
+
+        int[] columnNamesLength = new int[4];
+
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNamesLength[i] = columnNames[i].length();
+        }
+
+        int maxCustomerId = Integer.MIN_VALUE;
+        int maxCustomerName = Integer.MIN_VALUE;
+        int maxContactNo = Integer.MIN_VALUE;
+        int maxLicenseNumber = Integer.MIN_VALUE;
+
+        for (Customer customer : customers) {
+
+            if (customer.getCustomerId() != null) {
+                maxCustomerId = Math.max(maxCustomerId, customer.getCustomerId().length());
+            }
+
+            if (customer.getCustomerName() != null) {
+                maxCustomerName = Math.max(maxCustomerName, customer.getCustomerName().length());
+            }
+
+            if (customer.getContactNo() != null) {
+                maxContactNo = Math.max(maxContactNo, customer.getContactNo().length());
+            }
+
+            if (customer.getLicenseNumber() != null) {
+                maxLicenseNumber = Math.max(maxLicenseNumber, customer.getLicenseNumber().length());
+            }
+
+        }
+
+        int customerIdWidth =
+                Math.max(columnNames[0].length(), maxCustomerId);
+
+        int customerNameWidth =
+                Math.max(columnNames[1].length(), maxCustomerName);
+
+        int contactNoWidth =
+                Math.max(columnNames[2].length(), maxContactNo);
+
+        int licenseNumberWidth =
+                Math.max(columnNames[3].length(), maxLicenseNumber);
+
+        int[] maxColumnWidth = {customerIdWidth, customerNameWidth, contactNoWidth, licenseNumberWidth};
+
+        int totalColumnWidth = customerIdWidth + customerNameWidth + contactNoWidth + licenseNumberWidth + (columnNames.length + 1);
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n|");
+
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNamesLength[i] >= maxColumnWidth[i]) {
+                System.out.print(columnNames[i] + "|");
+            } else {
+                System.out.print(columnNames[i]);
+                for (int k = 0; k < (maxColumnWidth[i] - columnNamesLength[i]); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        for (Customer customer : customers) {
+
+            // Customer ID
+            if (customer.getCustomerId().length() >= customerIdWidth) {
+                System.out.print("\n|" + customer.getCustomerId() + "|");
+            } else {
+                System.out.print("\n|");
+                for (int k = 0; k < (customerIdWidth - customer.getCustomerId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(customer.getCustomerId() + "|");
+            }
+
+            // Customer Name
+            if (customer.getCustomerName().length() >= customerNameWidth) {
+                System.out.print(customer.getCustomerName() + "|");
+            } else {
+                for (int k = 0; k < (customerNameWidth - customer.getCustomerName().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(customer.getCustomerName() + "|");
+            }
+
+            // Contact No
+            if (customer.getContactNo().length() >= contactNoWidth) {
+                System.out.print(customer.getContactNo() + "|");
+            } else {
+                for (int k = 0; k < (contactNoWidth - customer.getCustomerName().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(customer.getContactNo() + "|");
+            }
+
+            // License Number
+            if (customer.getLicenseNumber().length() >= licenseNumberWidth) {
+                System.out.print(customer.getLicenseNumber() + "|");
+            } else {
+                for (int k = 0; k < (licenseNumberWidth - customer.getLicenseNumber().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(customer.getLicenseNumber() + "|");
+            }
+
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n");
+
+        askWantToExit();
+    }
+
+    // Method to Search Customers
+    public static void searchCustomer(){
+        clearConsole();
+        heading();
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        String customerId;
+
+        while (true) {
+            System.out.print("Enter Customer ID             : ");
+            customerId = scanner1.nextLine().trim();
+            if (customerId.matches("^C\\d{3}$")) {
+
+                boolean exists = false;
+                int index = -1;
+
+                for (Customer customer : customers) {
+                    if (customer.getCustomerId().equalsIgnoreCase(customerId)) {
+                        exists = true;
+                        index = customers.indexOf(customer);
+                    }
+                }
+                if (exists) {
+                    clearConsole();
+                    heading();
+                    System.out.println("Customer found!\n");
+                    System.out.println("01. Customer ID             : " + customers.get(index).getCustomerId());
+                    System.out.println("02. Customer Name           : " + customers.get(index).getCustomerName());
+                    System.out.println("03. Customer Contact No     : " + customers.get(index).getContactNo());
+                    System.out.println("04. Customer License Number : " + customers.get(index).getLicenseNumber());
+
+                    askWantToExit();
+
+                    break;
+
+                } else {
+                    System.out.println("Customer isn't registered yet!\n");
+                }
+            } else {
+                System.out.println("Invalid Customer ID (Ex: - C001)\n");
+            }
+        }
+    }
+
+    // Method to Remove Customers
+    public static void removeCustomer(){
+        clearConsole();
+        heading();
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        String customerId;
+
+        while (true) {
+            System.out.print("Enter Customer ID             : ");
+            customerId = scanner1.nextLine().trim();
+            if (customerId.matches("^C\\d{3}$")) {
+
+                boolean exists = false;
+                int index = -1;
+
+                for (Customer customer : customers) {
+                    if (customer.getCustomerId().equalsIgnoreCase(customerId)) {
+                        exists = true;
+                        index = customers.indexOf(customer);
+                    }
+                }
+                if (exists) {
+                    clearConsole();
+                    heading();
+                    customers.remove(index);
+                    System.out.println("Customer removed from the system!");
+
+                    askWantToExit();
+
+                    break;
+
+                } else {
+                    System.out.println("Customer isn't registered yet!\n");
+                }
+            } else {
+                System.out.println("Invalid Customer ID (Ex: - C001)\n");
+            }
+        }
+    }
     // Main Method
     public static void main(String[] args) {
 
