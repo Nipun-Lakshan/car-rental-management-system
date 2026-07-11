@@ -7,6 +7,9 @@
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 // Main Class
 class Application {
@@ -16,7 +19,9 @@ class Application {
     public static ArrayList<Motorcycle> motorcycles = new ArrayList<>();
     public static ArrayList<Van> vans = new ArrayList<>();
     public static ArrayList<Customer> customers = new ArrayList<>();
-    public static ArrayList<Rental> rentals = new ArrayList<>();
+    public static ArrayList<Rental> rentalCars = new ArrayList<>();
+    public static ArrayList<Rental> rentalVans = new ArrayList<>();
+    public static ArrayList<Rental> rentalMotorcycles = new ArrayList<>();
 
     // Method to Print Heading
     public static void heading() {
@@ -50,7 +55,7 @@ class Application {
         System.out.println("07. Search Customer");
         System.out.println("08. Remove Customer\n");
 
-        System.out.println("==================");
+        System.out.println("===================");
         System.out.println("|RENTAL MANAGEMENT|");
         System.out.println("===================\n");
 
@@ -114,7 +119,7 @@ class Application {
                         break;
 
                     case 6:
-                        viewCusomers();
+                        viewCustomers();
                         break;
 
                     case 7:
@@ -126,29 +131,30 @@ class Application {
                         break;
 
                     case 9:
-                        //
+                        rentVehicle();
                         break;
 
                     case 10:
-                        //
+                        //*
                         break;
 
                     case 11:
-                        //
+                        //*
                         break;
 
                     case 12:
-                        //
+                        //*
                         break;
 
                     case 13:
-                        //
+                        //*
                         break;
 
                     case 14:
                         clearConsole();
                         heading();
                         System.out.println("Programme terminated successfully!\n");
+                        System.exit(0);
                         break;
 
                 }
@@ -224,6 +230,7 @@ class Application {
                             clearConsole();
                             heading();
                             System.out.println("Programme terminated successfully!\n");
+                            System.exit(0);
                             break L1;
 
                     }
@@ -747,6 +754,7 @@ class Application {
                             clearConsole();
                             heading();
                             System.out.println("Programme terminated successfully!\n");
+                            System.exit(0);
                             break L1;
 
                     }
@@ -811,23 +819,17 @@ class Application {
 
         }
 
-        int vehicleIdWidth =
-                Math.max(columnNames[0].length(), maxVehicleId);
+        int vehicleIdWidth = Math.max(columnNames[0].length(), maxVehicleId);
 
-        int vehicleNameWidth =
-                Math.max(columnNames[1].length(), maxVehicleName);
+        int vehicleNameWidth = Math.max(columnNames[1].length(), maxVehicleName);
 
-        int dailyRentalRateWidth =
-                Math.max(columnNames[2].length(), maxDailyRentalRate);
+        int dailyRentalRateWidth = Math.max(columnNames[2].length(), maxDailyRentalRate);
 
-        int availabilityStatusWidth =
-                Math.max(columnNames[3].length(), maxAvailabilityStatus);
+        int availabilityStatusWidth = Math.max(columnNames[3].length(), maxAvailabilityStatus);
 
-        int numberOfSeatsWidth =
-                Math.max(columnNames[4].length(), maxNumberOfSeats);
+        int numberOfSeatsWidth = Math.max(columnNames[4].length(), maxNumberOfSeats);
 
-        int fuelTypeWidth =
-                Math.max(columnNames[5].length(), maxFuelType);
+        int fuelTypeWidth = Math.max(columnNames[5].length(), maxFuelType);
 
         int[] maxColumnWidth = {vehicleIdWidth, vehicleNameWidth, dailyRentalRateWidth, availabilityStatusWidth, numberOfSeatsWidth, fuelTypeWidth};
 
@@ -973,20 +975,15 @@ class Application {
 
         }
 
-        int vehicleIdWidth =
-                Math.max(columnNames[0].length(), maxVehicleId);
+        int vehicleIdWidth = Math.max(columnNames[0].length(), maxVehicleId);
 
-        int vehicleNameWidth =
-                Math.max(columnNames[1].length(), maxVehicleName);
+        int vehicleNameWidth = Math.max(columnNames[1].length(), maxVehicleName);
 
-        int dailyRentalRateWidth =
-                Math.max(columnNames[2].length(), maxDailyRentalRate);
+        int dailyRentalRateWidth = Math.max(columnNames[2].length(), maxDailyRentalRate);
 
-        int availabilityStatusWidth =
-                Math.max(columnNames[3].length(), maxAvailabilityStatus);
+        int availabilityStatusWidth = Math.max(columnNames[3].length(), maxAvailabilityStatus);
 
-        int cargoCapacityWidth =
-                Math.max(columnNames[4].length(), maxCargoCapacity);
+        int cargoCapacityWidth = Math.max(columnNames[4].length(), maxCargoCapacity);
 
         int[] maxColumnWidth = {vehicleIdWidth, vehicleNameWidth, dailyRentalRateWidth, availabilityStatusWidth, cargoCapacityWidth};
 
@@ -1121,20 +1118,15 @@ class Application {
 
         }
 
-        int vehicleIdWidth =
-                Math.max(columnNames[0].length(), maxVehicleId);
+        int vehicleIdWidth = Math.max(columnNames[0].length(), maxVehicleId);
 
-        int vehicleNameWidth =
-                Math.max(columnNames[1].length(), maxVehicleName);
+        int vehicleNameWidth = Math.max(columnNames[1].length(), maxVehicleName);
 
-        int dailyRentalRateWidth =
-                Math.max(columnNames[2].length(), maxDailyRentalRate);
+        int dailyRentalRateWidth = Math.max(columnNames[2].length(), maxDailyRentalRate);
 
-        int availabilityStatusWidth =
-                Math.max(columnNames[3].length(), maxAvailabilityStatus);
+        int availabilityStatusWidth = Math.max(columnNames[3].length(), maxAvailabilityStatus);
 
-        int engineCapacityWidth =
-                Math.max(columnNames[4].length(), maxEngineCapacity);
+        int engineCapacityWidth = Math.max(columnNames[4].length(), maxEngineCapacity);
 
         int[] maxColumnWidth = {vehicleIdWidth, vehicleNameWidth, dailyRentalRateWidth, availabilityStatusWidth, engineCapacityWidth};
 
@@ -1243,6 +1235,7 @@ class Application {
                 clearConsole();
                 heading();
                 System.out.println("Programme terminated successfully.");
+                System.exit(0);
             }
         } else {
             System.out.println("Invalid Input!");
@@ -1303,23 +1296,17 @@ class Application {
             }
         }
 
-        int vehicleIdWidth =
-                Math.max(columnNames[0].length(), maxVehicleId);
+        int vehicleIdWidth = Math.max(columnNames[0].length(), maxVehicleId);
 
-        int vehicleNameWidth =
-                Math.max(columnNames[1].length(), maxVehicleName);
+        int vehicleNameWidth = Math.max(columnNames[1].length(), maxVehicleName);
 
-        int dailyRentalRateWidth =
-                Math.max(columnNames[2].length(), maxDailyRentalRate);
+        int dailyRentalRateWidth = Math.max(columnNames[2].length(), maxDailyRentalRate);
 
-        int availabilityStatusWidth =
-                Math.max(columnNames[3].length(), maxAvailabilityStatus);
+        int availabilityStatusWidth = Math.max(columnNames[3].length(), maxAvailabilityStatus);
 
-        int numberOfSeatsWidth =
-                Math.max(columnNames[4].length(), maxNumberOfSeats);
+        int numberOfSeatsWidth = Math.max(columnNames[4].length(), maxNumberOfSeats);
 
-        int fuelTypeWidth =
-                Math.max(columnNames[5].length(), maxFuelType);
+        int fuelTypeWidth = Math.max(columnNames[5].length(), maxFuelType);
 
         int[] maxColumnWidth = {vehicleIdWidth, vehicleNameWidth, dailyRentalRateWidth, availabilityStatusWidth, numberOfSeatsWidth, fuelTypeWidth};
 
@@ -1459,20 +1446,15 @@ class Application {
 
         }
 
-        vehicleIdWidth =
-                Math.max(columnNames[0].length(), maxVehicleId);
+        vehicleIdWidth = Math.max(columnNames[0].length(), maxVehicleId);
 
-        vehicleNameWidth =
-                Math.max(columnNames[1].length(), maxVehicleName);
+        vehicleNameWidth = Math.max(columnNames[1].length(), maxVehicleName);
 
-        dailyRentalRateWidth =
-                Math.max(columnNames[2].length(), maxDailyRentalRate);
+        dailyRentalRateWidth = Math.max(columnNames[2].length(), maxDailyRentalRate);
 
-        availabilityStatusWidth =
-                Math.max(columnNames[3].length(), maxAvailabilityStatus);
+        availabilityStatusWidth = Math.max(columnNames[3].length(), maxAvailabilityStatus);
 
-        int cargoCapacityWidth =
-                Math.max(columnNames[4].length(), maxCargoCapacity);
+        int cargoCapacityWidth = Math.max(columnNames[4].length(), maxCargoCapacity);
 
         maxColumnWidth = new int[]{vehicleIdWidth, vehicleNameWidth, dailyRentalRateWidth, availabilityStatusWidth, cargoCapacityWidth};
 
@@ -1603,20 +1585,15 @@ class Application {
 
         }
 
-        vehicleIdWidth =
-                Math.max(columnNames[0].length(), maxVehicleId);
+        vehicleIdWidth = Math.max(columnNames[0].length(), maxVehicleId);
 
-        vehicleNameWidth =
-                Math.max(columnNames[1].length(), maxVehicleName);
+        vehicleNameWidth = Math.max(columnNames[1].length(), maxVehicleName);
 
-        dailyRentalRateWidth =
-                Math.max(columnNames[2].length(), maxDailyRentalRate);
+        dailyRentalRateWidth = Math.max(columnNames[2].length(), maxDailyRentalRate);
 
-        availabilityStatusWidth =
-                Math.max(columnNames[3].length(), maxAvailabilityStatus);
+        availabilityStatusWidth = Math.max(columnNames[3].length(), maxAvailabilityStatus);
 
-        int engineCapacityWidth =
-                Math.max(columnNames[4].length(), maxEngineCapacity);
+        int engineCapacityWidth = Math.max(columnNames[4].length(), maxEngineCapacity);
 
         maxColumnWidth = new int[]{vehicleIdWidth, vehicleNameWidth, dailyRentalRateWidth, availabilityStatusWidth, engineCapacityWidth};
 
@@ -1758,6 +1735,7 @@ class Application {
                             clearConsole();
                             heading();
                             System.out.println("Programme terminated successfully!\n");
+                            System.exit(0);
                             break L1;
                     }
                 }
@@ -1946,7 +1924,7 @@ class Application {
                         case 1:
                             clearConsole();
                             heading();
-                             removeCar();
+                            removeCar();
                             break L1;
 
                         case 2:
@@ -1970,6 +1948,7 @@ class Application {
                             clearConsole();
                             heading();
                             System.out.println("Programme terminated successfully!\n");
+                            System.exit(0);
                             break L1;
 
                     }
@@ -2205,7 +2184,7 @@ class Application {
     }
 
     // Method to View Customers
-    public static void  viewCusomers(){
+    public static void viewCustomers() {
 
         clearConsole();
         heading();
@@ -2243,17 +2222,13 @@ class Application {
 
         }
 
-        int customerIdWidth =
-                Math.max(columnNames[0].length(), maxCustomerId);
+        int customerIdWidth = Math.max(columnNames[0].length(), maxCustomerId);
 
-        int customerNameWidth =
-                Math.max(columnNames[1].length(), maxCustomerName);
+        int customerNameWidth = Math.max(columnNames[1].length(), maxCustomerName);
 
-        int contactNoWidth =
-                Math.max(columnNames[2].length(), maxContactNo);
+        int contactNoWidth = Math.max(columnNames[2].length(), maxContactNo);
 
-        int licenseNumberWidth =
-                Math.max(columnNames[3].length(), maxLicenseNumber);
+        int licenseNumberWidth = Math.max(columnNames[3].length(), maxLicenseNumber);
 
         int[] maxColumnWidth = {customerIdWidth, customerNameWidth, contactNoWidth, licenseNumberWidth};
 
@@ -2308,7 +2283,7 @@ class Application {
             if (customer.getContactNo().length() >= contactNoWidth) {
                 System.out.print(customer.getContactNo() + "|");
             } else {
-                for (int k = 0; k < (contactNoWidth - customer.getCustomerName().length()); k++) {
+                for (int k = 0; k < (contactNoWidth - customer.getContactNo().length()); k++) {
                     System.out.print(" ");
                 }
                 System.out.print(customer.getContactNo() + "|");
@@ -2336,7 +2311,7 @@ class Application {
     }
 
     // Method to Search Customers
-    public static void searchCustomer(){
+    public static void searchCustomer() {
         clearConsole();
         heading();
 
@@ -2381,7 +2356,7 @@ class Application {
     }
 
     // Method to Remove Customers
-    public static void removeCustomer(){
+    public static void removeCustomer() {
         clearConsole();
         heading();
 
@@ -2421,6 +2396,604 @@ class Application {
             }
         }
     }
+
+    // Method to rent a vehicle
+    public static void rentVehicle() {
+        clearConsole();
+        heading();
+
+        System.out.println("01. Rent a Car");
+        System.out.println("02. Rent a Van");
+        System.out.println("03. Rent a Motorcycle");
+        System.out.println("04. Main Menu\n");
+        System.out.println("05. Exit\n");
+
+        L1:
+        while (true) {
+
+            Scanner scanner2 = new Scanner(System.in);
+
+            System.out.print("Enter your choice: ");
+
+            try {
+
+                int choice = scanner2.nextInt();
+
+                if (choice > 5 || choice < 1) {
+
+                    System.out.println("Invalid choice!\n");
+                    scanner2.nextLine();
+
+                } else {
+
+                    switch (choice) {
+
+                        case 1:
+                            clearConsole();
+                            heading();
+                            rentCar();
+                            break L1;
+
+                        case 2:
+                            clearConsole();
+                            heading();
+                            rentVan();
+                            break L1;
+
+                        case 3:
+                            clearConsole();
+                            heading();
+                            rentMotorcycle();
+                            break L1;
+
+                        case 4:
+                            mainMenu();
+                            break L1;
+
+                        case 5:
+                            clearConsole();
+                            heading();
+                            System.out.println("Programme terminated successfully!\n");
+                            System.exit(0);
+                            break L1;
+
+                    }
+
+                }
+
+            } catch (InputMismatchException e) {
+
+                System.out.println("Invalid input!\n");
+                scanner2.nextLine();
+
+            }
+
+        }
+    }
+
+    // Method to rent a car
+    public static void rentCar() {
+        clearConsole();
+        heading();
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        String rentalId;
+        String customerId;
+        String vehicleId;
+        String rentalStartDate;
+        String rentalEndDate;
+        int numberOfRentalDays;
+        int rentalEstimatedCost = -1;
+
+        // Rental ID
+        while (true) {
+            System.out.print("Enter Rental ID          : ");
+            rentalId = scanner1.nextLine().trim();
+
+            if (rentalId.matches("^R\\d{3}$")) {
+                boolean exists = false;
+
+                for (Rental rent : rentalCars) {
+                    if (rent.getRentalId().equalsIgnoreCase(rentalId)) {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (exists) {
+                    System.out.println("Rental ID is already in use!\n");
+
+                } else {
+                    break;
+
+                }
+
+            } else {
+                System.out.println("Invalid Rental ID (Ex: - R001)\n");
+
+            }
+
+        }
+
+        // Customer ID
+        while (true) {
+            System.out.print("\nEnter Customer ID        : ");
+            customerId = scanner1.nextLine().trim();
+
+            if (customerId.matches("^C\\d{3}$")) {
+                boolean exists = false;
+
+                for (Customer customer : customers) {
+                    if (customer.getCustomerId().equalsIgnoreCase(customerId)) {
+                        exists = true;
+                        break;
+                    }
+
+                }
+
+                if (exists) {
+                    break;
+
+                } else {
+                    System.out.println("Customer has not been registered yet!");
+
+                }
+
+            } else {
+                System.out.println("Invalid Customer ID (Ex: - C001)");
+
+            }
+
+        }
+
+        // Vehicle ID
+        while (true) {
+            System.out.print("\nEnter Vehicle ID         : ");
+            vehicleId = scanner1.nextLine().trim();
+
+            if (vehicleId.matches("^V\\d{3}$")) {
+                boolean exists = false;
+                int index = -1;
+
+                for (Car car : cars) {
+                    if (car.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = cars.indexOf(car);
+                        break;
+                    }
+
+                }
+
+                if (exists) {
+                    if (cars.get(index).getAvailabilityStatus()) {
+                        System.out.println("\nChoose Vehicle Name      : " + cars.get(index).getVehicleName());
+                        cars.get(index).setAvailabilityStatus(false);
+                        break;
+
+                    } else {
+                        System.out.println("Vehicle isn't available at the moment!");
+                    }
+
+                } else {
+                    System.out.println("Vehicle has not been registered yet!");
+
+                }
+
+            } else {
+                System.out.println("Invalid Vehicle ID (Ex: - V001)");
+
+            }
+
+        }
+
+        // Rental Start Date
+        while (true) {
+
+            System.out.print("\nEnter Rental Start Date  : ");
+            rentalStartDate = scanner1.nextLine().trim();
+
+            if (rentalStartDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
+                break;
+
+            } else {
+                System.out.println("Invalid Rental Start Date (Ex: - 2026.01.01)");
+
+            }
+
+        }
+
+        // Rental End Date & Rental Days
+        while (true) {
+
+            System.out.print("\nEnter Rental End Date    : ");
+            rentalEndDate = scanner1.nextLine().trim();
+
+            if (rentalEndDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+                LocalDate startDate = LocalDate.parse(rentalStartDate, formatter);
+                LocalDate endDate = LocalDate.parse(rentalEndDate, formatter);
+                if (endDate.isBefore(startDate)) {
+                    System.out.println("Rental End Date cannot be earlier than Rental Start Date!");
+                } else if (endDate.isEqual(startDate)) {
+                    System.out.println("Rental End Date cannot be same as Rental Start Date!");
+                } else {
+                    numberOfRentalDays = (int) (ChronoUnit.DAYS.between(startDate, endDate));
+                    System.out.println("\nPeriod of Rental Days    : " + numberOfRentalDays);
+                    break;
+                }
+
+            } else {
+                System.out.println("Invalid Rental End Date (Ex: - 2026.01.01)");
+
+            }
+
+        }
+
+        // Estimated Rental Cost
+        for (Car car : cars) {
+            if (car.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                rentalEstimatedCost = numberOfRentalDays * car.getDailyRentalRate();
+                System.out.println("\nRental Estimated Cost    : " + rentalEstimatedCost);
+                break;
+            }
+        }
+
+        rentalCars.add(new Rental(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, rentalEstimatedCost, -1, -1, "Pending"));
+        System.out.println("\nCar rental has been successfully recorded!");
+
+        askWantToExit();
+
+    }
+
+    // Method to rent a van
+    public static void rentVan() {
+        clearConsole();
+        heading();
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        String rentalId;
+        String customerId;
+        String vehicleId;
+        String rentalStartDate;
+        String rentalEndDate;
+        int numberOfRentalDays;
+        int rentalEstimatedCost = -1;
+
+        // Rental ID
+        while (true) {
+            System.out.print("Enter Rental ID          : ");
+            rentalId = scanner1.nextLine().trim();
+
+            if (rentalId.matches("^R\\d{3}$")) {
+                boolean exists = false;
+
+                for (Rental rent : rentalVans) {
+                    if (rent.getRentalId().equalsIgnoreCase(rentalId)) {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (exists) {
+                    System.out.println("Rental ID is already in use!\n");
+
+                } else {
+                    break;
+
+                }
+
+            } else {
+                System.out.println("Invalid Rental ID (Ex: - R001)\n");
+
+            }
+
+        }
+
+        // Customer ID
+        while (true) {
+            System.out.print("\nEnter Customer ID        : ");
+            customerId = scanner1.nextLine().trim();
+
+            if (customerId.matches("^C\\d{3}$")) {
+                boolean exists = false;
+
+                for (Customer customer : customers) {
+                    if (customer.getCustomerId().equalsIgnoreCase(customerId)) {
+                        exists = true;
+                        break;
+                    }
+
+                }
+
+                if (exists) {
+                    break;
+
+                } else {
+                    System.out.println("Customer has not been registered yet!");
+
+                }
+
+            } else {
+                System.out.println("Invalid Customer ID (Ex: - C001)");
+
+            }
+
+        }
+
+        // Vehicle ID
+        while (true) {
+            System.out.print("\nEnter Vehicle ID         : ");
+            vehicleId = scanner1.nextLine().trim();
+
+            if (vehicleId.matches("^V\\d{3}$")) {
+                boolean exists = false;
+                int index = -1;
+
+                for (Van van : vans) {
+                    if (van.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = vans.indexOf(van);
+                        break;
+                    }
+
+                }
+
+                if (exists) {
+                    if (vans.get(index).getAvailabilityStatus()) {
+                        System.out.println("\nChoose Vehicle Name      : " + vans.get(index).getVehicleName());
+                        vans.get(index).setAvailabilityStatus(false);
+                        break;
+
+                    } else {
+                        System.out.println("Vehicle isn't available at the moment!");
+                    }
+
+                } else {
+                    System.out.println("Vehicle has not been registered yet!");
+
+                }
+
+            } else {
+                System.out.println("Invalid Vehicle ID (Ex: - V001)");
+
+            }
+
+        }
+
+        // Rental Start Date
+        while (true) {
+
+            System.out.print("\nEnter Rental Start Date  : ");
+            rentalStartDate = scanner1.nextLine().trim();
+
+            if (rentalStartDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
+                break;
+
+            } else {
+                System.out.println("Invalid Rental Start Date (Ex: - 2026.01.01)\n");
+
+            }
+
+        }
+
+        // Rental End Date & Rental Days
+        while (true) {
+
+            System.out.print("\nEnter Rental End Date    : ");
+            rentalEndDate = scanner1.nextLine().trim();
+
+            if (rentalEndDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+                LocalDate startDate = LocalDate.parse(rentalStartDate, formatter);
+                LocalDate endDate = LocalDate.parse(rentalEndDate, formatter);
+                if (endDate.isBefore(startDate)) {
+                    System.out.println("Rental End Date cannot be earlier than Rental Start Date!");
+                } else if (endDate.isEqual(startDate)) {
+                    System.out.println("Rental End Date cannot be same as Rental Start Date!");
+                } else {
+                    numberOfRentalDays = (int) (ChronoUnit.DAYS.between(startDate, endDate));
+                    System.out.println("\nEnter Rental Days        : " + numberOfRentalDays);
+                    break;
+                }
+
+            } else {
+                System.out.println("Invalid Rental End Date (Ex: - 2026.01.01)");
+
+            }
+
+        }
+
+        // Estimated Rental Cost
+        for (Van van : vans) {
+            if (van.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                rentalEstimatedCost = numberOfRentalDays * van.getDailyRentalRate();
+                System.out.println("\nRental Estimated Cost    : " + rentalEstimatedCost);
+                break;
+            }
+        }
+
+        rentalVans.add(new Rental(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, rentalEstimatedCost, -1, -1, "Pending"));
+        System.out.println("\nVan rental has been successfully recorded!");
+
+        askWantToExit();
+
+    }
+
+    // Method to rent a Motorcycle
+    public static void rentMotorcycle() {
+        clearConsole();
+        heading();
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        String rentalId;
+        String customerId;
+        String vehicleId;
+        String rentalStartDate;
+        String rentalEndDate;
+        int numberOfRentalDays;
+        int rentalEstimatedCost = -1;
+
+        // Rental ID
+        while (true) {
+            System.out.print("Enter Rental ID          : ");
+            rentalId = scanner1.nextLine().trim();
+
+            if (rentalId.matches("^R\\d{3}$")) {
+                boolean exists = false;
+
+                for (Rental rent : rentalMotorcycles) {
+                    if (rent.getRentalId().equalsIgnoreCase(rentalId)) {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (exists) {
+                    System.out.println("Rental ID is already in use!\n");
+
+                } else {
+                    break;
+
+                }
+
+            } else {
+                System.out.println("Invalid Rental ID (Ex: - R001)\n");
+
+            }
+
+        }
+
+        // Customer ID
+        while (true) {
+            System.out.print("\nEnter Customer ID        : ");
+            customerId = scanner1.nextLine().trim();
+
+            if (customerId.matches("^C\\d{3}$")) {
+                boolean exists = false;
+
+                for (Customer customer : customers) {
+                    if (customer.getCustomerId().equalsIgnoreCase(customerId)) {
+                        exists = true;
+                        break;
+                    }
+
+                }
+
+                if (exists) {
+                    break;
+
+                } else {
+                    System.out.println("Customer has not been registered yet.!\n");
+
+                }
+
+            } else {
+                System.out.println("Invalid Customer ID (Ex: - C001)\n");
+
+            }
+
+        }
+
+        // Vehicle ID
+        while (true) {
+            System.out.print("\nEnter Vehicle ID         : ");
+            vehicleId = scanner1.nextLine().trim();
+
+            if (vehicleId.matches("^V\\d{3}$")) {
+                boolean exists = false;
+                int index = -1;
+
+                for (Motorcycle motorcycle : motorcycles) {
+                    if (motorcycle.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = motorcycles.indexOf(motorcycle);
+                        break;
+                    }
+
+                }
+
+                if (exists) {
+                    if (motorcycles.get(index).getAvailabilityStatus()) {
+                        System.out.print("\nChoose Vehicle Name      : " + motorcycles.get(index).getVehicleName());
+                        motorcycles.get(index).setAvailabilityStatus(false);
+                        break;
+
+                    } else {
+                        System.out.println("Vehicle isn't available at the moment!\n");
+                    }
+
+                } else {
+                    System.out.println("Vehicle has not been registered yet.!\n");
+
+                }
+
+            } else {
+                System.out.println("Invalid Vehicle ID (Ex: - V001)\n");
+
+            }
+
+        }
+
+        // Rental Start Date
+        while (true) {
+
+            System.out.print("\nEnter Rental Start Date  : ");
+            rentalStartDate = scanner1.nextLine().trim();
+
+            if (rentalStartDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
+                break;
+
+            } else {
+                System.out.println("Invalid Rental Start Date (Ex: - 2026.01.01)\n");
+
+            }
+
+        }
+
+        // Rental End Date & Rental Days
+        while (true) {
+
+            System.out.print("\nEnter Rental End Date    : ");
+            rentalEndDate = scanner1.nextLine().trim();
+
+            if (rentalEndDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+                LocalDate startDate = LocalDate.parse(rentalStartDate, formatter);
+                LocalDate endDate = LocalDate.parse(rentalEndDate, formatter);
+                if (endDate.isBefore(startDate)) {
+                    System.out.println("Rental End Date cannot be earlier than Rental Start Date!");
+                } else {
+                    numberOfRentalDays = (int) (ChronoUnit.DAYS.between(startDate, endDate));
+                    System.out.print("\nEnter Rental Days        : " + numberOfRentalDays);
+                    break;
+                }
+
+            } else {
+                System.out.println("Invalid Rental End Date (Ex: - 2026.01.01)");
+
+            }
+
+        }
+
+        // Estimated Rental Cost
+        for (Motorcycle motorcycle : motorcycles) {
+            if (motorcycle.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                rentalEstimatedCost = numberOfRentalDays * motorcycle.getDailyRentalRate();
+                System.out.println("\nRental Estimated Cost: " + rentalEstimatedCost);
+                break;
+            }
+        }
+
+        rentalMotorcycles.add(new Rental(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, rentalEstimatedCost, -1, -1, "Pending"));
+        System.out.println("\nMotorcycle rental has been successfully recorded!");
+
+        askWantToExit();
+
+    }
+
     // Main Method
     public static void main(String[] args) {
 
@@ -2428,10 +3001,10 @@ class Application {
         cars.add(new Car("V001", "Toyota Prius 2015", 2000, true, 4, "Petrol"));
         cars.add(new Car("V002", "Honda Vezel RS 2019", 2500, true, 4, "Petrol"));
         cars.add(new Car("V003", "Toyota Axio 2018", 2200, true, 5, "Petrol"));
-        cars.add(new Car("V004", "Suzuki Wagon R 2017", 1800, false, 5, "Petrol"));
+        cars.add(new Car("V004", "Suzuki Wagon R 2017", 1800, true, 5, "Petrol"));
         cars.add(new Car("V005", "Nissan X-Trail 2016", 3000, true, 5, "Petrol"));
         cars.add(new Car("V006", "Toyota Aqua 2019", 2300, true, 5, "Hybrid"));
-        cars.add(new Car("V007", "Honda Grace 2018", 2400, false, 5, "Hybrid"));
+        cars.add(new Car("V007", "Honda Grace 2018", 2400, true, 5, "Hybrid"));
         cars.add(new Car("V008", "Mazda Demio 2017", 1900, true, 5, "Petrol"));
         cars.add(new Car("V009", "Suzuki Alto 2019", 1600, true, 4, "Petrol"));
         cars.add(new Car("V010", "Toyota Corolla 2020", 3200, true, 5, "Petrol"));
@@ -2439,19 +3012,19 @@ class Application {
         // Load Some Demo Data For Vans
         vans.add(new Van("V001", "Toyota Hiace Super GL 2017", 5000, true, 1000));
         vans.add(new Van("V002", "Toyota Hiace Super GL 2010", 4000, true, 1000));
-        vans.add(new Van("V003", "Nissan Caravan 2018", 4800, false, 1200));
-        vans.add(new Van("V004", "KDH 200 High Roof 2016", 4500, true, 1100));
-        vans.add(new Van("V005", "Toyota Dolphin 2008", 3500, true, 1500));
-        vans.add(new Van("V006", "Nissan NV350 2020", 5500, true, 1300));
-        vans.add(new Van("V007", "Mitsubishi Delica 2015", 4300, false, 1000));
-        vans.add(new Van("V008", "Toyota Hiace DX 2019", 5200, true, 1250));
+        vans.add(new Van("V003", "Nissan Caravan 2018", 4800, true, 200));
+        vans.add(new Van("V004", "KDH 200 High Roof 2016", 4500, true, 100));
+        vans.add(new Van("V005", "Toyota Dolphin 2008", 3500, true, 500));
+        vans.add(new Van("V006", "Nissan NV350 2020", 5500, true, 300));
+        vans.add(new Van("V007", "Mitsubishi Delica 2015", 4300, true, 1000));
+        vans.add(new Van("V008", "Toyota Hiace DX 2019", 5200, true, 250));
         vans.add(new Van("V009", "Mazda Bongo 2014", 3700, true, 900));
-        vans.add(new Van("V010", "Toyota Quantum 2021", 6000, true, 1500));
+        vans.add(new Van("V010", "Toyota Quantum 2021", 6000, true, 500));
 
         // Load Some Demo Data to Motorcycles
         motorcycles.add(new Motorcycle("V001", "Honda CBR 150R", 1000, true, 150));
         motorcycles.add(new Motorcycle("V002", "Honda Hornet 160R", 1200, true, 160));
-        motorcycles.add(new Motorcycle("V003", "Yamaha FZ-S V3", 1100, false, 150));
+        motorcycles.add(new Motorcycle("V003", "Yamaha FZ-S V3", 1100, true, 150));
         motorcycles.add(new Motorcycle("V004", "Bajaj Pulsar NS200", 1300, true, 200));
         motorcycles.add(new Motorcycle("V005", "TVS Apache RTR 160", 1000, true, 160));
         motorcycles.add(new Motorcycle("V006", "Suzuki Gixxer SF", 1250, true, 155));
@@ -2472,10 +3045,48 @@ class Application {
         customers.add(new Customer("C009", "Isuru Senanayake", "0779012345", "JK901234"));
         customers.add(new Customer("C010", "Malsha Karunaratne", "0750123456", "KL012345"));
 
+        // Load Some Demo Rental Data For Cars
+        rentalCars.add(new Rental("R001", "C001", "V001", "2016.02.21", "2016.04.06", 45, 90000, 4500, 85500, "Completed"));
+        rentalCars.add(new Rental("R002", "C002", "V002", "2016.03.10", "2016.03.30", 20, 50000, 2500, 47500, "Completed"));
+        rentalCars.add(new Rental("R003", "C003", "V003", "2016.04.05", "2016.04.20", 15, 33000, 1650, 31350, "Completed"));
+        rentalCars.add(new Rental("R004", "C004", "V004", "2016.05.12", "2016.06.11", 30, 54000, 2700, 51300, "Completed"));
+        rentalCars.add(new Rental("R005", "C005", "V005", "2016.06.18", "2016.06.30", 12, 36000, 1800, 34200, "Completed"));
+        rentalCars.add(new Rental("R006", "C006", "V006", "2016.07.25", "2016.08.19", 25, 57500, 2875, 54625, "Completed"));
+        rentalCars.add(new Rental("R007", "C007", "V007", "2016.08.14", "2016.09.01", 18, 43200, 2160, 41040, "Completed"));
+        rentalCars.add(new Rental("R008", "C008", "V008", "2016.09.02", "2016.09.24", 22, 41800, 2090, 39710, "Completed"));
+        rentalCars.add(new Rental("R009", "C009", "V009", "2016.10.19", "2016.10.29", 10, 16000, 800, 15200, "Completed"));
+        rentalCars.add(new Rental("R010", "C010", "V010", "2016.11.28", "2016.12.12", 14, 44800, 2240, 42560, "Completed"));
+
+        // Load Some Demo Rental Data For Motorcycles
+        rentalMotorcycles.add(new Rental("R001", "C001", "V001", "2017.01.15", "2017.01.25", 10, 10000, 1000, 9000, "Completed"));
+        rentalMotorcycles.add(new Rental("R002", "C002", "V002", "2017.02.20", "2017.03.04", 12, 14400, 1440, 12960, "Completed"));
+        rentalMotorcycles.add(new Rental("R003", "C003", "V003", "2017.03.05", "2017.03.20", 15, 16500, 1650, 14850, "Completed"));
+        rentalMotorcycles.add(new Rental("R004", "C004", "V004", "2017.04.18", "2017.04.26", 8, 10400, 1040, 9360, "Completed"));
+        rentalMotorcycles.add(new Rental("R005", "C005", "V005", "2017.05.22", "2017.06.11", 20, 20000, 2000, 18000, "Completed"));
+        rentalMotorcycles.add(new Rental("R006", "C006", "V006", "2017.06.10", "2017.06.24", 14, 17500, 1750, 15750, "Completed"));
+        rentalMotorcycles.add(new Rental("R007", "C007", "V007", "2017.07.25", "2017.08.01", 7, 12600, 1260, 11340, "Completed"));
+        rentalMotorcycles.add(new Rental("R008", "C008", "V008", "2017.08.12", "2017.08.28", 16, 27200, 2720, 24480, "Completed"));
+        rentalMotorcycles.add(new Rental("R009", "C009", "V009", "2017.09.08", "2017.09.17", 9, 7200, 720, 6480, "Completed"));
+        rentalMotorcycles.add(new Rental("R010", "C010", "V010", "2017.10.30", "2017.11.10", 11, 9900, 990, 8910, "Completed"));
+
+        // Load Some Demo Rental Data For Vans
+        rentalVans.add(new Rental("R001", "C001", "V001", "2018.01.05", "2018.01.15", 10, 50000, 4000, 46000, "Completed"));
+        rentalVans.add(new Rental("R002", "C002", "V002", "2018.02.14", "2018.03.01", 15, 60000, 4800, 55200, "Completed"));
+        rentalVans.add(new Rental("R003", "C003", "V003", "2018.03.20", "2018.04.01", 12, 57600, 4608, 52992, "Completed"));
+        rentalVans.add(new Rental("R004", "C004", "V004", "2018.04.25", "2018.05.13", 18, 81000, 6480, 74520, "Completed"));
+        rentalVans.add(new Rental("R005", "C005", "V005", "2018.05.10", "2018.05.30", 20, 70000, 5600, 64400, "Completed"));
+        rentalVans.add(new Rental("R006", "C006", "V006", "2018.06.15", "2018.06.29", 14, 77000, 6160, 70840, "Completed"));
+        rentalVans.add(new Rental("R007", "C007", "V007", "2018.07.22", "2018.08.07", 16, 68800, 5504, 63296, "Completed"));
+        rentalVans.add(new Rental("R008", "C008", "V008", "2018.08.30", "2018.09.10", 11, 57200, 4576, 52624, "Completed"));
+        rentalVans.add(new Rental("R009", "C009", "V009", "2018.09.18", "2018.10.01", 13, 48100, 3848, 44252, "Completed"));
+        rentalVans.add(new Rental("R010", "C010", "V010", "2018.10.27", "2018.11.05", 9, 54000, 4320, 49680, "Completed"));
+
         // Clear Console
         clearConsole();
 
         // Load Main Menu
         mainMenu();
+
     }
+
 }

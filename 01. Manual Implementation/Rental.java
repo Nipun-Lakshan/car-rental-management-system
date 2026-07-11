@@ -3,9 +3,12 @@ public class Rental {
     private String rentalId;
     private String customerId;
     private String vehicleId;
-    private String rentalDate;
+    private String rentalStartDate;
+    private String rentalEndDate;
     private int numberOfRentalDays;
-    private int rentalCost;
+    private int rentalEstimatedCost;
+    private int discount;
+    private int rentalAcutualCost;
     private String rentalStatus;
 
     public Rental() {
@@ -24,21 +27,41 @@ public class Rental {
         this(rentalId, customerId, vehicleId, "Unknown");
     }
 
-    public Rental(String rentalId, String customerId, String vehicleId, String rentalDate) {
-        this(rentalId, customerId, vehicleId, rentalDate, 0);
+    public Rental(String rentalId, String customerId, String vehicleId, String rentalStartDate) {
+        this(rentalId, customerId, vehicleId, rentalStartDate, "Unknown");
     }
 
-    public Rental(String rentalId, String customerId, String vehicleId, String rentalDate, int numberOfRentalDays) {
-        this(rentalId, customerId, vehicleId, rentalDate, numberOfRentalDays, 0);
+    public Rental(String rentalId, String customerId, String vehicleId, String rentalStartDate, String rentalEndDate) {
+        this(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, 0);
     }
 
-    public Rental(String rentalId, String customerId, String vehicleId, String rentalDate, int numberOfRentalDays, int rentalCost) {
+    public Rental(String rentalId, String customerId, String vehicleId, String rentalStartDate, String rentalEndDate, int numberOfRentalDays) {
+        this(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, 0);
+    }
+
+    public Rental(String rentalId, String customerId, String vehicleId, String rentalStartDate, String rentalEndDate, int numberOfRentalDays, int rentalEstimatedCost) {
+        this(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, rentalEstimatedCost, 0);
+    }
+
+    public Rental(String rentalId, String customerId, String vehicleId, String rentalStartDate, String rentalEndDate, int numberOfRentalDays, int rentalEstimatedCost, int discount) {
+        this(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, rentalEstimatedCost, discount, 0);
+    }
+
+    public Rental(String rentalId, String customerId, String vehicleId, String rentalStartDate, String rentalEndDate, int numberOfRentalDays, int rentalEstimatedCost, int discount, int rentalAcutualCost) {
+        this(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, rentalEstimatedCost, discount, rentalAcutualCost, "Unknown");
+    }
+
+    public Rental(String rentalId, String customerId, String vehicleId, String rentalStartDate, String rentalEndDate, int numberOfRentalDays, int rentalEstimatedCost, int discount, int rentalAcutualCost, String rentalStatus) {
         this.rentalId = rentalId;
         this.customerId = customerId;
         this.vehicleId = vehicleId;
-        this.rentalDate = rentalDate;
+        this.rentalStartDate = rentalStartDate;
+        this.rentalEndDate = rentalEndDate;
         this.numberOfRentalDays = numberOfRentalDays;
-        this.rentalCost = rentalCost;
+        this.rentalEstimatedCost = rentalEstimatedCost;
+        this.discount = discount;
+        this.rentalAcutualCost = rentalAcutualCost;
+        this.rentalStatus = rentalStatus;
     }
 
     public String getRentalId() {
@@ -65,12 +88,20 @@ public class Rental {
         this.vehicleId = vehicleId;
     }
 
-    public String getRentalDate() {
-        return rentalDate;
+    public String getRentalStartDate() {
+        return rentalStartDate;
     }
 
-    public void setRentalDate(String rentalDate) {
-        this.rentalDate = rentalDate;
+    public void setRentalStartDate(String rentalStartDate) {
+        this.rentalStartDate = rentalStartDate;
+    }
+
+    public String getRentalEndDate() {
+        return rentalEndDate;
+    }
+
+    public void setRentalEndDate(String rentalEndDate) {
+        this.rentalEndDate = rentalEndDate;
     }
 
     public int getNumberOfRentalDays() {
@@ -81,12 +112,28 @@ public class Rental {
         this.numberOfRentalDays = numberOfRentalDays;
     }
 
-    public int getRentalCost() {
-        return rentalCost;
+    public int getRentalEstimatedCost() {
+        return rentalEstimatedCost;
     }
 
-    public void setRentalCost(int dailyRentalCost, int numberOfRentalDays) {
-        this.rentalCost = dailyRentalCost * numberOfRentalDays;
+    public void setRentalEstimatedCost(int rentalEstimatedCost) {
+        this.rentalEstimatedCost = rentalEstimatedCost;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public int getRentalAcutualCost() {
+        return rentalAcutualCost;
+    }
+
+    public void setRentalAcutualCost(int rentalAcutualCost) {
+        this.rentalAcutualCost = rentalAcutualCost;
     }
 
     public String getRentalStatus() {
