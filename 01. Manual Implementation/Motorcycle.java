@@ -32,7 +32,7 @@ public class Motorcycle extends Vehicle {
     }
 
     public void setEngineCapacity(int engineCapacity) {
-
+        this.engineCapacity = engineCapacity;
     }
 
 }

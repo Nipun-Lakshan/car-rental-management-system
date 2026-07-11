@@ -4,6 +4,7 @@
 
 // Import Libraries
 
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -2594,7 +2595,14 @@ class Application {
             rentalStartDate = scanner1.nextLine().trim();
 
             if (rentalStartDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
-                break;
+                try {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+                    LocalDate.parse(rentalStartDate, formatter);
+                    break;
+
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid Rental Start Date!");
+                }
 
             } else {
                 System.out.println("Invalid Rental Start Date (Ex: - 2026.01.01)");
@@ -2610,17 +2618,21 @@ class Application {
             rentalEndDate = scanner1.nextLine().trim();
 
             if (rentalEndDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-                LocalDate startDate = LocalDate.parse(rentalStartDate, formatter);
-                LocalDate endDate = LocalDate.parse(rentalEndDate, formatter);
-                if (endDate.isBefore(startDate)) {
-                    System.out.println("Rental End Date cannot be earlier than Rental Start Date!");
-                } else if (endDate.isEqual(startDate)) {
-                    System.out.println("Rental End Date cannot be same as Rental Start Date!");
-                } else {
-                    numberOfRentalDays = (int) (ChronoUnit.DAYS.between(startDate, endDate));
-                    System.out.println("\nPeriod of Rental Days    : " + numberOfRentalDays);
-                    break;
+                try {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+                    LocalDate startDate = LocalDate.parse(rentalStartDate, formatter);
+                    LocalDate endDate = LocalDate.parse(rentalEndDate, formatter);
+                    if (endDate.isBefore(startDate)) {
+                        System.out.println("Rental End Date cannot be earlier than Rental Start Date!");
+                    } else if (endDate.isEqual(startDate)) {
+                        System.out.println("Rental End Date cannot be same as Rental Start Date!");
+                    } else {
+                        numberOfRentalDays = (int) (ChronoUnit.DAYS.between(startDate, endDate));
+                        System.out.println("\nPeriod of Rental Days    : " + numberOfRentalDays);
+                        break;
+                    }
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid Rental End Date!");
                 }
 
             } else {
@@ -2769,7 +2781,14 @@ class Application {
             rentalStartDate = scanner1.nextLine().trim();
 
             if (rentalStartDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
-                break;
+                try {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+                    LocalDate.parse(rentalStartDate, formatter);
+                    break;
+
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid Rental Start Date!");
+                }
 
             } else {
                 System.out.println("Invalid Rental Start Date (Ex: - 2026.01.01)\n");
@@ -2785,17 +2804,21 @@ class Application {
             rentalEndDate = scanner1.nextLine().trim();
 
             if (rentalEndDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-                LocalDate startDate = LocalDate.parse(rentalStartDate, formatter);
-                LocalDate endDate = LocalDate.parse(rentalEndDate, formatter);
-                if (endDate.isBefore(startDate)) {
-                    System.out.println("Rental End Date cannot be earlier than Rental Start Date!");
-                } else if (endDate.isEqual(startDate)) {
-                    System.out.println("Rental End Date cannot be same as Rental Start Date!");
-                } else {
-                    numberOfRentalDays = (int) (ChronoUnit.DAYS.between(startDate, endDate));
-                    System.out.println("\nEnter Rental Days        : " + numberOfRentalDays);
-                    break;
+                try {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+                    LocalDate startDate = LocalDate.parse(rentalStartDate, formatter);
+                    LocalDate endDate = LocalDate.parse(rentalEndDate, formatter);
+                    if (endDate.isBefore(startDate)) {
+                        System.out.println("Rental End Date cannot be earlier than Rental Start Date!");
+                    } else if (endDate.isEqual(startDate)) {
+                        System.out.println("Rental End Date cannot be same as Rental Start Date!");
+                    } else {
+                        numberOfRentalDays = (int) (ChronoUnit.DAYS.between(startDate, endDate));
+                        System.out.println("\nPeriod of Rental Days    : " + numberOfRentalDays);
+                        break;
+                    }
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid Rental End Date (Ex: 2026.01.01)");
                 }
 
             } else {
@@ -2886,7 +2909,7 @@ class Application {
                     break;
 
                 } else {
-                    System.out.println("Customer has not been registered yet.!\n");
+                    System.out.println("Customer has not been registered yet!\n");
 
                 }
 
@@ -2917,7 +2940,7 @@ class Application {
 
                 if (exists) {
                     if (motorcycles.get(index).getAvailabilityStatus()) {
-                        System.out.print("\nChoose Vehicle Name      : " + motorcycles.get(index).getVehicleName());
+                        System.out.println("\nChoose Vehicle Name      : " + motorcycles.get(index).getVehicleName());
                         motorcycles.get(index).setAvailabilityStatus(false);
                         break;
 
@@ -2926,7 +2949,7 @@ class Application {
                     }
 
                 } else {
-                    System.out.println("Vehicle has not been registered yet.!\n");
+                    System.out.println("Vehicle has not been registered yet!\n");
 
                 }
 
@@ -2944,7 +2967,14 @@ class Application {
             rentalStartDate = scanner1.nextLine().trim();
 
             if (rentalStartDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
-                break;
+                try {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+                    LocalDate.parse(rentalStartDate, formatter);
+                    break;
+
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid Rental Start Date (Ex: - 2026.01.01)");
+                }
 
             } else {
                 System.out.println("Invalid Rental Start Date (Ex: - 2026.01.01)\n");
@@ -2960,15 +2990,21 @@ class Application {
             rentalEndDate = scanner1.nextLine().trim();
 
             if (rentalEndDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-                LocalDate startDate = LocalDate.parse(rentalStartDate, formatter);
-                LocalDate endDate = LocalDate.parse(rentalEndDate, formatter);
-                if (endDate.isBefore(startDate)) {
-                    System.out.println("Rental End Date cannot be earlier than Rental Start Date!");
-                } else {
-                    numberOfRentalDays = (int) (ChronoUnit.DAYS.between(startDate, endDate));
-                    System.out.print("\nEnter Rental Days        : " + numberOfRentalDays);
-                    break;
+                try {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+                    LocalDate startDate = LocalDate.parse(rentalStartDate, formatter);
+                    LocalDate endDate = LocalDate.parse(rentalEndDate, formatter);
+                    if (endDate.isBefore(startDate)) {
+                        System.out.println("Rental End Date cannot be earlier than Rental Start Date!");
+                    } else if (endDate.isEqual(startDate)) {
+                        System.out.println("Rental End Date cannot be same as Rental Start Date!");
+                    } else {
+                        numberOfRentalDays = (int) (ChronoUnit.DAYS.between(startDate, endDate));
+                        System.out.println("\nPeriod of Rental Days    : " + numberOfRentalDays);
+                        break;
+                    }
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid Rental End Date!");
                 }
 
             } else {
@@ -2982,7 +3018,7 @@ class Application {
         for (Motorcycle motorcycle : motorcycles) {
             if (motorcycle.getVehicleId().equalsIgnoreCase(vehicleId)) {
                 rentalEstimatedCost = numberOfRentalDays * motorcycle.getDailyRentalRate();
-                System.out.println("\nRental Estimated Cost: " + rentalEstimatedCost);
+                System.out.println("\nRental Estimated Cost    : " + rentalEstimatedCost);
                 break;
             }
         }
@@ -3021,7 +3057,7 @@ class Application {
         vans.add(new Van("V009", "Mazda Bongo 2014", 3700, true, 900));
         vans.add(new Van("V010", "Toyota Quantum 2021", 6000, true, 500));
 
-        // Load Some Demo Data to Motorcycles
+        // Load Some Demo Data For Motorcycles
         motorcycles.add(new Motorcycle("V001", "Honda CBR 150R", 1000, true, 150));
         motorcycles.add(new Motorcycle("V002", "Honda Hornet 160R", 1200, true, 160));
         motorcycles.add(new Motorcycle("V003", "Yamaha FZ-S V3", 1100, true, 150));
@@ -3033,7 +3069,7 @@ class Application {
         motorcycles.add(new Motorcycle("V009", "Honda Dio", 800, true, 110));
         motorcycles.add(new Motorcycle("V010", "Hero Hunk", 900, true, 150));
 
-        // Load Some Demo Data to Customers
+        // Load Some Demo Data For Customers
         customers.add(new Customer("C001", "Shashini Weerasinghe", "0777425425", "AB123456"));
         customers.add(new Customer("C002", "Nimal Perera", "0712345678", "BC234567"));
         customers.add(new Customer("C003", "Kavindu Fernando", "0763456789", "CD345678"));
