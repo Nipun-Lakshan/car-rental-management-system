@@ -8,7 +8,7 @@ public class Rental {
     private int numberOfRentalDays;
     private int rentalEstimatedCost;
     private int discount;
-    private int rentalAcutualCost;
+    private int rentalActualCost;
     private String rentalStatus;
 
     public Rental() {
@@ -60,7 +60,7 @@ public class Rental {
         this.numberOfRentalDays = numberOfRentalDays;
         this.rentalEstimatedCost = rentalEstimatedCost;
         this.discount = discount;
-        this.rentalAcutualCost = rentalAcutualCost;
+        this.rentalActualCost = rentalAcutualCost;
         this.rentalStatus = rentalStatus;
     }
 
@@ -128,12 +128,12 @@ public class Rental {
         this.discount = discount;
     }
 
-    public int getRentalAcutualCost() {
-        return rentalAcutualCost;
+    public int getRentalActualCost() {
+        return rentalActualCost;
     }
 
     public void setRentalAcutualCost(int rentalAcutualCost) {
-        this.rentalAcutualCost = rentalAcutualCost;
+        this.rentalActualCost = rentalAcutualCost;
     }
 
     public String getRentalStatus() {

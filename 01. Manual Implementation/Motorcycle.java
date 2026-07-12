@@ -1,5 +1,7 @@
 public class Motorcycle extends Vehicle {
 
+    public static int DISCOUNT_RATE = 10;
+
     private int engineCapacity;
 
     public Motorcycle() {

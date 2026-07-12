@@ -1,5 +1,7 @@
 public class Van extends Vehicle {
 
+    public static int DISCOUNT_RATE = 8;
+
     private int cargoCapacity;
 
     public Van() {

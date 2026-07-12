@@ -1,5 +1,7 @@
 public class Car extends Vehicle {
 
+    public static int DISCOUNT_RATE = 5;
+
     private int numberOfSeats;
     private String fuelType;
 

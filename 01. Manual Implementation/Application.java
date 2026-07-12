@@ -61,17 +61,10 @@ class Application {
         System.out.println("===================\n");
 
         System.out.println("09. Rent a Vehicle");
-        System.out.println("10. Return a Vehicle\n");
+        System.out.println("10. Return a Vehicle");
+        System.out.println("11. View all Rentals\n");
 
-        System.out.println("========");
-        System.out.println("|REPORT|");
-        System.out.println("========\n");
-
-        System.out.println("11. Vehicle Report");
-        System.out.println("12. Customer Report");
-        System.out.println("13. Rental Report\n");
-
-        System.out.println("14. Exit\n");
+        System.out.println("12. Exit\n");
 
         askForChoice();
 
@@ -88,7 +81,7 @@ class Application {
 
             int choice = scanner1.nextInt();
 
-            if (choice > 14 || choice < 1) {
+            if (choice > 12 || choice < 1) {
 
                 System.out.println("Invalid choice!\n");
                 scanner1.nextLine();
@@ -136,22 +129,14 @@ class Application {
                         break;
 
                     case 10:
-                        //*
+                        returnVehicle();
                         break;
 
                     case 11:
-                        //*
+                        viewRentals();
                         break;
 
                     case 12:
-                        //*
-                        break;
-
-                    case 13:
-                        //*
-                        break;
-
-                    case 14:
                         clearConsole();
                         heading();
                         System.out.println("Programme terminated successfully!\n");
@@ -2646,7 +2631,7 @@ class Application {
         for (Car car : cars) {
             if (car.getVehicleId().equalsIgnoreCase(vehicleId)) {
                 rentalEstimatedCost = numberOfRentalDays * car.getDailyRentalRate();
-                System.out.println("\nRental Estimated Cost    : " + rentalEstimatedCost);
+                System.out.println("\nRental Estimated Cost    : Rs. " + rentalEstimatedCost);
                 break;
             }
         }
@@ -2832,7 +2817,7 @@ class Application {
         for (Van van : vans) {
             if (van.getVehicleId().equalsIgnoreCase(vehicleId)) {
                 rentalEstimatedCost = numberOfRentalDays * van.getDailyRentalRate();
-                System.out.println("\nRental Estimated Cost    : " + rentalEstimatedCost);
+                System.out.println("\nRental Estimated Cost    : Rs. " + rentalEstimatedCost);
                 break;
             }
         }
@@ -3018,13 +3003,1034 @@ class Application {
         for (Motorcycle motorcycle : motorcycles) {
             if (motorcycle.getVehicleId().equalsIgnoreCase(vehicleId)) {
                 rentalEstimatedCost = numberOfRentalDays * motorcycle.getDailyRentalRate();
-                System.out.println("\nRental Estimated Cost    : " + rentalEstimatedCost);
+                System.out.println("\nRental Estimated Cost    : Rs. " + rentalEstimatedCost);
                 break;
             }
         }
 
         rentalMotorcycles.add(new Rental(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, rentalEstimatedCost, -1, -1, "Pending"));
         System.out.println("\nMotorcycle rental has been successfully recorded!");
+
+        askWantToExit();
+
+    }
+
+    // Method to Return a Vehicle
+    public static void returnVehicle() {
+        clearConsole();
+        heading();
+
+        System.out.println("01. Return a Car");
+        System.out.println("02. Return Van");
+        System.out.println("03. Return a Motorcycle");
+        System.out.println("04. Main Menu\n");
+        System.out.println("05. Exit\n");
+
+        L1:
+        while (true) {
+
+            Scanner scanner2 = new Scanner(System.in);
+
+            System.out.print("Enter your choice: ");
+
+            try {
+
+                int choice = scanner2.nextInt();
+
+                if (choice > 5 || choice < 1) {
+
+                    System.out.println("Invalid choice!\n");
+                    scanner2.nextLine();
+
+                } else {
+
+                    switch (choice) {
+
+                        case 1:
+                            clearConsole();
+                            heading();
+                            returnCar();
+                            break L1;
+
+                        case 2:
+                            clearConsole();
+                            heading();
+                            returnVan();
+                            break L1;
+
+                        case 3:
+                            clearConsole();
+                            heading();
+                            returnMotorcycle();
+                            break L1;
+
+                        case 4:
+                            mainMenu();
+                            break L1;
+
+                        case 5:
+                            clearConsole();
+                            heading();
+                            System.out.println("Programme terminated successfully!\n");
+                            System.exit(0);
+                            break L1;
+
+                    }
+
+                }
+
+            } catch (InputMismatchException e) {
+
+                System.out.println("Invalid input!\n");
+                scanner2.nextLine();
+
+            }
+
+        }
+
+    }
+
+    // Method to return a car
+    public static void returnCar() {
+        clearConsole();
+        heading();
+
+        String rentalId;
+        int discount;
+        int rentalActualCost;
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        // Rental ID
+        while (true) {
+            System.out.print("Enter Rental ID          : ");
+            rentalId = scanner1.nextLine().trim();
+            int index = -1;
+
+            if (rentalId.matches("^R\\d{3}$")) {
+                boolean exists = false;
+                boolean alreadyCompleted = false;
+
+                for (Rental rent : rentalCars) {
+                    if (rent.getRentalId().equalsIgnoreCase(rentalId)) {
+                        index = rentalCars.indexOf(rent);
+
+                        if (rentalCars.get(index).getRentalStatus().equals("Completed")) {
+                            System.out.println("Rental is already completed!\n");
+                            alreadyCompleted = true;
+                            break;
+
+                        } else {
+                            exists = true;
+                            break;
+                        }
+
+                    }
+                }
+
+                if (exists) {
+                    clearConsole();
+                    heading();
+
+                    System.out.println("Rental ID is found!\n");
+
+                    System.out.println("01. Car Rental ID         : " + rentalCars.get(index).getRentalId());
+                    System.out.println("02. Customer ID           : " + rentalCars.get(index).getCustomerId());
+                    System.out.println("03. Vehicle ID            : " + rentalCars.get(index).getVehicleId());
+                    System.out.println("04. Rental Start Date     : " + rentalCars.get(index).getRentalStartDate());
+                    System.out.println("05. Rental End Date       : " + rentalCars.get(index).getRentalEndDate());
+                    System.out.println("06. Number of Rental Days : " + rentalCars.get(index).getNumberOfRentalDays());
+                    System.out.println("07. Rental Estimated Cost : " + rentalCars.get(index).getRentalEstimatedCost());
+
+                    // Header
+                    System.out.println("\n=============");
+                    System.out.println("Return a Car");
+                    System.out.println("=============\n");
+
+                    // Discount Rate
+                    discount = (int) Math.round((rentalCars.get(index).getRentalEstimatedCost() * Car.DISCOUNT_RATE) / 100.0);
+                    System.out.println("01. Car Rental Discount Rate : " + discount);
+
+                    // Actual Cost
+                    rentalActualCost = (rentalCars.get(index).getRentalEstimatedCost() - discount);
+                    System.out.println("02. Car Rental Actual Rate   : " + rentalActualCost);
+
+                    // Status Update
+                    rentalCars.get(index).setDiscount(discount);
+                    rentalCars.get(index).setRentalAcutualCost(rentalActualCost);
+                    rentalCars.get(index).setRentalStatus("Completed");
+
+                    for (Car car : cars) {
+                        if (car.getVehicleId().equalsIgnoreCase(rentalCars.get(index).getVehicleId())) {
+                            car.setAvailabilityStatus(true);
+                            break;
+                        }
+                    }
+
+                    System.out.println("\nCar Rental Return Processed Successfully!\n");
+                    break;
+
+                } else {
+                    if (!alreadyCompleted) {
+                        System.out.println("Rental ID is not found!\n");
+                    }
+
+                }
+
+            } else {
+                System.out.println("Invalid Rental ID (Ex: - R001)\n");
+
+            }
+
+        }
+
+        askWantToExit();
+
+    }
+
+    // Method to return a Van
+    public static void returnVan() {
+        clearConsole();
+        heading();
+
+        String rentalId;
+        int discount;
+        int rentalActualCost;
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        // Rental ID
+        while (true) {
+            System.out.print("Enter Rental ID          : ");
+            rentalId = scanner1.nextLine().trim();
+            int index = -1;
+
+            if (rentalId.matches("^R\\d{3}$")) {
+                boolean exists = false;
+                boolean alreadyCompleted = false;
+
+                for (Rental rent : rentalVans) {
+                    if (rent.getRentalId().equalsIgnoreCase(rentalId)) {
+                        index = rentalVans.indexOf(rent);
+                        if (rentalVans.get(index).getRentalStatus().equals("Completed")) {
+                            System.out.println("Rental is already completed!\n");
+                            alreadyCompleted = true;
+                            break;
+                        } else {
+                            exists = true;
+                            break;
+                        }
+
+                    }
+                }
+
+                if (exists) {
+                    clearConsole();
+                    heading();
+
+                    System.out.println("Rental ID is found!\n");
+
+                    System.out.println("01. Van Rental ID         : " + rentalVans.get(index).getRentalId());
+                    System.out.println("02. Customer ID           : " + rentalVans.get(index).getCustomerId());
+                    System.out.println("03. Vehicle ID            : " + rentalVans.get(index).getVehicleId());
+                    System.out.println("04. Rental Start Date     : " + rentalVans.get(index).getRentalStartDate());
+                    System.out.println("05. Rental End Date       : " + rentalVans.get(index).getRentalEndDate());
+                    System.out.println("06. Number of Rental Days : " + rentalVans.get(index).getNumberOfRentalDays());
+                    System.out.println("07. Rental Estimated Cost : " + rentalVans.get(index).getRentalEstimatedCost());
+
+                    // Header
+                    System.out.println("\n=============");
+                    System.out.println("Return a Van");
+                    System.out.println("=============\n");
+
+                    // Discount Rate
+                    discount = (int) Math.round((rentalVans.get(index).getRentalEstimatedCost() * Van.DISCOUNT_RATE) / 100.0);
+                    System.out.println("01. Van Rental Discount Rate : " + discount);
+
+                    // Actual Cost
+                    rentalActualCost = (rentalVans.get(index).getRentalEstimatedCost() - discount);
+                    System.out.println("02. Van Rental Actual Rate   : " + rentalActualCost);
+
+                    // Status Update
+                    rentalVans.get(index).setDiscount(discount);
+                    rentalVans.get(index).setRentalAcutualCost(rentalActualCost);
+                    rentalVans.get(index).setRentalStatus("Completed");
+
+                    for (Van van : vans) {
+                        if (van.getVehicleId().equalsIgnoreCase(rentalVans.get(index).getVehicleId())) {
+                            van.setAvailabilityStatus(true);
+                            break;
+                        }
+                    }
+
+                    System.out.println("\nVan Rental Return Processed Successfully!\n");
+                    break;
+
+                } else {
+                    if (!alreadyCompleted) {
+                        System.out.println("Rental ID is not found!\n");
+                    }
+
+                }
+
+            } else {
+                System.out.println("Invalid Rental ID (Ex: - R001)\n");
+
+            }
+
+        }
+
+        askWantToExit();
+
+    }
+
+    // Method to return a Motorcycle
+    public static void returnMotorcycle() {
+        clearConsole();
+        heading();
+
+        String rentalId;
+        int discount;
+        int rentalActualCost;
+
+        Scanner scanner1 = new Scanner(System.in);
+
+        // Rental ID
+        while (true) {
+            System.out.print("Enter Rental ID          : ");
+            rentalId = scanner1.nextLine().trim();
+            int index = -1;
+
+            if (rentalId.matches("^R\\d{3}$")) {
+                boolean exists = false;
+                boolean alreadyCompleted = false;
+
+                for (Rental rent : rentalMotorcycles) {
+                    if (rent.getRentalId().equalsIgnoreCase(rentalId)) {
+                        index = rentalMotorcycles.indexOf(rent);
+                        if (rentalMotorcycles.get(index).getRentalStatus().equals("Completed")) {
+                            System.out.println("Rental is already completed!\n");
+                            alreadyCompleted = true;
+                            break;
+                        } else {
+                            exists = true;
+                            break;
+                        }
+
+                    }
+                }
+                if (exists) {
+                    clearConsole();
+                    heading();
+
+                    System.out.println("Rental ID is found!\n");
+                    System.out.println("01. Customer ID           : " + rentalMotorcycles.get(index).getCustomerId());
+                    System.out.println("02. Motorcycle Rental ID  : " + rentalMotorcycles.get(index).getRentalId());
+                    System.out.println("03. Vehicle ID            : " + rentalMotorcycles.get(index).getVehicleId());
+                    System.out.println("04. Rental Start Date     : " + rentalMotorcycles.get(index).getRentalStartDate());
+                    System.out.println("05. Rental End Date       : " + rentalMotorcycles.get(index).getRentalEndDate());
+                    System.out.println("06. Number of Rental Days : " + rentalMotorcycles.get(index).getNumberOfRentalDays());
+                    System.out.println("07. Rental Estimated Cost : " + rentalMotorcycles.get(index).getRentalEstimatedCost());
+
+                    // Header
+                    System.out.println("\n===================");
+                    System.out.println("Return a Motorcycle");
+                    System.out.println("===================\n");
+
+                    // Discount Rate
+                    discount = (int) Math.round((rentalMotorcycles.get(index).getRentalEstimatedCost() * Motorcycle.DISCOUNT_RATE) / 100.0);
+                    System.out.println("01. Motorcycle Rental Discount Rate : " + discount);
+
+                    // Actual Cost
+                    rentalActualCost = (rentalMotorcycles.get(index).getRentalEstimatedCost() - discount);
+                    System.out.println("02. Motorcycle Rental Actual Rate   : " + rentalActualCost);
+
+                    // Status Update
+                    rentalMotorcycles.get(index).setDiscount(discount);
+                    rentalMotorcycles.get(index).setRentalAcutualCost(rentalActualCost);
+                    rentalMotorcycles.get(index).setRentalStatus("Completed");
+
+                    for (Motorcycle motorcycle : motorcycles) {
+                        if (motorcycle.getVehicleId().equalsIgnoreCase(rentalMotorcycles.get(index).getVehicleId())) {
+                            motorcycle.setAvailabilityStatus(true);
+                            break;
+                        }
+                    }
+
+                    System.out.println("\nMotorcycle Rental Return Processed Successfully!\n");
+                    break;
+
+                } else {
+                    if (!alreadyCompleted) {
+                        System.out.println("Rental ID is not found!\n");
+                    }
+
+                }
+
+            } else {
+                System.out.println("Invalid Rental ID (Ex: - R001)\n");
+
+            }
+
+        }
+
+        askWantToExit();
+
+    }
+
+    // Method to View All Rentals
+    public static void viewRentals() {
+
+        // 01. View All Cars
+        clearConsole();
+        heading();
+
+        System.out.println("========");
+        System.out.println("All Cars");
+        System.out.println("========\n");
+
+        String[] columnNames = {"Rental ID", "Customer ID", "Vehicle ID", "Start Date", "End Date", "No. of Days", "Estimated Rental Cost (Rs.)", "Discount (Rs.)", "Actual Cost (Rs. )", "Status"};
+
+        int[] columnNamesLength = new int[10];
+
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNamesLength[i] = columnNames[i].length();
+        }
+
+        int maxRentalId = Integer.MIN_VALUE;
+        int maxCustomerId = Integer.MIN_VALUE;
+        int maxVehicleId = Integer.MIN_VALUE;
+        int maxStartDate = Integer.MIN_VALUE;
+        int maxEndDate = Integer.MIN_VALUE;
+        int maxNumberOfDays = Integer.MIN_VALUE;
+        int maxEstimatedCost = Integer.MIN_VALUE;
+        int maxDiscount = Integer.MIN_VALUE;
+        int maxActualCost = Integer.MIN_VALUE;
+        int maxStatus = Integer.MIN_VALUE;
+
+        for (Rental rent : rentalCars) {
+
+            if (rent.getRentalId() != null) {
+                maxRentalId = Math.max(maxRentalId, rent.getRentalId().length());
+            }
+
+            if (rent.getCustomerId() != null) {
+                maxCustomerId = Math.max(maxCustomerId, rent.getCustomerId().length());
+            }
+
+            if (rent.getVehicleId() != null) {
+                maxVehicleId = Math.max(maxVehicleId, rent.getVehicleId().length());
+            }
+
+            if (rent.getRentalStartDate() != null) {
+                maxStartDate = Math.max(maxStartDate, rent.getRentalStartDate().length());
+            }
+
+            if (rent.getRentalEndDate() != null) {
+                maxEndDate = Math.max(maxEndDate, rent.getRentalEndDate().length());
+            }
+
+            if (rent.getNumberOfRentalDays() != 0) {
+                maxNumberOfDays = Math.max(maxNumberOfDays, String.valueOf(rent.getNumberOfRentalDays()).length());
+            }
+
+            if (rent.getRentalEstimatedCost() != 0) {
+                maxEstimatedCost = Math.max(maxEstimatedCost, String.valueOf(rent.getRentalEstimatedCost()).length());
+            }
+
+            if (rent.getDiscount() != 0) {
+                maxDiscount = Math.max(maxDiscount, String.valueOf(rent.getDiscount()).length());
+            }
+
+            if (rent.getRentalActualCost() != 0) {
+                maxActualCost = Math.max(maxActualCost, String.valueOf(rent.getRentalActualCost()).length());
+            }
+
+            if (rent.getRentalStatus() != null) {
+                maxStatus = Math.max(maxStatus, rent.getRentalStatus().length());
+            }
+
+        }
+
+        int rentalIdWidth = Math.max(columnNames[0].length(), maxRentalId);
+        int customerIdWidth = Math.max(columnNames[1].length(), maxCustomerId);
+        int vehicleIdWidth = Math.max(columnNames[2].length(), maxVehicleId);
+        int startDateWidth = Math.max(columnNames[3].length(), maxStartDate);
+        int endDateWidth = Math.max(columnNames[4].length(), maxEndDate);
+        int numberOfDaysWidth = Math.max(columnNames[5].length(), maxNumberOfDays);
+        int estimatedCostWidth = Math.max(columnNames[6].length(), maxEstimatedCost);
+        int discountWidth = Math.max(columnNames[7].length(), maxDiscount);
+        int actualCostWidth = Math.max(columnNames[8].length(), maxActualCost);
+        int statusWidth = Math.max(columnNames[9].length(), maxStatus);
+
+        int[] maxColumnWidth = {rentalIdWidth, customerIdWidth, vehicleIdWidth, startDateWidth, endDateWidth, numberOfDaysWidth, estimatedCostWidth, discountWidth, actualCostWidth, statusWidth};
+
+        int totalColumnWidth = rentalIdWidth + customerIdWidth + vehicleIdWidth + startDateWidth + endDateWidth + numberOfDaysWidth + estimatedCostWidth + discountWidth + actualCostWidth + statusWidth + (columnNames.length + 1);
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n|");
+
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNamesLength[i] >= maxColumnWidth[i]) {
+                System.out.print(columnNames[i] + "|");
+            } else {
+                System.out.print(columnNames[i]);
+                for (int k = 0; k < (maxColumnWidth[i] - columnNamesLength[i]); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        for (Rental rent : rentalCars) {
+
+            // Rental ID
+            if (rent.getRentalId().length() >= rentalIdWidth) {
+                System.out.print("\n|" + rent.getRentalId() + "|");
+            } else {
+                System.out.print("\n|");
+                for (int k = 0; k < (rentalIdWidth - rent.getRentalId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalId() + "|");
+            }
+
+            // Customer ID
+            if (rent.getCustomerId().length() >= customerIdWidth) {
+                System.out.print(rent.getCustomerId() + "|");
+            } else {
+                for (int k = 0; k < (customerIdWidth - rent.getCustomerId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getCustomerId() + "|");
+            }
+
+            // Vehicle ID
+            if (rent.getVehicleId().length() >= vehicleIdWidth) {
+                System.out.print(rent.getVehicleId() + "|");
+            } else {
+                for (int k = 0; k < (vehicleIdWidth - rent.getVehicleId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getVehicleId() + "|");
+            }
+
+            // Start Date
+            if (rent.getRentalStartDate().length() >= startDateWidth) {
+                System.out.print(rent.getRentalStartDate() + "|");
+            } else {
+                for (int k = 0; k < (startDateWidth - rent.getRentalStartDate().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalStartDate() + "|");
+            }
+
+            // End Date
+            if (rent.getRentalEndDate().length() >= endDateWidth) {
+                System.out.print(rent.getRentalEndDate() + "|");
+            } else {
+                for (int k = 0; k < (endDateWidth - rent.getRentalEndDate().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalEndDate() + "|");
+            }
+
+            // Number of Days
+            if ((String.valueOf(rent.getNumberOfRentalDays())).length() >= numberOfDaysWidth) {
+                System.out.print(rent.getNumberOfRentalDays() + "|");
+            } else {
+                for (int k = 0; k < (numberOfDaysWidth - (String.valueOf(rent.getNumberOfRentalDays())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getNumberOfRentalDays() + "|");
+            }
+
+            // Estimated Cost
+            if ((String.valueOf(rent.getRentalEstimatedCost())).length() >= estimatedCostWidth) {
+                System.out.print(rent.getRentalEstimatedCost() + "|");
+            } else {
+                for (int k = 0; k < (estimatedCostWidth - (String.valueOf(rent.getRentalEstimatedCost())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalEstimatedCost() + "|");
+            }
+
+            // Discount
+            if ((String.valueOf(rent.getDiscount())).length() >= discountWidth) {
+                System.out.print(rent.getDiscount() + "|");
+            } else {
+                for (int k = 0; k < (discountWidth - (String.valueOf(rent.getDiscount())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getDiscount() + "|");
+            }
+
+            // Actual Cost
+            if ((String.valueOf(rent.getRentalActualCost())).length() >= actualCostWidth) {
+                System.out.print(rent.getRentalActualCost() + "|");
+            } else {
+                for (int k = 0; k < (actualCostWidth - (String.valueOf(rent.getRentalActualCost())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalActualCost() + "|");
+            }
+
+            // Rental Status
+            if (rent.getRentalStatus().length() >= statusWidth) {
+                System.out.print(rent.getRentalStatus() + "|");
+            } else {
+                for (int k = 0; k < (statusWidth - rent.getRentalStatus().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalStatus() + "|");
+            }
+
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n");
+
+        // 02. View All Vans
+        System.out.println("\n========");
+        System.out.println("All Vans");
+        System.out.println("========\n");
+
+        columnNames = new String[]{"Rental ID", "Customer ID", "Vehicle ID", "Start Date", "End Date", "No. of Days", "Estimated Rental Cost (Rs.)", "Discount (Rs.)", "Actual Cost (Rs. )", "Status"};
+
+        columnNamesLength = new int[10];
+
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNamesLength[i] = columnNames[i].length();
+        }
+
+        maxRentalId = Integer.MIN_VALUE;
+        maxCustomerId = Integer.MIN_VALUE;
+        maxVehicleId = Integer.MIN_VALUE;
+        maxStartDate = Integer.MIN_VALUE;
+        maxEndDate = Integer.MIN_VALUE;
+        maxNumberOfDays = Integer.MIN_VALUE;
+        maxEstimatedCost = Integer.MIN_VALUE;
+        maxDiscount = Integer.MIN_VALUE;
+        maxActualCost = Integer.MIN_VALUE;
+        maxStatus = Integer.MIN_VALUE;
+
+        for (Rental rent : rentalVans) {
+
+            if (rent.getRentalId() != null) {
+                maxRentalId = Math.max(maxRentalId, rent.getRentalId().length());
+            }
+
+            if (rent.getCustomerId() != null) {
+                maxCustomerId = Math.max(maxCustomerId, rent.getCustomerId().length());
+            }
+
+            if (rent.getVehicleId() != null) {
+                maxVehicleId = Math.max(maxVehicleId, rent.getVehicleId().length());
+            }
+
+            if (rent.getRentalStartDate() != null) {
+                maxStartDate = Math.max(maxStartDate, rent.getRentalStartDate().length());
+            }
+
+            if (rent.getRentalEndDate() != null) {
+                maxEndDate = Math.max(maxEndDate, rent.getRentalEndDate().length());
+            }
+
+            if (rent.getNumberOfRentalDays() != 0) {
+                maxNumberOfDays = Math.max(maxNumberOfDays, String.valueOf(rent.getNumberOfRentalDays()).length());
+            }
+
+            if (rent.getRentalEstimatedCost() != 0) {
+                maxEstimatedCost = Math.max(maxEstimatedCost, String.valueOf(rent.getRentalEstimatedCost()).length());
+            }
+
+            if (rent.getDiscount() != 0) {
+                maxDiscount = Math.max(maxDiscount, String.valueOf(rent.getDiscount()).length());
+            }
+
+            if (rent.getRentalActualCost() != 0) {
+                maxActualCost = Math.max(maxActualCost, String.valueOf(rent.getRentalActualCost()).length());
+            }
+
+            if (rent.getRentalStatus() != null) {
+                maxStatus = Math.max(maxStatus, rent.getRentalStatus().length());
+            }
+
+        }
+
+        rentalIdWidth = Math.max(columnNames[0].length(), maxRentalId);
+        customerIdWidth = Math.max(columnNames[1].length(), maxCustomerId);
+        vehicleIdWidth = Math.max(columnNames[2].length(), maxVehicleId);
+        startDateWidth = Math.max(columnNames[3].length(), maxStartDate);
+        endDateWidth = Math.max(columnNames[4].length(), maxEndDate);
+        numberOfDaysWidth = Math.max(columnNames[5].length(), maxNumberOfDays);
+        estimatedCostWidth = Math.max(columnNames[6].length(), maxEstimatedCost);
+        discountWidth = Math.max(columnNames[7].length(), maxDiscount);
+        actualCostWidth = Math.max(columnNames[8].length(), maxActualCost);
+        statusWidth = Math.max(columnNames[9].length(), maxStatus);
+
+        maxColumnWidth = new int[]{rentalIdWidth, customerIdWidth, vehicleIdWidth, startDateWidth, endDateWidth, numberOfDaysWidth, estimatedCostWidth, discountWidth, actualCostWidth, statusWidth};
+
+        totalColumnWidth = rentalIdWidth + customerIdWidth + vehicleIdWidth + startDateWidth + endDateWidth + numberOfDaysWidth + estimatedCostWidth + discountWidth + actualCostWidth + statusWidth + (columnNames.length + 1);
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n|");
+
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNamesLength[i] >= maxColumnWidth[i]) {
+                System.out.print(columnNames[i] + "|");
+            } else {
+                System.out.print(columnNames[i]);
+                for (int k = 0; k < (maxColumnWidth[i] - columnNamesLength[i]); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        for (Rental rent : rentalVans) {
+
+            // Rental ID
+            if (rent.getRentalId().length() >= rentalIdWidth) {
+                System.out.print("\n|" + rent.getRentalId() + "|");
+            } else {
+                System.out.print("\n|");
+                for (int k = 0; k < (rentalIdWidth - rent.getRentalId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalId() + "|");
+            }
+
+            // Customer ID
+            if (rent.getCustomerId().length() >= customerIdWidth) {
+                System.out.print(rent.getCustomerId() + "|");
+            } else {
+                for (int k = 0; k < (customerIdWidth - rent.getCustomerId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getCustomerId() + "|");
+            }
+
+            // Vehicle ID
+            if (rent.getVehicleId().length() >= vehicleIdWidth) {
+                System.out.print(rent.getVehicleId() + "|");
+            } else {
+                for (int k = 0; k < (vehicleIdWidth - rent.getVehicleId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getVehicleId() + "|");
+            }
+
+            // Start Date
+            if (rent.getRentalStartDate().length() >= startDateWidth) {
+                System.out.print(rent.getRentalStartDate() + "|");
+            } else {
+                for (int k = 0; k < (startDateWidth - rent.getRentalStartDate().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalStartDate() + "|");
+            }
+
+            // End Date
+            if (rent.getRentalEndDate().length() >= endDateWidth) {
+                System.out.print(rent.getRentalEndDate() + "|");
+            } else {
+                for (int k = 0; k < (endDateWidth - rent.getRentalEndDate().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalEndDate() + "|");
+            }
+
+            // Number of Days
+            if ((String.valueOf(rent.getNumberOfRentalDays())).length() >= numberOfDaysWidth) {
+                System.out.print(rent.getNumberOfRentalDays() + "|");
+            } else {
+                for (int k = 0; k < (numberOfDaysWidth - (String.valueOf(rent.getNumberOfRentalDays())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getNumberOfRentalDays() + "|");
+            }
+
+            // Estimated Cost
+            if ((String.valueOf(rent.getRentalEstimatedCost())).length() >= estimatedCostWidth) {
+                System.out.print(rent.getRentalEstimatedCost() + "|");
+            } else {
+                for (int k = 0; k < (estimatedCostWidth - (String.valueOf(rent.getRentalEstimatedCost())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalEstimatedCost() + "|");
+            }
+
+            // Discount
+            if ((String.valueOf(rent.getDiscount())).length() >= discountWidth) {
+                System.out.print(rent.getDiscount() + "|");
+            } else {
+                for (int k = 0; k < (discountWidth - (String.valueOf(rent.getDiscount())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getDiscount() + "|");
+            }
+
+            // Actual Cost
+            if ((String.valueOf(rent.getRentalActualCost())).length() >= actualCostWidth) {
+                System.out.print(rent.getRentalActualCost() + "|");
+            } else {
+                for (int k = 0; k < (actualCostWidth - (String.valueOf(rent.getRentalActualCost())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalActualCost() + "|");
+            }
+
+            // Rental Status
+            if (rent.getRentalStatus().length() >= statusWidth) {
+                System.out.print(rent.getRentalStatus() + "|");
+            } else {
+                for (int k = 0; k < (statusWidth - rent.getRentalStatus().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalStatus() + "|");
+            }
+
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n");
+
+        // 03. View All Motorcycles
+        System.out.println("\n===============");
+        System.out.println("All Motorcycles");
+        System.out.println("===============\n");
+
+        columnNames = new String[]{"Rental ID", "Customer ID", "Vehicle ID", "Start Date", "End Date", "No. of Days", "Estimated Rental Cost (Rs.)", "Discount (Rs.)", "Actual Cost (Rs. )", "Status"};
+
+        columnNamesLength = new int[10];
+
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNamesLength[i] = columnNames[i].length();
+        }
+
+        maxRentalId = Integer.MIN_VALUE;
+        maxCustomerId = Integer.MIN_VALUE;
+        maxVehicleId = Integer.MIN_VALUE;
+        maxStartDate = Integer.MIN_VALUE;
+        maxEndDate = Integer.MIN_VALUE;
+        maxNumberOfDays = Integer.MIN_VALUE;
+        maxEstimatedCost = Integer.MIN_VALUE;
+        maxDiscount = Integer.MIN_VALUE;
+        maxActualCost = Integer.MIN_VALUE;
+        maxStatus = Integer.MIN_VALUE;
+
+        for (Rental rent : rentalMotorcycles) {
+
+            if (rent.getRentalId() != null) {
+                maxRentalId = Math.max(maxRentalId, rent.getRentalId().length());
+            }
+
+            if (rent.getCustomerId() != null) {
+                maxCustomerId = Math.max(maxCustomerId, rent.getCustomerId().length());
+            }
+
+            if (rent.getVehicleId() != null) {
+                maxVehicleId = Math.max(maxVehicleId, rent.getVehicleId().length());
+            }
+
+            if (rent.getRentalStartDate() != null) {
+                maxStartDate = Math.max(maxStartDate, rent.getRentalStartDate().length());
+            }
+
+            if (rent.getRentalEndDate() != null) {
+                maxEndDate = Math.max(maxEndDate, rent.getRentalEndDate().length());
+            }
+
+            if (rent.getNumberOfRentalDays() != 0) {
+                maxNumberOfDays = Math.max(maxNumberOfDays, String.valueOf(rent.getNumberOfRentalDays()).length());
+            }
+
+            if (rent.getRentalEstimatedCost() != 0) {
+                maxEstimatedCost = Math.max(maxEstimatedCost, String.valueOf(rent.getRentalEstimatedCost()).length());
+            }
+
+            if (rent.getDiscount() != 0) {
+                maxDiscount = Math.max(maxDiscount, String.valueOf(rent.getDiscount()).length());
+            }
+
+            if (rent.getRentalActualCost() != 0) {
+                maxActualCost = Math.max(maxActualCost, String.valueOf(rent.getRentalActualCost()).length());
+            }
+
+            if (rent.getRentalStatus() != null) {
+                maxStatus = Math.max(maxStatus, rent.getRentalStatus().length());
+            }
+
+        }
+
+        rentalIdWidth = Math.max(columnNames[0].length(), maxRentalId);
+        customerIdWidth = Math.max(columnNames[1].length(), maxCustomerId);
+        vehicleIdWidth = Math.max(columnNames[2].length(), maxVehicleId);
+        startDateWidth = Math.max(columnNames[3].length(), maxStartDate);
+        endDateWidth = Math.max(columnNames[4].length(), maxEndDate);
+        numberOfDaysWidth = Math.max(columnNames[5].length(), maxNumberOfDays);
+        estimatedCostWidth = Math.max(columnNames[6].length(), maxEstimatedCost);
+        discountWidth = Math.max(columnNames[7].length(), maxDiscount);
+        actualCostWidth = Math.max(columnNames[8].length(), maxActualCost);
+        statusWidth = Math.max(columnNames[9].length(), maxStatus);
+
+        maxColumnWidth = new int[]{rentalIdWidth, customerIdWidth, vehicleIdWidth, startDateWidth, endDateWidth, numberOfDaysWidth, estimatedCostWidth, discountWidth, actualCostWidth, statusWidth};
+
+        totalColumnWidth = rentalIdWidth + customerIdWidth + vehicleIdWidth + startDateWidth + endDateWidth + numberOfDaysWidth + estimatedCostWidth + discountWidth + actualCostWidth + statusWidth + (columnNames.length + 1);
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n|");
+
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNamesLength[i] >= maxColumnWidth[i]) {
+                System.out.print(columnNames[i] + "|");
+            } else {
+                System.out.print(columnNames[i]);
+                for (int k = 0; k < (maxColumnWidth[i] - columnNamesLength[i]); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        for (Rental rent : rentalMotorcycles) {
+
+            // Rental ID
+            if (rent.getRentalId().length() >= rentalIdWidth) {
+                System.out.print("\n|" + rent.getRentalId() + "|");
+            } else {
+                System.out.print("\n|");
+                for (int k = 0; k < (rentalIdWidth - rent.getRentalId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalId() + "|");
+            }
+
+            // Customer ID
+            if (rent.getCustomerId().length() >= customerIdWidth) {
+                System.out.print(rent.getCustomerId() + "|");
+            } else {
+                for (int k = 0; k < (customerIdWidth - rent.getCustomerId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getCustomerId() + "|");
+            }
+
+            // Vehicle ID
+            if (rent.getVehicleId().length() >= vehicleIdWidth) {
+                System.out.print(rent.getVehicleId() + "|");
+            } else {
+                for (int k = 0; k < (vehicleIdWidth - rent.getVehicleId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getVehicleId() + "|");
+            }
+
+            // Start Date
+            if (rent.getRentalStartDate().length() >= startDateWidth) {
+                System.out.print(rent.getRentalStartDate() + "|");
+            } else {
+                for (int k = 0; k < (startDateWidth - rent.getRentalStartDate().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalStartDate() + "|");
+            }
+
+            // End Date
+            if (rent.getRentalEndDate().length() >= endDateWidth) {
+                System.out.print(rent.getRentalEndDate() + "|");
+            } else {
+                for (int k = 0; k < (endDateWidth - rent.getRentalEndDate().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalEndDate() + "|");
+            }
+
+            // Number of Days
+            if ((String.valueOf(rent.getNumberOfRentalDays())).length() >= numberOfDaysWidth) {
+                System.out.print(rent.getNumberOfRentalDays() + "|");
+            } else {
+                for (int k = 0; k < (numberOfDaysWidth - (String.valueOf(rent.getNumberOfRentalDays())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getNumberOfRentalDays() + "|");
+            }
+
+            // Estimated Cost
+            if ((String.valueOf(rent.getRentalEstimatedCost())).length() >= estimatedCostWidth) {
+                System.out.print(rent.getRentalEstimatedCost() + "|");
+            } else {
+                for (int k = 0; k < (estimatedCostWidth - (String.valueOf(rent.getRentalEstimatedCost())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalEstimatedCost() + "|");
+            }
+
+            // Discount
+            if ((String.valueOf(rent.getDiscount())).length() >= discountWidth) {
+                System.out.print(rent.getDiscount() + "|");
+            } else {
+                for (int k = 0; k < (discountWidth - (String.valueOf(rent.getDiscount())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getDiscount() + "|");
+            }
+
+            // Actual Cost
+            if ((String.valueOf(rent.getRentalActualCost())).length() >= actualCostWidth) {
+                System.out.print(rent.getRentalActualCost() + "|");
+            } else {
+                for (int k = 0; k < (actualCostWidth - (String.valueOf(rent.getRentalActualCost())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalActualCost() + "|");
+            }
+
+            // Rental Status
+            if (rent.getRentalStatus().length() >= statusWidth) {
+                System.out.print(rent.getRentalStatus() + "|");
+            } else {
+                for (int k = 0; k < (statusWidth - rent.getRentalStatus().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalStatus() + "|");
+            }
+
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n");
 
         askWantToExit();
 
