@@ -1,22 +1,21 @@
 /**
- * Rental.java
- * Represents a rental transaction linking a Customer to a Vehicle.
+ * Represents a single rental transaction linking a customer to a vehicle
+ * for a given period, along with the resulting cost and status.
  */
+
 public class Rental {
 
-    // ---------------------- Private Fields ----------------------
     private String rentalId;
     private String customerId;
     private String vehicleId;
     private String rentalStartDate;
     private String rentalEndDate;
     private int numberOfRentalDays;
-    private double rentalEstimatedCost;
-    private double discount;
-    private double rentalActualCost;
+    private int rentalEstimatedCost;
+    private int discount;
+    private int rentalActualCost;
     private String rentalStatus;
 
-    // ---------------------- Constructor Chaining ----------------------
     public Rental() {
         this("Unknown");
     }
@@ -30,32 +29,34 @@ public class Rental {
     }
 
     public Rental(String rentalId, String customerId, String vehicleId) {
-        this(rentalId, customerId, vehicleId, "Unknown", "Unknown");
+        this(rentalId, customerId, vehicleId, "Unknown");
     }
 
-    public Rental(String rentalId, String customerId, String vehicleId,
-                  String rentalStartDate, String rentalEndDate) {
+    public Rental(String rentalId, String customerId, String vehicleId, String rentalStartDate) {
+        this(rentalId, customerId, vehicleId, rentalStartDate, "Unknown");
+    }
+
+    public Rental(String rentalId, String customerId, String vehicleId, String rentalStartDate, String rentalEndDate) {
         this(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, 0);
     }
 
-    public Rental(String rentalId, String customerId, String vehicleId,
-                  String rentalStartDate, String rentalEndDate, int numberOfRentalDays) {
-        this(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate,
-                numberOfRentalDays, 0, 0);
+    public Rental(String rentalId, String customerId, String vehicleId, String rentalStartDate, String rentalEndDate, int numberOfRentalDays) {
+        this(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, 0);
     }
 
-    public Rental(String rentalId, String customerId, String vehicleId,
-                  String rentalStartDate, String rentalEndDate, int numberOfRentalDays,
-                  double rentalEstimatedCost, double discount) {
-        this(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate,
-                numberOfRentalDays, rentalEstimatedCost, discount, 0, "Unknown");
+    public Rental(String rentalId, String customerId, String vehicleId, String rentalStartDate, String rentalEndDate, int numberOfRentalDays, int rentalEstimatedCost) {
+        this(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, rentalEstimatedCost, 0);
     }
 
-    // Final constructor - initializes all fields
-    public Rental(String rentalId, String customerId, String vehicleId,
-                  String rentalStartDate, String rentalEndDate, int numberOfRentalDays,
-                  double rentalEstimatedCost, double discount, double rentalActualCost,
-                  String rentalStatus) {
+    public Rental(String rentalId, String customerId, String vehicleId, String rentalStartDate, String rentalEndDate, int numberOfRentalDays, int rentalEstimatedCost, int discount) {
+        this(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, rentalEstimatedCost, discount, 0);
+    }
+
+    public Rental(String rentalId, String customerId, String vehicleId, String rentalStartDate, String rentalEndDate, int numberOfRentalDays, int rentalEstimatedCost, int discount, int rentalActualCost) {
+        this(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, rentalEstimatedCost, discount, rentalActualCost, "Unknown");
+    }
+
+    public Rental(String rentalId, String customerId, String vehicleId, String rentalStartDate, String rentalEndDate, int numberOfRentalDays, int rentalEstimatedCost, int discount, int rentalActualCost, String rentalStatus) {
         this.rentalId = rentalId;
         this.customerId = customerId;
         this.vehicleId = vehicleId;
@@ -68,7 +69,6 @@ public class Rental {
         this.rentalStatus = rentalStatus;
     }
 
-    // ---------------------- Getters & Setters ----------------------
     public String getRentalId() {
         return rentalId;
     }
@@ -117,27 +117,27 @@ public class Rental {
         this.numberOfRentalDays = numberOfRentalDays;
     }
 
-    public double getRentalEstimatedCost() {
+    public int getRentalEstimatedCost() {
         return rentalEstimatedCost;
     }
 
-    public void setRentalEstimatedCost(double rentalEstimatedCost) {
+    public void setRentalEstimatedCost(int rentalEstimatedCost) {
         this.rentalEstimatedCost = rentalEstimatedCost;
     }
 
-    public double getDiscount() {
+    public int getDiscount() {
         return discount;
     }
 
-    public void setDiscount(double discount) {
+    public void setDiscount(int discount) {
         this.discount = discount;
     }
 
-    public double getRentalActualCost() {
+    public int getRentalActualCost() {
         return rentalActualCost;
     }
 
-    public void setRentalActualCost(double rentalActualCost) {
+    public void setRentalActualCost(int rentalActualCost) {
         this.rentalActualCost = rentalActualCost;
     }
 
@@ -149,13 +149,4 @@ public class Rental {
         this.rentalStatus = rentalStatus;
     }
 
-    // ---------------------- Utility ----------------------
-    @Override
-    public String toString() {
-        return String.format(
-                "Rental ID: %-8s | Customer: %-8s | Vehicle: %-8s | Start: %-10s | End: %-10s | " +
-                        "Days: %-3d | Est. Cost: %-8.2f | Discount: %-5.2f%% | Actual Cost: %-8.2f | Status: %s",
-                rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate,
-                numberOfRentalDays, rentalEstimatedCost, discount, rentalActualCost, rentalStatus);
-    }
 }

@@ -1,16 +1,15 @@
 /**
- * Motorcycle.java
- * Subclass of Vehicle representing a motorcycle.
+ * Represents a rentable motorcycle.
+ * Extends Vehicle with the engine capacity attribute.
+ * DISCOUNT_RATE is the percentage discount applied to the
+ * estimated cost when a motorcycle is returned.
  */
 public class Motorcycle extends Vehicle {
 
-    // Static discount rate applicable to all Motorcycle objects (10%)
-    public static final double DISCOUNT_RATE = 10;
+    public static int DISCOUNT_RATE = 10;
 
-    // ---------------------- Private Fields ----------------------
     private int engineCapacity;
 
-    // ---------------------- Constructor Chaining ----------------------
     public Motorcycle() {
         this("Unknown");
     }
@@ -23,22 +22,19 @@ public class Motorcycle extends Vehicle {
         this(vehicleId, vehicleName, 0);
     }
 
-    public Motorcycle(String vehicleId, String vehicleName, double dailyRentalRate) {
+    public Motorcycle(String vehicleId, String vehicleName, int dailyRentalRate) {
         this(vehicleId, vehicleName, dailyRentalRate, false);
     }
 
-    public Motorcycle(String vehicleId, String vehicleName, double dailyRentalRate, boolean availabilityStatus) {
+    public Motorcycle(String vehicleId, String vehicleName, int dailyRentalRate, boolean availabilityStatus) {
         this(vehicleId, vehicleName, dailyRentalRate, availabilityStatus, 0);
     }
 
-    // Final constructor - initializes all fields (calls super for inherited fields)
-    public Motorcycle(String vehicleId, String vehicleName, double dailyRentalRate, boolean availabilityStatus,
-                      int engineCapacity) {
+    public Motorcycle(String vehicleId, String vehicleName, int dailyRentalRate, boolean availabilityStatus, int engineCapacity) {
         super(vehicleId, vehicleName, dailyRentalRate, availabilityStatus);
         this.engineCapacity = engineCapacity;
     }
 
-    // ---------------------- Getters & Setters ----------------------
     public int getEngineCapacity() {
         return engineCapacity;
     }
@@ -47,19 +43,4 @@ public class Motorcycle extends Vehicle {
         this.engineCapacity = engineCapacity;
     }
 
-    // ---------------------- Overridden Abstract Methods ----------------------
-    @Override
-    public String getVehicleType() {
-        return "Motorcycle";
-    }
-
-    @Override
-    public double getDiscountRate() {
-        return DISCOUNT_RATE;
-    }
-
-    @Override
-    public String getExtraDetails() {
-        return String.format("Engine: %dcc", engineCapacity);
-    }
 }

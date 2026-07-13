@@ -1,16 +1,13 @@
 /**
- * Customer.java
- * Represents a customer who can rent vehicles.
+ * Represents a customer who can rent vehicles from the system.
  */
 public class Customer {
 
-    // ---------------------- Private Fields ----------------------
     private String customerId;
     private String customerName;
     private String contactNo;
     private String licenseNumber;
 
-    // ---------------------- Constructor Chaining ----------------------
     public Customer() {
         this("Unknown");
     }
@@ -27,7 +24,6 @@ public class Customer {
         this(customerId, customerName, contactNo, "Unknown");
     }
 
-    // Final constructor - initializes all fields
     public Customer(String customerId, String customerName, String contactNo, String licenseNumber) {
         this.customerId = customerId;
         this.customerName = customerName;
@@ -35,7 +31,6 @@ public class Customer {
         this.licenseNumber = licenseNumber;
     }
 
-    // ---------------------- Getters & Setters ----------------------
     public String getCustomerId() {
         return customerId;
     }
@@ -68,11 +63,4 @@ public class Customer {
         this.licenseNumber = licenseNumber;
     }
 
-    // ---------------------- Utility ----------------------
-    @Override
-    public String toString() {
-        return String.format(
-                "ID: %-8s | Name: %-15s | Contact: %-12s | License: %-10s",
-                customerId, customerName, contactNo, licenseNumber);
-    }
 }
