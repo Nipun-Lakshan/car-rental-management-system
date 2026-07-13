@@ -1,9 +1,5 @@
 # 🚗 Car Rental Management System
 
-This repository contains a Java based Car Rental Management System developed as part of a study comparing AI - assisted programming with traditional programming approaches.
-
----
-
 ## 📌 About the Project
 
 A console-based **Java Car Rental Management System** developed to demonstrate Object-Oriented Programming (OOP) concepts, software design principles and AI-assisted vs traditional programming approaches. This project explores how software solutions can be developed using different programming approaches by comparing implementation structure, development efficiency and learning outcomes through practical development and documentation.
@@ -12,9 +8,7 @@ A console-based **Java Car Rental Management System** developed to demonstrate O
 
 ## 📌 Project Overview
 
-The **Car Rental Management System** is a Java console application designed to manage the core operations of a vehicle rental service.
-
-The system allows users to manage vehicles, customers and rental transactions through a menu-driven interface. All data is stored temporarily using the **Java Collections Framework** without database integration.
+The **Car Rental Management System** is a Java console application designed to manage the core operations of a vehicle rental service. The system allows users to manage vehicles, customers and rental transactions through a menu-driven interface. All data is stored temporarily using the **Java Collections Framework** without database integration.
 
 The project focuses on applying fundamental software engineering concepts including:
 
@@ -45,18 +39,6 @@ The project focuses on applying fundamental software engineering concepts includ
 - Return rented vehicles
 - Track rental information
 - Manage rental transactions
-
----
-
-## 🛠️ Technologies Used
-
-| Technology | Description |
-|------------|-------------|
-| Java | Core programming language |
-| OOP Concepts | Application design and development |
-| Java Collections Framework | Temporary data storage |
-| IntelliJ IDEA / NetBeans | Development environment |
-| Git & GitHub | Version control |
 
 ---
 
@@ -117,7 +99,7 @@ git clone https://github.com/Nipun-Lakshan/car-rental-management-system.git
 3. Compile and run:
 
 ```
-Application.java
+java Application.java
 ```
 
 4. Use the console menu to interact with the system.
