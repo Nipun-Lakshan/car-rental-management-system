@@ -122,8 +122,8 @@ The main objectives of this project are:
 
 **Nipun Lakshan**
 
-Information Technology & Management Undergraduate  
-University of Colombo, Faculty of Science
+* Information Technology & Management Undergraduate  
+* University of Colombo, Faculty of Science
 
 GitHub:
 https://github.com/Nipun-Lakshan
@@ -132,6 +132,6 @@ https://github.com/Nipun-Lakshan
 
 ## ⭐ Support
 
-If you find this project useful or interesting, feel free to give it a ⭐ star on GitHub. Your support is greatly appreciated!
+If you find this repository useful, consider giving it a star.
 
 ---
