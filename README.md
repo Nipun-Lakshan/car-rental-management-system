@@ -38,7 +38,6 @@ The project focuses on applying fundamental software engineering concepts includ
 - Rent vehicles to customers
 - Return rented vehicles
 - Track rental information
-- Manage rental transactions
 
 ---
 
