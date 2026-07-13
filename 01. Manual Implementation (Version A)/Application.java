@@ -205,10 +205,11 @@ class Application {
                         case 3:
                             clearConsole();
                             heading();
-                            registerMotorCycle();
+                            registerMotorcycle();
                             break L1;
 
                         case 4:
+                            clearConsole();
                             mainMenu();
                             break L1;
 
@@ -323,7 +324,7 @@ class Application {
 
             } catch (InputMismatchException e) {
 
-                System.out.println("Invalid availability status!\n");
+                System.out.println("Invalid availability status!");
                 scanner1.nextLine();
 
             }
@@ -478,7 +479,7 @@ class Application {
 
             } catch (InputMismatchException e) {
 
-                System.out.println("Invalid availability status!\n");
+                System.out.println("Invalid availability status!");
                 scanner1.nextLine();
 
             }
@@ -519,7 +520,7 @@ class Application {
     }
 
     // Method to Register a Motorcycle
-    public static void registerMotorCycle() {
+    public static void registerMotorcycle() {
 
         clearConsole();
         heading();
@@ -567,7 +568,7 @@ class Application {
 
         }
 
-        System.out.print("\nEnter Vehicle Name           : ");
+        System.out.print("\nEnter Vehicle Name            : ");
         vehicleName = ((scanner1.nextLine()).trim());
 
         while (true) {
@@ -607,7 +608,7 @@ class Application {
 
             } catch (InputMismatchException e) {
 
-                System.out.println("Invalid availability status!\n");
+                System.out.println("Invalid availability status!");
                 scanner1.nextLine();
 
             }
@@ -1759,12 +1760,12 @@ class Application {
                     clearConsole();
                     heading();
                     System.out.println("Vehicle found!\n");
-                    System.out.println("01. Car ID             : " + cars.get(index).getVehicleId());
-                    System.out.println("02. Car Name           : " + cars.get(index).getVehicleName());
-                    System.out.println("03. Daily Rental Rate  : Rs. " + cars.get(index).getDailyRentalRate());
-                    System.out.println("04. Availablity Status : " + cars.get(index).getAvailabilityStatus());
-                    System.out.println("05. Number of Seats    : " + cars.get(index).getNumberOfSeats());
-                    System.out.println("06. Fuel Type          : " + cars.get(index).getFuelType());
+                    System.out.println("01. Car ID              : " + cars.get(index).getVehicleId());
+                    System.out.println("02. Car Name            : " + cars.get(index).getVehicleName());
+                    System.out.println("03. Daily Rental Rate   : Rs. " + cars.get(index).getDailyRentalRate());
+                    System.out.println("04. Availability Status : " + cars.get(index).getAvailabilityStatus());
+                    System.out.println("05. Number of Seats     : " + cars.get(index).getNumberOfSeats());
+                    System.out.println("06. Fuel Type           : " + cars.get(index).getFuelType());
 
                     askWantToExit();
 
@@ -1807,11 +1808,11 @@ class Application {
                     clearConsole();
                     heading();
                     System.out.println("Vehicle found!\n");
-                    System.out.println("01. Van ID             : " + vans.get(index).getVehicleId());
-                    System.out.println("02. Van Name           : " + vans.get(index).getVehicleName());
-                    System.out.println("03. Daily Rental Rate  : Rs. " + vans.get(index).getDailyRentalRate());
-                    System.out.println("04. Availablity Status : " + vans.get(index).getAvailabilityStatus());
-                    System.out.println("05. Cargo Capacity     : " + vans.get(index).getCargoCapacity() + "Kg");
+                    System.out.println("01. Van ID              : " + vans.get(index).getVehicleId());
+                    System.out.println("02. Van Name            : " + vans.get(index).getVehicleName());
+                    System.out.println("03. Daily Rental Rate   : Rs. " + vans.get(index).getDailyRentalRate());
+                    System.out.println("04. Availability Status : " + vans.get(index).getAvailabilityStatus());
+                    System.out.println("05. Cargo Capacity      : " + vans.get(index).getCargoCapacity() + "Kg");
 
                     askWantToExit();
 
@@ -1854,11 +1855,11 @@ class Application {
                     clearConsole();
                     heading();
                     System.out.println("Vehicle found!\n");
-                    System.out.println("01. Motorcycle ID      : " + motorcycles.get(index).getVehicleId());
-                    System.out.println("02. Motorcycle Name    : " + motorcycles.get(index).getVehicleName());
-                    System.out.println("03. Daily Rental Rate  : Rs. " + motorcycles.get(index).getDailyRentalRate());
-                    System.out.println("04. Availablity Status : " + motorcycles.get(index).getAvailabilityStatus());
-                    System.out.println("05. Engine Capacity    : " + motorcycles.get(index).getEngineCapacity() + "CC");
+                    System.out.println("01. Motorcycle ID       : " + motorcycles.get(index).getVehicleId());
+                    System.out.println("02. Motorcycle Name     : " + motorcycles.get(index).getVehicleName());
+                    System.out.println("03. Daily Rental Rate   : Rs. " + motorcycles.get(index).getDailyRentalRate());
+                    System.out.println("04. Availability Status : " + motorcycles.get(index).getAvailabilityStatus());
+                    System.out.println("05. Engine Capacity     : " + motorcycles.get(index).getEngineCapacity() + "CC");
 
                     askWantToExit();
 
@@ -2296,7 +2297,7 @@ class Application {
         askWantToExit();
     }
 
-    // Method to Search Customers
+    // Method to Search Customer
     public static void searchCustomer() {
         clearConsole();
         heading();
@@ -2383,7 +2384,7 @@ class Application {
         }
     }
 
-    // Method to rent a vehicle
+    // Method to Rent a Vehicle
     public static void rentVehicle() {
         clearConsole();
         heading();
@@ -2433,6 +2434,7 @@ class Application {
                             break L1;
 
                         case 4:
+                            clearConsole();
                             mainMenu();
                             break L1;
 
@@ -2457,7 +2459,7 @@ class Application {
         }
     }
 
-    // Method to rent a car
+    // Method to Rent a Car
     public static void rentCar() {
         clearConsole();
         heading();
@@ -2894,12 +2896,12 @@ class Application {
                     break;
 
                 } else {
-                    System.out.println("Customer has not been registered yet!\n");
+                    System.out.println("Customer has not been registered yet!");
 
                 }
 
             } else {
-                System.out.println("Invalid Customer ID (Ex: - C001)\n");
+                System.out.println("Invalid Customer ID (Ex: - C001)");
 
             }
 
@@ -2930,16 +2932,16 @@ class Application {
                         break;
 
                     } else {
-                        System.out.println("Vehicle isn't available at the moment!\n");
+                        System.out.println("Vehicle isn't available at the moment!");
                     }
 
                 } else {
-                    System.out.println("Vehicle has not been registered yet!\n");
+                    System.out.println("Vehicle has not been registered yet!");
 
                 }
 
             } else {
-                System.out.println("Invalid Vehicle ID (Ex: - V001)\n");
+                System.out.println("Invalid Vehicle ID (Ex: - V001)");
 
             }
 
@@ -2962,7 +2964,7 @@ class Application {
                 }
 
             } else {
-                System.out.println("Invalid Rental Start Date (Ex: - 2026.01.01)\n");
+                System.out.println("Invalid Rental Start Date (Ex: - 2026.01.01)");
 
             }
 
@@ -3065,6 +3067,7 @@ class Application {
                             break L1;
 
                         case 4:
+                            clearConsole();
                             mainMenu();
                             break L1;
 
@@ -3157,7 +3160,7 @@ class Application {
 
                     // Status Update
                     rentalCars.get(index).setDiscount(discount);
-                    rentalCars.get(index).setRentalAcutualCost(rentalActualCost);
+                    rentalCars.get(index).setRentalActualCost(rentalActualCost);
                     rentalCars.get(index).setRentalStatus("Completed");
 
                     for (Car car : cars) {
@@ -3253,7 +3256,7 @@ class Application {
 
                     // Status Update
                     rentalVans.get(index).setDiscount(discount);
-                    rentalVans.get(index).setRentalAcutualCost(rentalActualCost);
+                    rentalVans.get(index).setRentalActualCost(rentalActualCost);
                     rentalVans.get(index).setRentalStatus("Completed");
 
                     for (Van van : vans) {
@@ -3347,7 +3350,7 @@ class Application {
 
                     // Status Update
                     rentalMotorcycles.get(index).setDiscount(discount);
-                    rentalMotorcycles.get(index).setRentalAcutualCost(rentalActualCost);
+                    rentalMotorcycles.get(index).setRentalActualCost(rentalActualCost);
                     rentalMotorcycles.get(index).setRentalStatus("Completed");
 
                     for (Motorcycle motorcycle : motorcycles) {

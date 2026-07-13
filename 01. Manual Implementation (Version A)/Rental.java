@@ -132,7 +132,7 @@ public class Rental {
         return rentalActualCost;
     }
 
-    public void setRentalAcutualCost(int rentalAcutualCost) {
+    public void setRentalActualCost(int rentalAcutualCost) {
         this.rentalActualCost = rentalAcutualCost;
     }
 

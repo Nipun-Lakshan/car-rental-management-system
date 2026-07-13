@@ -1,5 +1,5 @@
 // Application : Car Rental Management System
-// Method      : Manual Implementation
+// Method      : AI Assisted Implementation
 // Author      : A. W. W. A. Nipun Lakshan
 
 // Import Libraries
@@ -7,7 +7,6 @@
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -24,9 +23,6 @@ class Application {
     public static ArrayList<Rental> rentalCars = new ArrayList<>();
     public static ArrayList<Rental> rentalVans = new ArrayList<>();
     public static ArrayList<Rental> rentalMotorcycles = new ArrayList<>();
-
-    // Single shared Scanner for all console input
-    private static final Scanner scanner = new Scanner(System.in);
 
     // Method to Print Heading
     public static void heading() {
@@ -77,16 +73,18 @@ class Application {
     // Ask For a Choice Method
     public static void askForChoice() {
 
+        Scanner scanner1 = new Scanner(System.in);
+
         System.out.print("Enter your choice: ");
 
         try {
 
-            int choice = scanner.nextInt();
+            int choice = scanner1.nextInt();
 
             if (choice > 12 || choice < 1) {
 
                 System.out.println("Invalid choice!\n");
-                scanner.nextLine();
+                scanner1.nextLine();
 
                 askForChoice();
 
@@ -152,214 +150,11 @@ class Application {
         } catch (InputMismatchException e) {
 
             System.out.println("Invalid input!\n");
-            scanner.nextLine();
+            scanner1.nextLine();
 
             askForChoice();
 
         }
-
-    }
-
-    // ================================================================
-    // Generic lookup helpers
-    // ================================================================
-
-    // Finds the index of a vehicle (car/van/motorcycle) by its ID, or -1 if not found
-    private static <T extends Vehicle> int findVehicleIndex(List<T> vehicles, String vehicleId) {
-
-        for (int i = 0; i < vehicles.size(); i++) {
-            if (vehicles.get(i).getVehicleId().equalsIgnoreCase(vehicleId)) {
-                return i;
-            }
-        }
-
-        return -1;
-
-    }
-
-    // Finds the index of a customer by ID, or -1 if not found
-    private static int findCustomerIndex(String customerId) {
-
-        for (int i = 0; i < customers.size(); i++) {
-            if (customers.get(i).getCustomerId().equalsIgnoreCase(customerId)) {
-                return i;
-            }
-        }
-
-        return -1;
-
-    }
-
-    // Finds the index of a rental by ID within a given rentals list, or -1 if not found
-    private static int findRentalIndex(List<Rental> rentals, String rentalId) {
-
-        for (int i = 0; i < rentals.size(); i++) {
-            if (rentals.get(i).getRentalId().equalsIgnoreCase(rentalId)) {
-                return i;
-            }
-        }
-
-        return -1;
-
-    }
-
-    // ================================================================
-    // Generic table-printing helpers (replaces the repeated column-width
-    // calculation and manual "|"-separated printing that used to be
-    // duplicated in every "view" method)
-    // ================================================================
-
-    // Prints a table with the given column headers and rows. Every column is
-    // sized to fit its widest header or cell, headers are left-aligned and
-    // data cells are right-aligned, matching the original table style.
-    private static void printTable(String[] columnNames, List<String[]> rows) {
-
-        int columns = columnNames.length;
-        int[] widths = new int[columns];
-
-        for (int i = 0; i < columns; i++) {
-            widths[i] = columnNames[i].length();
-        }
-
-        for (String[] row : rows) {
-            for (int i = 0; i < columns; i++) {
-                widths[i] = Math.max(widths[i], row[i].length());
-            }
-        }
-
-        int totalWidth = columns + 1;
-        for (int width : widths) {
-            totalWidth += width;
-        }
-
-        StringBuilder separator = new StringBuilder();
-        for (int i = 0; i < totalWidth; i++) {
-            separator.append("=");
-        }
-
-        System.out.println(separator);
-        System.out.println(formatTableRow(columnNames, widths, true));
-        System.out.println(separator);
-
-        for (String[] row : rows) {
-            System.out.println(formatTableRow(row, widths, false));
-        }
-
-        System.out.println(separator);
-
-    }
-
-    // Formats one table row, left-aligning headers and right-aligning data
-    private static String formatTableRow(String[] values, int[] widths, boolean leftAlign) {
-
-        StringBuilder row = new StringBuilder("|");
-
-        for (int i = 0; i < values.length; i++) {
-            row.append(String.format("%" + (leftAlign ? "-" : "") + widths[i] + "s", values[i]));
-            row.append("|");
-        }
-
-        return row.toString();
-
-    }
-
-    // Builds the table rows for a list of cars
-    private static List<String[]> buildCarRows(List<Car> carList) {
-
-        List<String[]> rows = new ArrayList<>();
-
-        for (Car car : carList) {
-            rows.add(new String[]{
-                    car.getVehicleId(),
-                    car.getVehicleName(),
-                    String.valueOf(car.getDailyRentalRate()),
-                    String.valueOf(car.getAvailabilityStatus()),
-                    String.valueOf(car.getNumberOfSeats()),
-                    car.getFuelType()
-            });
-        }
-
-        return rows;
-
-    }
-
-    // Builds the table rows for a list of vans
-    private static List<String[]> buildVanRows(List<Van> vanList) {
-
-        List<String[]> rows = new ArrayList<>();
-
-        for (Van van : vanList) {
-            rows.add(new String[]{
-                    van.getVehicleId(),
-                    van.getVehicleName(),
-                    String.valueOf(van.getDailyRentalRate()),
-                    String.valueOf(van.getAvailabilityStatus()),
-                    String.valueOf(van.getCargoCapacity())
-            });
-        }
-
-        return rows;
-
-    }
-
-    // Builds the table rows for a list of motorcycles
-    private static List<String[]> buildMotorcycleRows(List<Motorcycle> motorcycleList) {
-
-        List<String[]> rows = new ArrayList<>();
-
-        for (Motorcycle motorcycle : motorcycleList) {
-            rows.add(new String[]{
-                    motorcycle.getVehicleId(),
-                    motorcycle.getVehicleName(),
-                    String.valueOf(motorcycle.getDailyRentalRate()),
-                    String.valueOf(motorcycle.getAvailabilityStatus()),
-                    String.valueOf(motorcycle.getEngineCapacity())
-            });
-        }
-
-        return rows;
-
-    }
-
-    // Builds the table rows for a list of customers
-    private static List<String[]> buildCustomerRows(List<Customer> customerList) {
-
-        List<String[]> rows = new ArrayList<>();
-
-        for (Customer customer : customerList) {
-            rows.add(new String[]{
-                    customer.getCustomerId(),
-                    customer.getCustomerName(),
-                    customer.getContactNo(),
-                    customer.getLicenseNumber()
-            });
-        }
-
-        return rows;
-
-    }
-
-    // Builds the table rows for a list of rentals
-    private static List<String[]> buildRentalRows(List<Rental> rentalList) {
-
-        List<String[]> rows = new ArrayList<>();
-
-        for (Rental rent : rentalList) {
-            rows.add(new String[]{
-                    rent.getRentalId(),
-                    rent.getCustomerId(),
-                    rent.getVehicleId(),
-                    rent.getRentalStartDate(),
-                    rent.getRentalEndDate(),
-                    String.valueOf(rent.getNumberOfRentalDays()),
-                    String.valueOf(rent.getRentalEstimatedCost()),
-                    String.valueOf(rent.getDiscount()),
-                    String.valueOf(rent.getRentalActualCost()),
-                    rent.getRentalStatus()
-            });
-        }
-
-        return rows;
 
     }
 
@@ -378,16 +173,18 @@ class Application {
         L1:
         while (true) {
 
+            Scanner scanner2 = new Scanner(System.in);
+
             System.out.print("Enter your choice: ");
 
             try {
 
-                int choice = scanner.nextInt();
+                int choice = scanner2.nextInt();
 
                 if (choice > 5 || choice < 1) {
 
                     System.out.println("Invalid choice!\n");
-                    scanner.nextLine();
+                    scanner2.nextLine();
 
                 } else {
 
@@ -429,7 +226,7 @@ class Application {
             } catch (InputMismatchException e) {
 
                 System.out.println("Invalid input!\n");
-                scanner.nextLine();
+                scanner2.nextLine();
 
             }
 
@@ -443,6 +240,8 @@ class Application {
         clearConsole();
         heading();
 
+        Scanner scanner1 = new Scanner(System.in);
+
         String vehicleId;
         String vehicleName;
         int dailyRentalRate;
@@ -452,11 +251,22 @@ class Application {
 
         while (true) {
             System.out.print("Enter Vehicle ID          : ");
-            vehicleId = scanner.nextLine().trim();
+            vehicleId = scanner1.nextLine().trim();
 
             if (vehicleId.matches("^V\\d{3}$")) {
 
-                if (findVehicleIndex(cars, vehicleId) != -1) {
+                boolean exists = false;
+
+                for (Car car : cars) {
+
+                    if (car.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        break;
+                    }
+
+                }
+
+                if (exists) {
 
                     System.out.println("Vehicle ID is already in use!\n");
 
@@ -475,21 +285,21 @@ class Application {
         }
 
         System.out.print("\nEnter Vehicle Name        : ");
-        vehicleName = ((scanner.nextLine()).trim());
+        vehicleName = ((scanner1.nextLine()).trim());
 
         while (true) {
 
             try {
 
                 System.out.print("\nEnter Daily Rental Rate   : Rs. ");
-                dailyRentalRate = scanner.nextInt();
+                dailyRentalRate = scanner1.nextInt();
 
                 if (dailyRentalRate < 0) {
                     System.out.println("Invalid Daily Rental Rate!");
 
                 } else {
 
-                    scanner.nextLine();
+                    scanner1.nextLine();
                     break;
 
                 }
@@ -497,7 +307,7 @@ class Application {
             } catch (InputMismatchException e) {
 
                 System.out.println("Invalid Daily Rental Rate!");
-                scanner.nextLine();
+                scanner1.nextLine();
 
             }
 
@@ -508,13 +318,13 @@ class Application {
             try {
 
                 System.out.print("\nEnter availability status : ");
-                availabilityStatus = scanner.nextBoolean();
+                availabilityStatus = scanner1.nextBoolean();
                 break;
 
             } catch (InputMismatchException e) {
 
-                System.out.println("Invalid availability status!\n");
-                scanner.nextLine();
+                System.out.println("Invalid availability status!");
+                scanner1.nextLine();
 
             }
 
@@ -525,14 +335,14 @@ class Application {
             try {
 
                 System.out.print("\nEnter Number of Seats     : ");
-                numberOfSeats = scanner.nextInt();
+                numberOfSeats = scanner1.nextInt();
 
                 if (numberOfSeats < 3 || numberOfSeats > 5) {
                     System.out.println("Invalid Number of Seats!");
 
                 } else {
 
-                    scanner.nextLine();
+                    scanner1.nextLine();
                     break;
 
                 }
@@ -540,7 +350,7 @@ class Application {
             } catch (InputMismatchException e) {
 
                 System.out.println("Invalid Input!");
-                scanner.nextLine();
+                scanner1.nextLine();
 
             }
 
@@ -551,7 +361,7 @@ class Application {
             try {
 
                 System.out.print("\nEnter Fuel Type           : ");
-                fuelType = scanner.nextLine().trim();
+                fuelType = scanner1.nextLine().trim();
 
                 if (fuelType.equalsIgnoreCase("Diesel") || fuelType.equalsIgnoreCase("Petrol") || fuelType.equalsIgnoreCase("Hybrid")) {
 
@@ -566,7 +376,7 @@ class Application {
             } catch (InputMismatchException e) {
 
                 System.out.println("Invalid Input!");
-                scanner.nextLine();
+                scanner1.nextLine();
 
             }
 
@@ -584,6 +394,8 @@ class Application {
         clearConsole();
         heading();
 
+        Scanner scanner1 = new Scanner(System.in);
+
         String vehicleId;
         String vehicleName;
         int dailyRentalRate;
@@ -593,11 +405,22 @@ class Application {
         while (true) {
 
             System.out.print("Enter Vehicle ID             : ");
-            vehicleId = scanner.nextLine().trim();
+            vehicleId = scanner1.nextLine().trim();
 
             if (vehicleId.matches("^V\\d{3}$")) {
 
-                if (findVehicleIndex(vans, vehicleId) != -1) {
+                boolean exists = false;
+
+                for (Van van : vans) {
+
+                    if (van.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        break;
+                    }
+
+                }
+
+                if (exists) {
 
                     System.out.println("Vehicle ID is already in use!\n");
 
@@ -616,14 +439,14 @@ class Application {
         }
 
         System.out.print("\nEnter Vehicle Name           : ");
-        vehicleName = ((scanner.nextLine()).trim());
+        vehicleName = ((scanner1.nextLine()).trim());
 
         while (true) {
 
             try {
 
                 System.out.print("\nEnter Daily Rental Rate      : Rs. ");
-                dailyRentalRate = scanner.nextInt();
+                dailyRentalRate = scanner1.nextInt();
 
                 if (dailyRentalRate < 0) {
 
@@ -631,7 +454,7 @@ class Application {
 
                 } else {
 
-                    scanner.nextLine();
+                    scanner1.nextLine();
                     break;
 
                 }
@@ -639,7 +462,7 @@ class Application {
             } catch (InputMismatchException e) {
 
                 System.out.println("Invalid Daily Rental Rate!");
-                scanner.nextLine();
+                scanner1.nextLine();
 
             }
 
@@ -650,13 +473,13 @@ class Application {
             try {
 
                 System.out.print("\nEnter availability status    : ");
-                availabilityStatus = scanner.nextBoolean();
+                availabilityStatus = scanner1.nextBoolean();
                 break;
 
             } catch (InputMismatchException e) {
 
-                System.out.println("Invalid availability status!\n");
-                scanner.nextLine();
+                System.out.println("Invalid availability status!");
+                scanner1.nextLine();
 
             }
 
@@ -667,7 +490,7 @@ class Application {
             try {
 
                 System.out.print("\nEnter Cargo Capacity (In Kg) : ");
-                cargoCapacity = scanner.nextInt();
+                cargoCapacity = scanner1.nextInt();
 
                 if (cargoCapacity < 0 || cargoCapacity > 1000) {
 
@@ -675,7 +498,7 @@ class Application {
 
                 } else {
 
-                    scanner.nextLine();
+                    scanner1.nextLine();
                     break;
 
                 }
@@ -683,7 +506,7 @@ class Application {
             } catch (InputMismatchException e) {
 
                 System.out.println("Invalid Input!");
-                scanner.nextLine();
+                scanner1.nextLine();
 
             }
 
@@ -701,6 +524,8 @@ class Application {
         clearConsole();
         heading();
 
+        Scanner scanner1 = new Scanner(System.in);
+
         String vehicleId;
         String vehicleName;
         int dailyRentalRate;
@@ -710,11 +535,22 @@ class Application {
         while (true) {
 
             System.out.print("Enter Vehicle ID              : ");
-            vehicleId = scanner.nextLine().trim();
+            vehicleId = scanner1.nextLine().trim();
 
             if (vehicleId.matches("^V\\d{3}$")) {
 
-                if (findVehicleIndex(motorcycles, vehicleId) != -1) {
+                boolean exists = false;
+
+                for (Motorcycle motorcycle : motorcycles) {
+
+                    if (motorcycle.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        break;
+                    }
+
+                }
+
+                if (exists) {
 
                     System.out.println("Vehicle ID is already in use!\n");
 
@@ -732,14 +568,14 @@ class Application {
         }
 
         System.out.print("\nEnter Vehicle Name           : ");
-        vehicleName = ((scanner.nextLine()).trim());
+        vehicleName = ((scanner1.nextLine()).trim());
 
         while (true) {
 
             try {
 
                 System.out.print("\nEnter Daily Rental Rate       : Rs. ");
-                dailyRentalRate = scanner.nextInt();
+                dailyRentalRate = scanner1.nextInt();
 
                 if (dailyRentalRate < 0) {
 
@@ -747,7 +583,7 @@ class Application {
 
                 } else {
 
-                    scanner.nextLine();
+                    scanner1.nextLine();
                     break;
 
                 }
@@ -755,7 +591,7 @@ class Application {
             } catch (InputMismatchException e) {
 
                 System.out.println("Invalid Daily Rental Rate!");
-                scanner.nextLine();
+                scanner1.nextLine();
 
             }
 
@@ -766,13 +602,13 @@ class Application {
             try {
 
                 System.out.print("\nEnter availability status     : ");
-                availabilityStatus = scanner.nextBoolean();
+                availabilityStatus = scanner1.nextBoolean();
                 break;
 
             } catch (InputMismatchException e) {
 
-                System.out.println("Invalid availability status!\n");
-                scanner.nextLine();
+                System.out.println("Invalid availability status!");
+                scanner1.nextLine();
 
             }
 
@@ -783,7 +619,7 @@ class Application {
             try {
 
                 System.out.print("\nEnter Engine Capacity (In CC) : ");
-                engineCapacity = scanner.nextInt();
+                engineCapacity = scanner1.nextInt();
 
                 if (engineCapacity < 100 || engineCapacity > 2000) {
 
@@ -791,7 +627,7 @@ class Application {
 
                 } else {
 
-                    scanner.nextLine();
+                    scanner1.nextLine();
                     break;
 
                 }
@@ -799,7 +635,7 @@ class Application {
             } catch (InputMismatchException e) {
 
                 System.out.println("Invalid Input!");
-                scanner.nextLine();
+                scanner1.nextLine();
 
             }
 
@@ -854,16 +690,18 @@ class Application {
         L1:
         while (true) {
 
+            Scanner scanner2 = new Scanner(System.in);
+
             System.out.print("Enter your choice: ");
 
             try {
 
-                int choice = scanner.nextInt();
+                int choice = scanner2.nextInt();
 
                 if (choice > 6 || choice < 1) {
 
                     System.out.println("Invalid choice!\n");
-                    scanner.nextLine();
+                    scanner2.nextLine();
 
                 } else {
 
@@ -912,7 +750,7 @@ class Application {
             } catch (InputMismatchException e) {
 
                 System.out.println("Invalid input!\n");
-                scanner.nextLine();
+                scanner2.nextLine();
 
             }
 
@@ -928,7 +766,154 @@ class Application {
 
         String[] columnNames = {"Vehicle ID", "Vehicle Name", "Daily Rental Rate (Rs.)", "Availability Status", "Number of Seats", "Fuel Type"};
 
-        printTable(columnNames, buildCarRows(cars));
+        int[] columnNamesLength = new int[6];
+
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNamesLength[i] = columnNames[i].length();
+        }
+
+        int maxVehicleId = Integer.MIN_VALUE;
+        int maxVehicleName = Integer.MIN_VALUE;
+        int maxDailyRentalRate = Integer.MIN_VALUE;
+        int maxAvailabilityStatus = Integer.MIN_VALUE;
+        int maxNumberOfSeats = Integer.MIN_VALUE;
+        int maxFuelType = Integer.MIN_VALUE;
+
+        for (Car car : cars) {
+
+            if (car.getVehicleId() != null) {
+                maxVehicleId = Math.max(maxVehicleId, car.getVehicleId().length());
+            }
+
+            if (car.getVehicleName() != null) {
+                maxVehicleName = Math.max(maxVehicleName, car.getVehicleName().length());
+            }
+
+            if (car.getDailyRentalRate() != 0) {
+                maxDailyRentalRate = Math.max(maxDailyRentalRate, String.valueOf(car.getDailyRentalRate()).length());
+            }
+
+            maxAvailabilityStatus = Math.max(maxAvailabilityStatus, String.valueOf(car.getAvailabilityStatus()).length());
+
+            if (car.getNumberOfSeats() != 0) {
+                maxNumberOfSeats = Math.max(maxNumberOfSeats, String.valueOf(car.getNumberOfSeats()).length());
+            }
+
+            if (!(car.getFuelType().equals("Unknown"))) {
+                maxFuelType = Math.max(maxFuelType, String.valueOf(car.getFuelType()).length());
+            }
+
+        }
+
+        int vehicleIdWidth = Math.max(columnNames[0].length(), maxVehicleId);
+
+        int vehicleNameWidth = Math.max(columnNames[1].length(), maxVehicleName);
+
+        int dailyRentalRateWidth = Math.max(columnNames[2].length(), maxDailyRentalRate);
+
+        int availabilityStatusWidth = Math.max(columnNames[3].length(), maxAvailabilityStatus);
+
+        int numberOfSeatsWidth = Math.max(columnNames[4].length(), maxNumberOfSeats);
+
+        int fuelTypeWidth = Math.max(columnNames[5].length(), maxFuelType);
+
+        int[] maxColumnWidth = {vehicleIdWidth, vehicleNameWidth, dailyRentalRateWidth, availabilityStatusWidth, numberOfSeatsWidth, fuelTypeWidth};
+
+        int totalColumnWidth = vehicleIdWidth + vehicleNameWidth + dailyRentalRateWidth + availabilityStatusWidth + numberOfSeatsWidth + fuelTypeWidth + (columnNames.length + 1);
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        System.out.print("\n|");
+
+        for (int i = 0; i < columnNames.length; i++) {
+
+            if (columnNamesLength[i] >= maxColumnWidth[i]) {
+                System.out.print(columnNames[i] + "|");
+            } else {
+                System.out.print(columnNames[i]);
+                for (int k = 0; k < (maxColumnWidth[i] - columnNamesLength[i]); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        for (Car car : cars) {
+
+            // Vehicle ID
+            if (car.getVehicleId().length() >= vehicleIdWidth) {
+                System.out.print("\n|" + car.getVehicleId() + "|");
+            } else {
+                System.out.print("\n|");
+                for (int k = 0; k < (vehicleIdWidth - car.getVehicleId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(car.getVehicleId() + "|");
+            }
+
+            // Vehicle Name
+            if (car.getVehicleName().length() >= vehicleNameWidth) {
+                System.out.print(car.getVehicleName() + "|");
+            } else {
+                for (int k = 0; k < (vehicleNameWidth - car.getVehicleName().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(car.getVehicleName() + "|");
+            }
+
+            // Daily Rental Rate
+            if ((String.valueOf(car.getDailyRentalRate())).length() >= dailyRentalRateWidth) {
+                System.out.print(car.getDailyRentalRate() + "|");
+            } else {
+                for (int k = 0; k < (dailyRentalRateWidth - (String.valueOf(car.getDailyRentalRate())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(car.getDailyRentalRate() + "|");
+            }
+
+            // Availability Status
+            if ((String.valueOf(car.getAvailabilityStatus())).length() >= availabilityStatusWidth) {
+                System.out.print(car.getAvailabilityStatus() + "|");
+            } else {
+                for (int k = 0; k < (availabilityStatusWidth - (String.valueOf(car.getAvailabilityStatus())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(car.getAvailabilityStatus() + "|");
+            }
+
+            // Number of Seats
+            if ((String.valueOf(car.getNumberOfSeats())).length() >= numberOfSeatsWidth) {
+                System.out.print(car.getNumberOfSeats() + "|");
+            } else {
+                for (int k = 0; k < (numberOfSeatsWidth - (String.valueOf(car.getNumberOfSeats())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(car.getNumberOfSeats() + "|");
+            }
+
+            // Fuel Type
+            if (car.getFuelType().length() >= fuelTypeWidth) {
+                System.out.print(car.getFuelType() + "|");
+            } else {
+                for (int k = 0; k < (fuelTypeWidth - car.getFuelType().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(car.getFuelType() + "|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n");
 
         askWantToExit();
 
@@ -942,7 +927,136 @@ class Application {
 
         String[] columnNames = {"Vehicle ID", "Vehicle Name", "Daily Rental Rate (Rs.)", "Availability Status", "Cargo Capacity (In Kg)"};
 
-        printTable(columnNames, buildVanRows(vans));
+        int[] columnNamesLength = new int[5];
+
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNamesLength[i] = columnNames[i].length();
+        }
+
+        int maxVehicleId = Integer.MIN_VALUE;
+        int maxVehicleName = Integer.MIN_VALUE;
+        int maxDailyRentalRate = Integer.MIN_VALUE;
+        int maxAvailabilityStatus = Integer.MIN_VALUE;
+        int maxCargoCapacity = Integer.MIN_VALUE;
+
+        for (Van van : vans) {
+
+            if (van.getVehicleId() != null) {
+                maxVehicleId = Math.max(maxVehicleId, van.getVehicleId().length());
+            }
+
+            if (van.getVehicleName() != null) {
+                maxVehicleName = Math.max(maxVehicleName, van.getVehicleName().length());
+            }
+
+            if (van.getDailyRentalRate() != 0) {
+                maxDailyRentalRate = Math.max(maxDailyRentalRate, String.valueOf(van.getDailyRentalRate()).length());
+            }
+
+            maxAvailabilityStatus = Math.max(maxAvailabilityStatus, String.valueOf(van.getAvailabilityStatus()).length());
+
+            if (van.getCargoCapacity() != 0) {
+                maxCargoCapacity = Math.max(maxCargoCapacity, String.valueOf(van.getCargoCapacity()).length());
+            }
+
+        }
+
+        int vehicleIdWidth = Math.max(columnNames[0].length(), maxVehicleId);
+
+        int vehicleNameWidth = Math.max(columnNames[1].length(), maxVehicleName);
+
+        int dailyRentalRateWidth = Math.max(columnNames[2].length(), maxDailyRentalRate);
+
+        int availabilityStatusWidth = Math.max(columnNames[3].length(), maxAvailabilityStatus);
+
+        int cargoCapacityWidth = Math.max(columnNames[4].length(), maxCargoCapacity);
+
+        int[] maxColumnWidth = {vehicleIdWidth, vehicleNameWidth, dailyRentalRateWidth, availabilityStatusWidth, cargoCapacityWidth};
+
+        int totalColumnWidth = vehicleIdWidth + vehicleNameWidth + dailyRentalRateWidth + availabilityStatusWidth + cargoCapacityWidth + (columnNames.length + 1);
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n|");
+
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNamesLength[i] >= maxColumnWidth[i]) {
+                System.out.print(columnNames[i] + "|");
+            } else {
+                System.out.print(columnNames[i]);
+                for (int k = 0; k < (maxColumnWidth[i] - columnNamesLength[i]); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        for (Van van : vans) {
+
+            // Vehicle ID
+            if (van.getVehicleId().length() >= vehicleIdWidth) {
+                System.out.print("\n|" + van.getVehicleId() + "|");
+            } else {
+                System.out.print("\n|");
+                for (int k = 0; k < (vehicleIdWidth - van.getVehicleId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(van.getVehicleId() + "|");
+            }
+
+            // Vehicle Name
+            if (van.getVehicleName().length() >= vehicleNameWidth) {
+                System.out.print(van.getVehicleName() + "|");
+            } else {
+                for (int k = 0; k < (vehicleNameWidth - van.getVehicleName().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(van.getVehicleName() + "|");
+            }
+
+            // Daily Rental Rate
+            if ((String.valueOf(van.getDailyRentalRate())).length() >= dailyRentalRateWidth) {
+                System.out.print(van.getDailyRentalRate() + "|");
+            } else {
+                for (int k = 0; k < (dailyRentalRateWidth - (String.valueOf(van.getDailyRentalRate())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(van.getDailyRentalRate() + "|");
+            }
+
+            // Availability Status
+            if ((String.valueOf(van.getAvailabilityStatus())).length() >= availabilityStatusWidth) {
+                System.out.print(van.getAvailabilityStatus() + "|");
+            } else {
+                for (int k = 0; k < (availabilityStatusWidth - (String.valueOf(van.getAvailabilityStatus())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(van.getAvailabilityStatus() + "|");
+            }
+
+            // Cargo Capacity
+            if ((String.valueOf(van.getCargoCapacity())).length() >= cargoCapacityWidth) {
+                System.out.print(van.getCargoCapacity() + "|");
+            } else {
+                for (int k = 0; k < (cargoCapacityWidth - (String.valueOf(van.getCargoCapacity())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(van.getCargoCapacity() + "|");
+            }
+
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n");
 
         askWantToExit();
 
@@ -956,7 +1070,136 @@ class Application {
 
         String[] columnNames = {"Vehicle ID", "Vehicle Name", "Daily Rental Rate (Rs.)", "Availability Status", "Engine Capacity (In CC)"};
 
-        printTable(columnNames, buildMotorcycleRows(motorcycles));
+        int[] columnNamesLength = new int[5];
+
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNamesLength[i] = columnNames[i].length();
+        }
+
+        int maxVehicleId = Integer.MIN_VALUE;
+        int maxVehicleName = Integer.MIN_VALUE;
+        int maxDailyRentalRate = Integer.MIN_VALUE;
+        int maxAvailabilityStatus = Integer.MIN_VALUE;
+        int maxEngineCapacity = Integer.MIN_VALUE;
+
+        for (Motorcycle motorcycle : motorcycles) {
+
+            if (motorcycle.getVehicleId() != null) {
+                maxVehicleId = Math.max(maxVehicleId, motorcycle.getVehicleId().length());
+            }
+
+            if (motorcycle.getVehicleName() != null) {
+                maxVehicleName = Math.max(maxVehicleName, motorcycle.getVehicleName().length());
+            }
+
+            if (motorcycle.getDailyRentalRate() != 0) {
+                maxDailyRentalRate = Math.max(maxDailyRentalRate, String.valueOf(motorcycle.getDailyRentalRate()).length());
+            }
+
+            maxAvailabilityStatus = Math.max(maxAvailabilityStatus, String.valueOf(motorcycle.getAvailabilityStatus()).length());
+
+            if (motorcycle.getEngineCapacity() != 0) {
+                maxEngineCapacity = Math.max(maxEngineCapacity, String.valueOf(motorcycle.getEngineCapacity()).length());
+            }
+
+        }
+
+        int vehicleIdWidth = Math.max(columnNames[0].length(), maxVehicleId);
+
+        int vehicleNameWidth = Math.max(columnNames[1].length(), maxVehicleName);
+
+        int dailyRentalRateWidth = Math.max(columnNames[2].length(), maxDailyRentalRate);
+
+        int availabilityStatusWidth = Math.max(columnNames[3].length(), maxAvailabilityStatus);
+
+        int engineCapacityWidth = Math.max(columnNames[4].length(), maxEngineCapacity);
+
+        int[] maxColumnWidth = {vehicleIdWidth, vehicleNameWidth, dailyRentalRateWidth, availabilityStatusWidth, engineCapacityWidth};
+
+        int totalColumnWidth = vehicleIdWidth + vehicleNameWidth + dailyRentalRateWidth + availabilityStatusWidth + engineCapacityWidth + (columnNames.length + 1);
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n|");
+
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNamesLength[i] >= maxColumnWidth[i]) {
+                System.out.print(columnNames[i] + "|");
+            } else {
+                System.out.print(columnNames[i]);
+                for (int k = 0; k < (maxColumnWidth[i] - columnNamesLength[i]); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        for (Motorcycle motorcycle : motorcycles) {
+
+            // Vehicle ID
+            if (motorcycle.getVehicleId().length() >= vehicleIdWidth) {
+                System.out.print("\n|" + motorcycle.getVehicleId() + "|");
+            } else {
+                System.out.print("\n|");
+                for (int k = 0; k < (vehicleIdWidth - motorcycle.getVehicleId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(motorcycle.getVehicleId() + "|");
+            }
+
+            // Vehicle Name
+            if (motorcycle.getVehicleName().length() >= vehicleNameWidth) {
+                System.out.print(motorcycle.getVehicleName() + "|");
+            } else {
+                for (int k = 0; k < (vehicleNameWidth - motorcycle.getVehicleName().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(motorcycle.getVehicleName() + "|");
+            }
+
+            // Daily Rental Rate
+            if ((String.valueOf(motorcycle.getDailyRentalRate())).length() >= dailyRentalRateWidth) {
+                System.out.print(motorcycle.getDailyRentalRate() + "|");
+            } else {
+                for (int k = 0; k < (dailyRentalRateWidth - (String.valueOf(motorcycle.getDailyRentalRate())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(motorcycle.getDailyRentalRate() + "|");
+            }
+
+            // Availability Status
+            if ((String.valueOf(motorcycle.getAvailabilityStatus())).length() >= availabilityStatusWidth) {
+                System.out.print(motorcycle.getAvailabilityStatus() + "|");
+            } else {
+                for (int k = 0; k < (availabilityStatusWidth - (String.valueOf(motorcycle.getAvailabilityStatus())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(motorcycle.getAvailabilityStatus() + "|");
+            }
+
+            // Engine Capacity
+            if ((String.valueOf(motorcycle.getEngineCapacity())).length() >= engineCapacityWidth) {
+                System.out.print(motorcycle.getEngineCapacity() + "|");
+            } else {
+                for (int k = 0; k < (engineCapacityWidth - (String.valueOf(motorcycle.getEngineCapacity())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(motorcycle.getEngineCapacity() + "|");
+            }
+
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n");
 
         askWantToExit();
 
@@ -965,8 +1208,10 @@ class Application {
     // Method to ask whether you want to exit or not
     public static void askWantToExit() {
 
+        Scanner scanner2 = new Scanner(System.in);
+
         System.out.print("\nDo you want to exit (Y/N): ");
-        String input = scanner.nextLine();
+        String input = scanner2.nextLine();
 
         if ((input.equalsIgnoreCase("Y")) || (input.equalsIgnoreCase("N"))) {
             if (input.equalsIgnoreCase("N")) {
@@ -988,6 +1233,8 @@ class Application {
     // Method to View All Vehicles
     public static void viewAllVehicles() {
 
+        // 01. View All Cars
+
         clearConsole();
         heading();
 
@@ -995,19 +1242,431 @@ class Application {
         System.out.println("All Cars");
         System.out.println("========\n");
 
-        printTable(new String[]{"Vehicle ID", "Vehicle Name", "Daily Rental Rate (Rs.)", "Availability Status", "Number of Seats", "Fuel Type"}, buildCarRows(cars));
+        String[] columnNames = {"Vehicle ID", "Vehicle Name", "Daily Rental Rate (Rs.)", "Availability Status", "Number of Seats", "Fuel Type"};
+
+        int[] columnNamesLength = new int[6];
+
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNamesLength[i] = columnNames[i].length();
+        }
+
+        int maxVehicleId = Integer.MIN_VALUE;
+        int maxVehicleName = Integer.MIN_VALUE;
+        int maxDailyRentalRate = Integer.MIN_VALUE;
+        int maxAvailabilityStatus = Integer.MIN_VALUE;
+        int maxNumberOfSeats = Integer.MIN_VALUE;
+        int maxFuelType = Integer.MIN_VALUE;
+
+        for (Car car : cars) {
+
+            if (car.getVehicleId() != null) {
+                maxVehicleId = Math.max(maxVehicleId, car.getVehicleId().length());
+            }
+
+            if (car.getVehicleName() != null) {
+                maxVehicleName = Math.max(maxVehicleName, car.getVehicleName().length());
+            }
+
+            if (car.getDailyRentalRate() != 0) {
+                maxDailyRentalRate = Math.max(maxDailyRentalRate, String.valueOf(car.getDailyRentalRate()).length());
+            }
+
+            maxAvailabilityStatus = Math.max(maxAvailabilityStatus, String.valueOf(car.getAvailabilityStatus()).length());
+
+            if (car.getNumberOfSeats() != 0) {
+                maxNumberOfSeats = Math.max(maxNumberOfSeats, String.valueOf(car.getNumberOfSeats()).length());
+            }
+
+            if (!(car.getFuelType().equals("Unknown"))) {
+                maxFuelType = Math.max(maxFuelType, String.valueOf(car.getFuelType()).length());
+            }
+        }
+
+        int vehicleIdWidth = Math.max(columnNames[0].length(), maxVehicleId);
+
+        int vehicleNameWidth = Math.max(columnNames[1].length(), maxVehicleName);
+
+        int dailyRentalRateWidth = Math.max(columnNames[2].length(), maxDailyRentalRate);
+
+        int availabilityStatusWidth = Math.max(columnNames[3].length(), maxAvailabilityStatus);
+
+        int numberOfSeatsWidth = Math.max(columnNames[4].length(), maxNumberOfSeats);
+
+        int fuelTypeWidth = Math.max(columnNames[5].length(), maxFuelType);
+
+        int[] maxColumnWidth = {vehicleIdWidth, vehicleNameWidth, dailyRentalRateWidth, availabilityStatusWidth, numberOfSeatsWidth, fuelTypeWidth};
+
+        int totalColumnWidth = vehicleIdWidth + vehicleNameWidth + dailyRentalRateWidth + availabilityStatusWidth + numberOfSeatsWidth + fuelTypeWidth + (columnNames.length + 1);
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n|");
+
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNamesLength[i] >= maxColumnWidth[i]) {
+                System.out.print(columnNames[i] + "|");
+            } else {
+                System.out.print(columnNames[i]);
+                for (int k = 0; k < (maxColumnWidth[i] - columnNamesLength[i]); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        for (Car car : cars) {
+
+            // Vehicle ID
+            if (car.getVehicleId().length() >= vehicleIdWidth) {
+                System.out.print("\n|" + car.getVehicleId() + "|");
+            } else {
+                System.out.print("\n|");
+                for (int k = 0; k < (vehicleIdWidth - car.getVehicleId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(car.getVehicleId() + "|");
+            }
+
+            // Vehicle Name
+            if (car.getVehicleName().length() >= vehicleNameWidth) {
+                System.out.print(car.getVehicleName() + "|");
+            } else {
+                for (int k = 0; k < (vehicleNameWidth - car.getVehicleName().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(car.getVehicleName() + "|");
+            }
+
+            // Daily Rental Rate
+            if ((String.valueOf(car.getDailyRentalRate())).length() >= dailyRentalRateWidth) {
+                System.out.print(car.getDailyRentalRate() + "|");
+            } else {
+                for (int k = 0; k < (dailyRentalRateWidth - (String.valueOf(car.getDailyRentalRate())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(car.getDailyRentalRate() + "|");
+            }
+
+            // Availability Status
+            if ((String.valueOf(car.getAvailabilityStatus())).length() >= availabilityStatusWidth) {
+                System.out.print(car.getAvailabilityStatus() + "|");
+            } else {
+                for (int k = 0; k < (availabilityStatusWidth - (String.valueOf(car.getAvailabilityStatus())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(car.getAvailabilityStatus() + "|");
+            }
+
+            // Number of Seats
+            if ((String.valueOf(car.getNumberOfSeats())).length() >= numberOfSeatsWidth) {
+                System.out.print(car.getNumberOfSeats() + "|");
+            } else {
+                for (int k = 0; k < (numberOfSeatsWidth - (String.valueOf(car.getNumberOfSeats())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(car.getNumberOfSeats() + "|");
+            }
+
+            // Fuel Type
+            if (car.getFuelType().length() >= fuelTypeWidth) {
+                System.out.print(car.getFuelType() + "|");
+            } else {
+                for (int k = 0; k < (fuelTypeWidth - car.getFuelType().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(car.getFuelType() + "|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n");
+
+        // 02. View All Vans
 
         System.out.println("\n========");
         System.out.println("All Vans");
         System.out.println("========\n");
 
-        printTable(new String[]{"Vehicle ID", "Vehicle Name", "Daily Rental Rate (Rs.)", "Availability Status", "Cargo Capacity (In Kg)"}, buildVanRows(vans));
+        columnNames = new String[]{"Vehicle ID", "Vehicle Name", "Daily Rental Rate (Rs.)", "Availability Status", "Cargo Capacity (In Kg)"};
+
+        columnNamesLength = new int[5];
+
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNamesLength[i] = columnNames[i].length();
+        }
+
+        maxVehicleId = Integer.MIN_VALUE;
+        maxVehicleName = Integer.MIN_VALUE;
+        maxDailyRentalRate = Integer.MIN_VALUE;
+        maxAvailabilityStatus = Integer.MIN_VALUE;
+        int maxCargoCapacity = Integer.MIN_VALUE;
+
+        for (Van van : vans) {
+
+            if (van.getVehicleId() != null) {
+                maxVehicleId = Math.max(maxVehicleId, van.getVehicleId().length());
+            }
+
+            if (van.getVehicleName() != null) {
+                maxVehicleName = Math.max(maxVehicleName, van.getVehicleName().length());
+            }
+
+            if (van.getDailyRentalRate() != 0) {
+                maxDailyRentalRate = Math.max(maxDailyRentalRate, String.valueOf(van.getDailyRentalRate()).length());
+            }
+
+            maxAvailabilityStatus = Math.max(maxAvailabilityStatus, String.valueOf(van.getAvailabilityStatus()).length());
+
+            if (van.getCargoCapacity() != 0) {
+                maxCargoCapacity = Math.max(maxCargoCapacity, String.valueOf(van.getCargoCapacity()).length());
+            }
+
+        }
+
+        vehicleIdWidth = Math.max(columnNames[0].length(), maxVehicleId);
+
+        vehicleNameWidth = Math.max(columnNames[1].length(), maxVehicleName);
+
+        dailyRentalRateWidth = Math.max(columnNames[2].length(), maxDailyRentalRate);
+
+        availabilityStatusWidth = Math.max(columnNames[3].length(), maxAvailabilityStatus);
+
+        int cargoCapacityWidth = Math.max(columnNames[4].length(), maxCargoCapacity);
+
+        maxColumnWidth = new int[]{vehicleIdWidth, vehicleNameWidth, dailyRentalRateWidth, availabilityStatusWidth, cargoCapacityWidth};
+
+        totalColumnWidth = vehicleIdWidth + vehicleNameWidth + dailyRentalRateWidth + availabilityStatusWidth + cargoCapacityWidth + (columnNames.length + 1);
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n|");
+
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNamesLength[i] >= maxColumnWidth[i]) {
+                System.out.print(columnNames[i] + "|");
+            } else {
+                System.out.print(columnNames[i]);
+                for (int k = 0; k < (maxColumnWidth[i] - columnNamesLength[i]); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        for (Van van : vans) {
+
+            // Vehicle ID
+            if (van.getVehicleId().length() >= vehicleIdWidth) {
+                System.out.print("\n|" + van.getVehicleId() + "|");
+            } else {
+                System.out.print("\n|");
+                for (int k = 0; k < (vehicleIdWidth - van.getVehicleId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(van.getVehicleId() + "|");
+            }
+
+            // Vehicle Name
+            if (van.getVehicleName().length() >= vehicleNameWidth) {
+                System.out.print(van.getVehicleName() + "|");
+            } else {
+                for (int k = 0; k < (vehicleNameWidth - van.getVehicleName().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(van.getVehicleName() + "|");
+            }
+
+            // Daily Rental Rate
+            if ((String.valueOf(van.getDailyRentalRate())).length() >= dailyRentalRateWidth) {
+                System.out.print(van.getDailyRentalRate() + "|");
+            } else {
+                for (int k = 0; k < (dailyRentalRateWidth - (String.valueOf(van.getDailyRentalRate())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(van.getDailyRentalRate() + "|");
+            }
+
+            // Availability Status
+            if ((String.valueOf(van.getAvailabilityStatus())).length() >= availabilityStatusWidth) {
+                System.out.print(van.getAvailabilityStatus() + "|");
+            } else {
+                for (int k = 0; k < (availabilityStatusWidth - (String.valueOf(van.getAvailabilityStatus())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(van.getAvailabilityStatus() + "|");
+            }
+
+            // Cargo Capacity
+            if ((String.valueOf(van.getCargoCapacity())).length() >= cargoCapacityWidth) {
+                System.out.print(van.getCargoCapacity() + "|");
+            } else {
+                for (int k = 0; k < (cargoCapacityWidth - (String.valueOf(van.getCargoCapacity())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(van.getCargoCapacity() + "|");
+            }
+
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n");
+
+        // 03. View All Motorcycles
 
         System.out.println("\n===============");
         System.out.println("All Motorcycles");
         System.out.println("===============\n");
 
-        printTable(new String[]{"Vehicle ID", "Vehicle Name", "Daily Rental Rate (Rs.)", "Availability Status", "Engine Capacity (In CC)"}, buildMotorcycleRows(motorcycles));
+        columnNames = new String[]{"Vehicle ID", "Vehicle Name", "Daily Rental Rate (Rs.)", "Availability Status", "Engine Capacity (In CC)"};
+
+        columnNamesLength = new int[5];
+
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNamesLength[i] = columnNames[i].length();
+        }
+
+        maxVehicleId = Integer.MIN_VALUE;
+        maxVehicleName = Integer.MIN_VALUE;
+        maxDailyRentalRate = Integer.MIN_VALUE;
+        maxAvailabilityStatus = Integer.MIN_VALUE;
+        int maxEngineCapacity = Integer.MIN_VALUE;
+
+        for (Motorcycle motorcycle : motorcycles) {
+
+            if (motorcycle.getVehicleId() != null) {
+                maxVehicleId = Math.max(maxVehicleId, motorcycle.getVehicleId().length());
+            }
+
+            if (motorcycle.getVehicleName() != null) {
+                maxVehicleName = Math.max(maxVehicleName, motorcycle.getVehicleName().length());
+            }
+
+            if (motorcycle.getDailyRentalRate() != 0) {
+                maxDailyRentalRate = Math.max(maxDailyRentalRate, String.valueOf(motorcycle.getDailyRentalRate()).length());
+            }
+
+            maxAvailabilityStatus = Math.max(maxAvailabilityStatus, String.valueOf(motorcycle.getAvailabilityStatus()).length());
+
+            if (motorcycle.getEngineCapacity() != 0) {
+                maxEngineCapacity = Math.max(maxEngineCapacity, String.valueOf(motorcycle.getEngineCapacity()).length());
+            }
+
+        }
+
+        vehicleIdWidth = Math.max(columnNames[0].length(), maxVehicleId);
+
+        vehicleNameWidth = Math.max(columnNames[1].length(), maxVehicleName);
+
+        dailyRentalRateWidth = Math.max(columnNames[2].length(), maxDailyRentalRate);
+
+        availabilityStatusWidth = Math.max(columnNames[3].length(), maxAvailabilityStatus);
+
+        int engineCapacityWidth = Math.max(columnNames[4].length(), maxEngineCapacity);
+
+        maxColumnWidth = new int[]{vehicleIdWidth, vehicleNameWidth, dailyRentalRateWidth, availabilityStatusWidth, engineCapacityWidth};
+
+        totalColumnWidth = vehicleIdWidth + vehicleNameWidth + dailyRentalRateWidth + availabilityStatusWidth + engineCapacityWidth + (columnNames.length + 1);
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n|");
+
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNamesLength[i] >= maxColumnWidth[i]) {
+                System.out.print(columnNames[i] + "|");
+            } else {
+                System.out.print(columnNames[i]);
+                for (int k = 0; k < (maxColumnWidth[i] - columnNamesLength[i]); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        for (Motorcycle motorcycle : motorcycles) {
+
+            // Vehicle ID
+            if (motorcycle.getVehicleId().length() >= vehicleIdWidth) {
+                System.out.print("\n|" + motorcycle.getVehicleId() + "|");
+            } else {
+                System.out.print("\n|");
+                for (int k = 0; k < (vehicleIdWidth - motorcycle.getVehicleId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(motorcycle.getVehicleId() + "|");
+            }
+
+            // Vehicle Name
+            if (motorcycle.getVehicleName().length() >= vehicleNameWidth) {
+                System.out.print(motorcycle.getVehicleName() + "|");
+            } else {
+                for (int k = 0; k < (vehicleNameWidth - motorcycle.getVehicleName().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(motorcycle.getVehicleName() + "|");
+            }
+
+            // Daily Rental Rate
+            if ((String.valueOf(motorcycle.getDailyRentalRate())).length() >= dailyRentalRateWidth) {
+                System.out.print(motorcycle.getDailyRentalRate() + "|");
+            } else {
+                for (int k = 0; k < (dailyRentalRateWidth - (String.valueOf(motorcycle.getDailyRentalRate())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(motorcycle.getDailyRentalRate() + "|");
+            }
+
+            // Availability Status
+            if ((String.valueOf(motorcycle.getAvailabilityStatus())).length() >= availabilityStatusWidth) {
+                System.out.print(motorcycle.getAvailabilityStatus() + "|");
+            } else {
+                for (int k = 0; k < (availabilityStatusWidth - (String.valueOf(motorcycle.getAvailabilityStatus())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(motorcycle.getAvailabilityStatus() + "|");
+            }
+
+            // Engine Capacity
+            if ((String.valueOf(motorcycle.getEngineCapacity())).length() >= engineCapacityWidth) {
+                System.out.print(motorcycle.getEngineCapacity() + "|");
+            } else {
+                for (int k = 0; k < (engineCapacityWidth - (String.valueOf(motorcycle.getEngineCapacity())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(motorcycle.getEngineCapacity() + "|");
+            }
+
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n");
 
         askWantToExit();
 
@@ -1028,13 +1687,15 @@ class Application {
         L1:
         while (true) {
 
+            Scanner scanner2 = new Scanner(System.in);
+
             System.out.print("Enter your choice: ");
 
             try {
-                int choice = scanner.nextInt();
+                int choice = scanner2.nextInt();
                 if (choice > 5 || choice < 1) {
                     System.out.println("Invalid choice!\n");
-                    scanner.nextLine();
+                    scanner2.nextLine();
                 } else {
                     switch (choice) {
                         case 1:
@@ -1066,7 +1727,7 @@ class Application {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input!\n");
-                scanner.nextLine();
+                scanner2.nextLine();
             }
         }
     }
@@ -1076,16 +1737,25 @@ class Application {
         clearConsole();
         heading();
 
+        Scanner scanner1 = new Scanner(System.in);
+
         String vehicleId;
 
         while (true) {
             System.out.print("Enter Vehicle ID             : ");
-            vehicleId = scanner.nextLine().trim();
+            vehicleId = scanner1.nextLine().trim();
             if (vehicleId.matches("^V\\d{3}$")) {
 
-                int index = findVehicleIndex(cars, vehicleId);
+                boolean exists = false;
+                int index = -1;
 
-                if (index != -1) {
+                for (Car car : cars) {
+                    if (car.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = cars.indexOf(car);
+                    }
+                }
+                if (exists) {
                     clearConsole();
                     heading();
                     System.out.println("Vehicle found!\n");
@@ -1115,16 +1785,25 @@ class Application {
         clearConsole();
         heading();
 
+        Scanner scanner1 = new Scanner(System.in);
+
         String vehicleId;
 
         while (true) {
             System.out.print("Enter Vehicle ID             : ");
-            vehicleId = scanner.nextLine().trim();
+            vehicleId = scanner1.nextLine().trim();
             if (vehicleId.matches("^V\\d{3}$")) {
 
-                int index = findVehicleIndex(vans, vehicleId);
+                boolean exists = false;
+                int index = -1;
 
-                if (index != -1) {
+                for (Van van : vans) {
+                    if (van.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = vans.indexOf(van);
+                    }
+                }
+                if (exists) {
                     clearConsole();
                     heading();
                     System.out.println("Vehicle found!\n");
@@ -1153,16 +1832,25 @@ class Application {
         clearConsole();
         heading();
 
+        Scanner scanner1 = new Scanner(System.in);
+
         String vehicleId;
 
         while (true) {
             System.out.print("Enter Vehicle ID             : ");
-            vehicleId = scanner.nextLine().trim();
+            vehicleId = scanner1.nextLine().trim();
             if (vehicleId.matches("^V\\d{3}$")) {
 
-                int index = findVehicleIndex(motorcycles, vehicleId);
+                boolean exists = false;
+                int index = -1;
 
-                if (index != -1) {
+                for (Motorcycle motorcycle : motorcycles) {
+                    if (motorcycle.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = motorcycles.indexOf(motorcycle);
+                    }
+                }
+                if (exists) {
                     clearConsole();
                     heading();
                     System.out.println("Vehicle found!\n");
@@ -1202,16 +1890,18 @@ class Application {
         L1:
         while (true) {
 
+            Scanner scanner2 = new Scanner(System.in);
+
             System.out.print("Enter your choice: ");
 
             try {
 
-                int choice = scanner.nextInt();
+                int choice = scanner2.nextInt();
 
                 if (choice > 5 || choice < 1) {
 
                     System.out.println("Invalid choice!\n");
-                    scanner.nextLine();
+                    scanner2.nextLine();
 
                 } else {
 
@@ -1254,7 +1944,7 @@ class Application {
             } catch (InputMismatchException e) {
 
                 System.out.println("Invalid input!\n");
-                scanner.nextLine();
+                scanner2.nextLine();
 
             }
 
@@ -1268,16 +1958,25 @@ class Application {
         clearConsole();
         heading();
 
+        Scanner scanner1 = new Scanner(System.in);
+
         String vehicleId;
 
         while (true) {
             System.out.print("Enter Vehicle ID             : ");
-            vehicleId = scanner.nextLine().trim();
+            vehicleId = scanner1.nextLine().trim();
             if (vehicleId.matches("^V\\d{3}$")) {
 
-                int index = findVehicleIndex(cars, vehicleId);
+                boolean exists = false;
+                int index = -1;
 
-                if (index != -1) {
+                for (Car car : cars) {
+                    if (car.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = cars.indexOf(car);
+                    }
+                }
+                if (exists) {
                     clearConsole();
                     heading();
                     cars.remove(index);
@@ -1303,16 +2002,25 @@ class Application {
         clearConsole();
         heading();
 
+        Scanner scanner1 = new Scanner(System.in);
+
         String vehicleId;
 
         while (true) {
             System.out.print("Enter Vehicle ID             : ");
-            vehicleId = scanner.nextLine().trim();
+            vehicleId = scanner1.nextLine().trim();
             if (vehicleId.matches("^V\\d{3}$")) {
 
-                int index = findVehicleIndex(motorcycles, vehicleId);
+                boolean exists = false;
+                int index = -1;
 
-                if (index != -1) {
+                for (Motorcycle motorcycle : motorcycles) {
+                    if (motorcycle.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = motorcycles.indexOf(motorcycle);
+                    }
+                }
+                if (exists) {
                     clearConsole();
                     heading();
                     motorcycles.remove(index);
@@ -1338,16 +2046,25 @@ class Application {
         clearConsole();
         heading();
 
+        Scanner scanner1 = new Scanner(System.in);
+
         String vehicleId;
 
         while (true) {
             System.out.print("Enter Vehicle ID             : ");
-            vehicleId = scanner.nextLine().trim();
+            vehicleId = scanner1.nextLine().trim();
             if (vehicleId.matches("^V\\d{3}$")) {
 
-                int index = findVehicleIndex(vans, vehicleId);
+                boolean exists = false;
+                int index = -1;
 
-                if (index != -1) {
+                for (Van van : vans) {
+                    if (van.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = vans.indexOf(van);
+                    }
+                }
+                if (exists) {
                     clearConsole();
                     heading();
                     vans.remove(index);
@@ -1373,6 +2090,8 @@ class Application {
         clearConsole();
         heading();
 
+        Scanner scanner1 = new Scanner(System.in);
+
         String customerId;
         String customerName;
         String contactNo;
@@ -1380,11 +2099,22 @@ class Application {
 
         while (true) {
             System.out.print("Enter Customer ID               : ");
-            customerId = scanner.nextLine().trim();
+            customerId = scanner1.nextLine().trim();
 
             if (customerId.matches("^C\\d{3}$")) {
 
-                if (findCustomerIndex(customerId) != -1) {
+                boolean exists = false;
+
+                for (Customer customer : customers) {
+
+                    if (customer.getCustomerId().equalsIgnoreCase(customerId)) {
+                        exists = true;
+                        break;
+                    }
+
+                }
+
+                if (exists) {
 
                     System.out.println("Customer ID is already in use!\n");
 
@@ -1403,11 +2133,11 @@ class Application {
         }
 
         System.out.print("\nEnter Customer Name             : ");
-        customerName = ((scanner.nextLine()).trim());
+        customerName = ((scanner1.nextLine()).trim());
 
         while (true) {
             System.out.print("\nEnter Customer Contact Number   : ");
-            contactNo = scanner.nextLine().trim();
+            contactNo = scanner1.nextLine().trim();
 
             if (contactNo.matches("^07\\d{8}$")) {
                 break;
@@ -1421,7 +2151,7 @@ class Application {
 
         while (true) {
             System.out.print("\nEnter Customer License's Number : ");
-            licenseNumber = scanner.nextLine().trim();
+            licenseNumber = scanner1.nextLine().trim();
 
             if (licenseNumber.matches("^[A-Z]{2}\\d{6}$")) {
                 break;
@@ -1447,7 +2177,121 @@ class Application {
 
         String[] columnNames = {"Customer ID", "Customer Name", "Contact No", "License Number"};
 
-        printTable(columnNames, buildCustomerRows(customers));
+        int[] columnNamesLength = new int[4];
+
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNamesLength[i] = columnNames[i].length();
+        }
+
+        int maxCustomerId = Integer.MIN_VALUE;
+        int maxCustomerName = Integer.MIN_VALUE;
+        int maxContactNo = Integer.MIN_VALUE;
+        int maxLicenseNumber = Integer.MIN_VALUE;
+
+        for (Customer customer : customers) {
+
+            if (customer.getCustomerId() != null) {
+                maxCustomerId = Math.max(maxCustomerId, customer.getCustomerId().length());
+            }
+
+            if (customer.getCustomerName() != null) {
+                maxCustomerName = Math.max(maxCustomerName, customer.getCustomerName().length());
+            }
+
+            if (customer.getContactNo() != null) {
+                maxContactNo = Math.max(maxContactNo, customer.getContactNo().length());
+            }
+
+            if (customer.getLicenseNumber() != null) {
+                maxLicenseNumber = Math.max(maxLicenseNumber, customer.getLicenseNumber().length());
+            }
+
+        }
+
+        int customerIdWidth = Math.max(columnNames[0].length(), maxCustomerId);
+
+        int customerNameWidth = Math.max(columnNames[1].length(), maxCustomerName);
+
+        int contactNoWidth = Math.max(columnNames[2].length(), maxContactNo);
+
+        int licenseNumberWidth = Math.max(columnNames[3].length(), maxLicenseNumber);
+
+        int[] maxColumnWidth = {customerIdWidth, customerNameWidth, contactNoWidth, licenseNumberWidth};
+
+        int totalColumnWidth = customerIdWidth + customerNameWidth + contactNoWidth + licenseNumberWidth + (columnNames.length + 1);
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n|");
+
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNamesLength[i] >= maxColumnWidth[i]) {
+                System.out.print(columnNames[i] + "|");
+            } else {
+                System.out.print(columnNames[i]);
+                for (int k = 0; k < (maxColumnWidth[i] - columnNamesLength[i]); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        for (Customer customer : customers) {
+
+            // Customer ID
+            if (customer.getCustomerId().length() >= customerIdWidth) {
+                System.out.print("\n|" + customer.getCustomerId() + "|");
+            } else {
+                System.out.print("\n|");
+                for (int k = 0; k < (customerIdWidth - customer.getCustomerId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(customer.getCustomerId() + "|");
+            }
+
+            // Customer Name
+            if (customer.getCustomerName().length() >= customerNameWidth) {
+                System.out.print(customer.getCustomerName() + "|");
+            } else {
+                for (int k = 0; k < (customerNameWidth - customer.getCustomerName().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(customer.getCustomerName() + "|");
+            }
+
+            // Contact No
+            if (customer.getContactNo().length() >= contactNoWidth) {
+                System.out.print(customer.getContactNo() + "|");
+            } else {
+                for (int k = 0; k < (contactNoWidth - customer.getContactNo().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(customer.getContactNo() + "|");
+            }
+
+            // License Number
+            if (customer.getLicenseNumber().length() >= licenseNumberWidth) {
+                System.out.print(customer.getLicenseNumber() + "|");
+            } else {
+                for (int k = 0; k < (licenseNumberWidth - customer.getLicenseNumber().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(customer.getLicenseNumber() + "|");
+            }
+
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n");
 
         askWantToExit();
     }
@@ -1457,16 +2301,25 @@ class Application {
         clearConsole();
         heading();
 
+        Scanner scanner1 = new Scanner(System.in);
+
         String customerId;
 
         while (true) {
             System.out.print("Enter Customer ID             : ");
-            customerId = scanner.nextLine().trim();
+            customerId = scanner1.nextLine().trim();
             if (customerId.matches("^C\\d{3}$")) {
 
-                int index = findCustomerIndex(customerId);
+                boolean exists = false;
+                int index = -1;
 
-                if (index != -1) {
+                for (Customer customer : customers) {
+                    if (customer.getCustomerId().equalsIgnoreCase(customerId)) {
+                        exists = true;
+                        index = customers.indexOf(customer);
+                    }
+                }
+                if (exists) {
                     clearConsole();
                     heading();
                     System.out.println("Customer found!\n");
@@ -1493,16 +2346,25 @@ class Application {
         clearConsole();
         heading();
 
+        Scanner scanner1 = new Scanner(System.in);
+
         String customerId;
 
         while (true) {
             System.out.print("Enter Customer ID             : ");
-            customerId = scanner.nextLine().trim();
+            customerId = scanner1.nextLine().trim();
             if (customerId.matches("^C\\d{3}$")) {
 
-                int index = findCustomerIndex(customerId);
+                boolean exists = false;
+                int index = -1;
 
-                if (index != -1) {
+                for (Customer customer : customers) {
+                    if (customer.getCustomerId().equalsIgnoreCase(customerId)) {
+                        exists = true;
+                        index = customers.indexOf(customer);
+                    }
+                }
+                if (exists) {
                     clearConsole();
                     heading();
                     customers.remove(index);
@@ -1535,16 +2397,18 @@ class Application {
         L1:
         while (true) {
 
+            Scanner scanner2 = new Scanner(System.in);
+
             System.out.print("Enter your choice: ");
 
             try {
 
-                int choice = scanner.nextInt();
+                int choice = scanner2.nextInt();
 
                 if (choice > 5 || choice < 1) {
 
                     System.out.println("Invalid choice!\n");
-                    scanner.nextLine();
+                    scanner2.nextLine();
 
                 } else {
 
@@ -1586,7 +2450,7 @@ class Application {
             } catch (InputMismatchException e) {
 
                 System.out.println("Invalid input!\n");
-                scanner.nextLine();
+                scanner2.nextLine();
 
             }
 
@@ -1597,6 +2461,8 @@ class Application {
     public static void rentCar() {
         clearConsole();
         heading();
+
+        Scanner scanner1 = new Scanner(System.in);
 
         String rentalId;
         String customerId;
@@ -1609,64 +2475,109 @@ class Application {
         // Rental ID
         while (true) {
             System.out.print("Enter Rental ID          : ");
-            rentalId = scanner.nextLine().trim();
+            rentalId = scanner1.nextLine().trim();
 
             if (rentalId.matches("^R\\d{3}$")) {
-                if (findRentalIndex(rentalCars, rentalId) != -1) {
+                boolean exists = false;
+
+                for (Rental rent : rentalCars) {
+                    if (rent.getRentalId().equalsIgnoreCase(rentalId)) {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (exists) {
                     System.out.println("Rental ID is already in use!\n");
+
                 } else {
                     break;
+
                 }
+
             } else {
                 System.out.println("Invalid Rental ID (Ex: - R001)\n");
+
             }
+
         }
 
         // Customer ID
         while (true) {
             System.out.print("\nEnter Customer ID        : ");
-            customerId = scanner.nextLine().trim();
+            customerId = scanner1.nextLine().trim();
 
             if (customerId.matches("^C\\d{3}$")) {
-                if (findCustomerIndex(customerId) != -1) {
+                boolean exists = false;
+
+                for (Customer customer : customers) {
+                    if (customer.getCustomerId().equalsIgnoreCase(customerId)) {
+                        exists = true;
+                        break;
+                    }
+
+                }
+
+                if (exists) {
                     break;
+
                 } else {
                     System.out.println("Customer has not been registered yet!");
+
                 }
+
             } else {
                 System.out.println("Invalid Customer ID (Ex: - C001)");
+
             }
+
         }
 
         // Vehicle ID
         while (true) {
             System.out.print("\nEnter Vehicle ID         : ");
-            vehicleId = scanner.nextLine().trim();
+            vehicleId = scanner1.nextLine().trim();
 
             if (vehicleId.matches("^V\\d{3}$")) {
-                int index = findVehicleIndex(cars, vehicleId);
+                boolean exists = false;
+                int index = -1;
 
-                if (index != -1) {
+                for (Car car : cars) {
+                    if (car.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = cars.indexOf(car);
+                        break;
+                    }
+
+                }
+
+                if (exists) {
                     if (cars.get(index).getAvailabilityStatus()) {
                         System.out.println("\nChoose Vehicle Name      : " + cars.get(index).getVehicleName());
                         cars.get(index).setAvailabilityStatus(false);
                         break;
+
                     } else {
                         System.out.println("Vehicle isn't available at the moment!");
                     }
+
                 } else {
                     System.out.println("Vehicle has not been registered yet!");
+
                 }
+
             } else {
                 System.out.println("Invalid Vehicle ID (Ex: - V001)");
+
             }
+
         }
 
         // Rental Start Date
         while (true) {
 
             System.out.print("\nEnter Rental Start Date  : ");
-            rentalStartDate = scanner.nextLine().trim();
+            rentalStartDate = scanner1.nextLine().trim();
 
             if (rentalStartDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
                 try {
@@ -1689,7 +2600,7 @@ class Application {
         while (true) {
 
             System.out.print("\nEnter Rental End Date    : ");
-            rentalEndDate = scanner.nextLine().trim();
+            rentalEndDate = scanner1.nextLine().trim();
 
             if (rentalEndDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
                 try {
@@ -1717,10 +2628,12 @@ class Application {
         }
 
         // Estimated Rental Cost
-        int carIndex = findVehicleIndex(cars, vehicleId);
-        if (carIndex != -1) {
-            rentalEstimatedCost = numberOfRentalDays * cars.get(carIndex).getDailyRentalRate();
-            System.out.println("\nRental Estimated Cost    : Rs. " + rentalEstimatedCost);
+        for (Car car : cars) {
+            if (car.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                rentalEstimatedCost = numberOfRentalDays * car.getDailyRentalRate();
+                System.out.println("\nRental Estimated Cost    : Rs. " + rentalEstimatedCost);
+                break;
+            }
         }
 
         rentalCars.add(new Rental(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, rentalEstimatedCost, -1, -1, "Pending"));
@@ -1735,6 +2648,8 @@ class Application {
         clearConsole();
         heading();
 
+        Scanner scanner1 = new Scanner(System.in);
+
         String rentalId;
         String customerId;
         String vehicleId;
@@ -1746,64 +2661,109 @@ class Application {
         // Rental ID
         while (true) {
             System.out.print("Enter Rental ID          : ");
-            rentalId = scanner.nextLine().trim();
+            rentalId = scanner1.nextLine().trim();
 
             if (rentalId.matches("^R\\d{3}$")) {
-                if (findRentalIndex(rentalVans, rentalId) != -1) {
+                boolean exists = false;
+
+                for (Rental rent : rentalVans) {
+                    if (rent.getRentalId().equalsIgnoreCase(rentalId)) {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (exists) {
                     System.out.println("Rental ID is already in use!\n");
+
                 } else {
                     break;
+
                 }
+
             } else {
                 System.out.println("Invalid Rental ID (Ex: - R001)\n");
+
             }
+
         }
 
         // Customer ID
         while (true) {
             System.out.print("\nEnter Customer ID        : ");
-            customerId = scanner.nextLine().trim();
+            customerId = scanner1.nextLine().trim();
 
             if (customerId.matches("^C\\d{3}$")) {
-                if (findCustomerIndex(customerId) != -1) {
+                boolean exists = false;
+
+                for (Customer customer : customers) {
+                    if (customer.getCustomerId().equalsIgnoreCase(customerId)) {
+                        exists = true;
+                        break;
+                    }
+
+                }
+
+                if (exists) {
                     break;
+
                 } else {
                     System.out.println("Customer has not been registered yet!");
+
                 }
+
             } else {
                 System.out.println("Invalid Customer ID (Ex: - C001)");
+
             }
+
         }
 
         // Vehicle ID
         while (true) {
             System.out.print("\nEnter Vehicle ID         : ");
-            vehicleId = scanner.nextLine().trim();
+            vehicleId = scanner1.nextLine().trim();
 
             if (vehicleId.matches("^V\\d{3}$")) {
-                int index = findVehicleIndex(vans, vehicleId);
+                boolean exists = false;
+                int index = -1;
 
-                if (index != -1) {
+                for (Van van : vans) {
+                    if (van.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = vans.indexOf(van);
+                        break;
+                    }
+
+                }
+
+                if (exists) {
                     if (vans.get(index).getAvailabilityStatus()) {
                         System.out.println("\nChoose Vehicle Name      : " + vans.get(index).getVehicleName());
                         vans.get(index).setAvailabilityStatus(false);
                         break;
+
                     } else {
                         System.out.println("Vehicle isn't available at the moment!");
                     }
+
                 } else {
                     System.out.println("Vehicle has not been registered yet!");
+
                 }
+
             } else {
                 System.out.println("Invalid Vehicle ID (Ex: - V001)");
+
             }
+
         }
 
         // Rental Start Date
         while (true) {
 
             System.out.print("\nEnter Rental Start Date  : ");
-            rentalStartDate = scanner.nextLine().trim();
+            rentalStartDate = scanner1.nextLine().trim();
 
             if (rentalStartDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
                 try {
@@ -1826,7 +2786,7 @@ class Application {
         while (true) {
 
             System.out.print("\nEnter Rental End Date    : ");
-            rentalEndDate = scanner.nextLine().trim();
+            rentalEndDate = scanner1.nextLine().trim();
 
             if (rentalEndDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
                 try {
@@ -1854,10 +2814,12 @@ class Application {
         }
 
         // Estimated Rental Cost
-        int vanIndex = findVehicleIndex(vans, vehicleId);
-        if (vanIndex != -1) {
-            rentalEstimatedCost = numberOfRentalDays * vans.get(vanIndex).getDailyRentalRate();
-            System.out.println("\nRental Estimated Cost    : Rs. " + rentalEstimatedCost);
+        for (Van van : vans) {
+            if (van.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                rentalEstimatedCost = numberOfRentalDays * van.getDailyRentalRate();
+                System.out.println("\nRental Estimated Cost    : Rs. " + rentalEstimatedCost);
+                break;
+            }
         }
 
         rentalVans.add(new Rental(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, rentalEstimatedCost, -1, -1, "Pending"));
@@ -1872,6 +2834,8 @@ class Application {
         clearConsole();
         heading();
 
+        Scanner scanner1 = new Scanner(System.in);
+
         String rentalId;
         String customerId;
         String vehicleId;
@@ -1883,64 +2847,109 @@ class Application {
         // Rental ID
         while (true) {
             System.out.print("Enter Rental ID          : ");
-            rentalId = scanner.nextLine().trim();
+            rentalId = scanner1.nextLine().trim();
 
             if (rentalId.matches("^R\\d{3}$")) {
-                if (findRentalIndex(rentalMotorcycles, rentalId) != -1) {
+                boolean exists = false;
+
+                for (Rental rent : rentalMotorcycles) {
+                    if (rent.getRentalId().equalsIgnoreCase(rentalId)) {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (exists) {
                     System.out.println("Rental ID is already in use!\n");
+
                 } else {
                     break;
+
                 }
+
             } else {
                 System.out.println("Invalid Rental ID (Ex: - R001)\n");
+
             }
+
         }
 
         // Customer ID
         while (true) {
             System.out.print("\nEnter Customer ID        : ");
-            customerId = scanner.nextLine().trim();
+            customerId = scanner1.nextLine().trim();
 
             if (customerId.matches("^C\\d{3}$")) {
-                if (findCustomerIndex(customerId) != -1) {
+                boolean exists = false;
+
+                for (Customer customer : customers) {
+                    if (customer.getCustomerId().equalsIgnoreCase(customerId)) {
+                        exists = true;
+                        break;
+                    }
+
+                }
+
+                if (exists) {
                     break;
+
                 } else {
                     System.out.println("Customer has not been registered yet!\n");
+
                 }
+
             } else {
                 System.out.println("Invalid Customer ID (Ex: - C001)\n");
+
             }
+
         }
 
         // Vehicle ID
         while (true) {
             System.out.print("\nEnter Vehicle ID         : ");
-            vehicleId = scanner.nextLine().trim();
+            vehicleId = scanner1.nextLine().trim();
 
             if (vehicleId.matches("^V\\d{3}$")) {
-                int index = findVehicleIndex(motorcycles, vehicleId);
+                boolean exists = false;
+                int index = -1;
 
-                if (index != -1) {
+                for (Motorcycle motorcycle : motorcycles) {
+                    if (motorcycle.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                        exists = true;
+                        index = motorcycles.indexOf(motorcycle);
+                        break;
+                    }
+
+                }
+
+                if (exists) {
                     if (motorcycles.get(index).getAvailabilityStatus()) {
                         System.out.println("\nChoose Vehicle Name      : " + motorcycles.get(index).getVehicleName());
                         motorcycles.get(index).setAvailabilityStatus(false);
                         break;
+
                     } else {
                         System.out.println("Vehicle isn't available at the moment!\n");
                     }
+
                 } else {
                     System.out.println("Vehicle has not been registered yet!\n");
+
                 }
+
             } else {
                 System.out.println("Invalid Vehicle ID (Ex: - V001)\n");
+
             }
+
         }
 
         // Rental Start Date
         while (true) {
 
             System.out.print("\nEnter Rental Start Date  : ");
-            rentalStartDate = scanner.nextLine().trim();
+            rentalStartDate = scanner1.nextLine().trim();
 
             if (rentalStartDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
                 try {
@@ -1963,7 +2972,7 @@ class Application {
         while (true) {
 
             System.out.print("\nEnter Rental End Date    : ");
-            rentalEndDate = scanner.nextLine().trim();
+            rentalEndDate = scanner1.nextLine().trim();
 
             if (rentalEndDate.matches("^\\d{4}\\.\\d{2}\\.\\d{2}$")) {
                 try {
@@ -1991,10 +3000,12 @@ class Application {
         }
 
         // Estimated Rental Cost
-        int motorcycleIndex = findVehicleIndex(motorcycles, vehicleId);
-        if (motorcycleIndex != -1) {
-            rentalEstimatedCost = numberOfRentalDays * motorcycles.get(motorcycleIndex).getDailyRentalRate();
-            System.out.println("\nRental Estimated Cost    : Rs. " + rentalEstimatedCost);
+        for (Motorcycle motorcycle : motorcycles) {
+            if (motorcycle.getVehicleId().equalsIgnoreCase(vehicleId)) {
+                rentalEstimatedCost = numberOfRentalDays * motorcycle.getDailyRentalRate();
+                System.out.println("\nRental Estimated Cost    : Rs. " + rentalEstimatedCost);
+                break;
+            }
         }
 
         rentalMotorcycles.add(new Rental(rentalId, customerId, vehicleId, rentalStartDate, rentalEndDate, numberOfRentalDays, rentalEstimatedCost, -1, -1, "Pending"));
@@ -2018,16 +3029,18 @@ class Application {
         L1:
         while (true) {
 
+            Scanner scanner2 = new Scanner(System.in);
+
             System.out.print("Enter your choice: ");
 
             try {
 
-                int choice = scanner.nextInt();
+                int choice = scanner2.nextInt();
 
                 if (choice > 5 || choice < 1) {
 
                     System.out.println("Invalid choice!\n");
-                    scanner.nextLine();
+                    scanner2.nextLine();
 
                 } else {
 
@@ -2069,7 +3082,7 @@ class Application {
             } catch (InputMismatchException e) {
 
                 System.out.println("Invalid input!\n");
-                scanner.nextLine();
+                scanner2.nextLine();
 
             }
 
@@ -2086,19 +3099,36 @@ class Application {
         int discount;
         int rentalActualCost;
 
+        Scanner scanner1 = new Scanner(System.in);
+
         // Rental ID
         while (true) {
             System.out.print("Enter Rental ID          : ");
-            rentalId = scanner.nextLine().trim();
+            rentalId = scanner1.nextLine().trim();
+            int index = -1;
 
             if (rentalId.matches("^R\\d{3}$")) {
+                boolean exists = false;
+                boolean alreadyCompleted = false;
 
-                int index = findRentalIndex(rentalCars, rentalId);
+                for (Rental rent : rentalCars) {
+                    if (rent.getRentalId().equalsIgnoreCase(rentalId)) {
+                        index = rentalCars.indexOf(rent);
 
-                if (index != -1 && rentalCars.get(index).getRentalStatus().equals("Completed")) {
-                    System.out.println("Rental is already completed!\n");
+                        if (rentalCars.get(index).getRentalStatus().equals("Completed")) {
+                            System.out.println("Rental is already completed!\n");
+                            alreadyCompleted = true;
+                            break;
 
-                } else if (index != -1) {
+                        } else {
+                            exists = true;
+                            break;
+                        }
+
+                    }
+                }
+
+                if (exists) {
                     clearConsole();
                     heading();
 
@@ -2130,20 +3160,26 @@ class Application {
                     rentalCars.get(index).setRentalActualCost(rentalActualCost);
                     rentalCars.get(index).setRentalStatus("Completed");
 
-                    int carIndex = findVehicleIndex(cars, rentalCars.get(index).getVehicleId());
-                    if (carIndex != -1) {
-                        cars.get(carIndex).setAvailabilityStatus(true);
+                    for (Car car : cars) {
+                        if (car.getVehicleId().equalsIgnoreCase(rentalCars.get(index).getVehicleId())) {
+                            car.setAvailabilityStatus(true);
+                            break;
+                        }
                     }
 
                     System.out.println("\nCar Rental Return Processed Successfully!\n");
                     break;
 
                 } else {
-                    System.out.println("Rental ID is not found!\n");
+                    if (!alreadyCompleted) {
+                        System.out.println("Rental ID is not found!\n");
+                    }
+
                 }
 
             } else {
                 System.out.println("Invalid Rental ID (Ex: - R001)\n");
+
             }
 
         }
@@ -2161,19 +3197,34 @@ class Application {
         int discount;
         int rentalActualCost;
 
+        Scanner scanner1 = new Scanner(System.in);
+
         // Rental ID
         while (true) {
             System.out.print("Enter Rental ID          : ");
-            rentalId = scanner.nextLine().trim();
+            rentalId = scanner1.nextLine().trim();
+            int index = -1;
 
             if (rentalId.matches("^R\\d{3}$")) {
+                boolean exists = false;
+                boolean alreadyCompleted = false;
 
-                int index = findRentalIndex(rentalVans, rentalId);
+                for (Rental rent : rentalVans) {
+                    if (rent.getRentalId().equalsIgnoreCase(rentalId)) {
+                        index = rentalVans.indexOf(rent);
+                        if (rentalVans.get(index).getRentalStatus().equals("Completed")) {
+                            System.out.println("Rental is already completed!\n");
+                            alreadyCompleted = true;
+                            break;
+                        } else {
+                            exists = true;
+                            break;
+                        }
 
-                if (index != -1 && rentalVans.get(index).getRentalStatus().equals("Completed")) {
-                    System.out.println("Rental is already completed!\n");
+                    }
+                }
 
-                } else if (index != -1) {
+                if (exists) {
                     clearConsole();
                     heading();
 
@@ -2205,20 +3256,26 @@ class Application {
                     rentalVans.get(index).setRentalActualCost(rentalActualCost);
                     rentalVans.get(index).setRentalStatus("Completed");
 
-                    int vanIndex = findVehicleIndex(vans, rentalVans.get(index).getVehicleId());
-                    if (vanIndex != -1) {
-                        vans.get(vanIndex).setAvailabilityStatus(true);
+                    for (Van van : vans) {
+                        if (van.getVehicleId().equalsIgnoreCase(rentalVans.get(index).getVehicleId())) {
+                            van.setAvailabilityStatus(true);
+                            break;
+                        }
                     }
 
                     System.out.println("\nVan Rental Return Processed Successfully!\n");
                     break;
 
                 } else {
-                    System.out.println("Rental ID is not found!\n");
+                    if (!alreadyCompleted) {
+                        System.out.println("Rental ID is not found!\n");
+                    }
+
                 }
 
             } else {
                 System.out.println("Invalid Rental ID (Ex: - R001)\n");
+
             }
 
         }
@@ -2236,19 +3293,33 @@ class Application {
         int discount;
         int rentalActualCost;
 
+        Scanner scanner1 = new Scanner(System.in);
+
         // Rental ID
         while (true) {
             System.out.print("Enter Rental ID          : ");
-            rentalId = scanner.nextLine().trim();
+            rentalId = scanner1.nextLine().trim();
+            int index = -1;
 
             if (rentalId.matches("^R\\d{3}$")) {
+                boolean exists = false;
+                boolean alreadyCompleted = false;
 
-                int index = findRentalIndex(rentalMotorcycles, rentalId);
+                for (Rental rent : rentalMotorcycles) {
+                    if (rent.getRentalId().equalsIgnoreCase(rentalId)) {
+                        index = rentalMotorcycles.indexOf(rent);
+                        if (rentalMotorcycles.get(index).getRentalStatus().equals("Completed")) {
+                            System.out.println("Rental is already completed!\n");
+                            alreadyCompleted = true;
+                            break;
+                        } else {
+                            exists = true;
+                            break;
+                        }
 
-                if (index != -1 && rentalMotorcycles.get(index).getRentalStatus().equals("Completed")) {
-                    System.out.println("Rental is already completed!\n");
-
-                } else if (index != -1) {
+                    }
+                }
+                if (exists) {
                     clearConsole();
                     heading();
 
@@ -2279,20 +3350,26 @@ class Application {
                     rentalMotorcycles.get(index).setRentalActualCost(rentalActualCost);
                     rentalMotorcycles.get(index).setRentalStatus("Completed");
 
-                    int motorcycleIndex = findVehicleIndex(motorcycles, rentalMotorcycles.get(index).getVehicleId());
-                    if (motorcycleIndex != -1) {
-                        motorcycles.get(motorcycleIndex).setAvailabilityStatus(true);
+                    for (Motorcycle motorcycle : motorcycles) {
+                        if (motorcycle.getVehicleId().equalsIgnoreCase(rentalMotorcycles.get(index).getVehicleId())) {
+                            motorcycle.setAvailabilityStatus(true);
+                            break;
+                        }
                     }
 
                     System.out.println("\nMotorcycle Rental Return Processed Successfully!\n");
                     break;
 
                 } else {
-                    System.out.println("Rental ID is not found!\n");
+                    if (!alreadyCompleted) {
+                        System.out.println("Rental ID is not found!\n");
+                    }
+
                 }
 
             } else {
                 System.out.println("Invalid Rental ID (Ex: - R001)\n");
+
             }
 
         }
@@ -2304,28 +3381,656 @@ class Application {
     // Method to View All Rentals
     public static void viewRentals() {
 
+        // 01. View All Cars
         clearConsole();
         heading();
-
-        String[] columnNames = {"Rental ID", "Customer ID", "Vehicle ID", "Start Date", "End Date", "No. of Days", "Estimated Rental Cost (Rs.)", "Discount (Rs.)", "Actual Cost (Rs. )", "Status"};
 
         System.out.println("========");
         System.out.println("All Cars");
         System.out.println("========\n");
 
-        printTable(columnNames, buildRentalRows(rentalCars));
+        String[] columnNames = {"Rental ID", "Customer ID", "Vehicle ID", "Start Date", "End Date", "No. of Days", "Estimated Rental Cost (Rs.)", "Discount (Rs.)", "Actual Cost (Rs. )", "Status"};
 
+        int[] columnNamesLength = new int[10];
+
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNamesLength[i] = columnNames[i].length();
+        }
+
+        int maxRentalId = Integer.MIN_VALUE;
+        int maxCustomerId = Integer.MIN_VALUE;
+        int maxVehicleId = Integer.MIN_VALUE;
+        int maxStartDate = Integer.MIN_VALUE;
+        int maxEndDate = Integer.MIN_VALUE;
+        int maxNumberOfDays = Integer.MIN_VALUE;
+        int maxEstimatedCost = Integer.MIN_VALUE;
+        int maxDiscount = Integer.MIN_VALUE;
+        int maxActualCost = Integer.MIN_VALUE;
+        int maxStatus = Integer.MIN_VALUE;
+
+        for (Rental rent : rentalCars) {
+
+            if (rent.getRentalId() != null) {
+                maxRentalId = Math.max(maxRentalId, rent.getRentalId().length());
+            }
+
+            if (rent.getCustomerId() != null) {
+                maxCustomerId = Math.max(maxCustomerId, rent.getCustomerId().length());
+            }
+
+            if (rent.getVehicleId() != null) {
+                maxVehicleId = Math.max(maxVehicleId, rent.getVehicleId().length());
+            }
+
+            if (rent.getRentalStartDate() != null) {
+                maxStartDate = Math.max(maxStartDate, rent.getRentalStartDate().length());
+            }
+
+            if (rent.getRentalEndDate() != null) {
+                maxEndDate = Math.max(maxEndDate, rent.getRentalEndDate().length());
+            }
+
+            if (rent.getNumberOfRentalDays() != 0) {
+                maxNumberOfDays = Math.max(maxNumberOfDays, String.valueOf(rent.getNumberOfRentalDays()).length());
+            }
+
+            if (rent.getRentalEstimatedCost() != 0) {
+                maxEstimatedCost = Math.max(maxEstimatedCost, String.valueOf(rent.getRentalEstimatedCost()).length());
+            }
+
+            if (rent.getDiscount() != 0) {
+                maxDiscount = Math.max(maxDiscount, String.valueOf(rent.getDiscount()).length());
+            }
+
+            if (rent.getRentalActualCost() != 0) {
+                maxActualCost = Math.max(maxActualCost, String.valueOf(rent.getRentalActualCost()).length());
+            }
+
+            if (rent.getRentalStatus() != null) {
+                maxStatus = Math.max(maxStatus, rent.getRentalStatus().length());
+            }
+
+        }
+
+        int rentalIdWidth = Math.max(columnNames[0].length(), maxRentalId);
+        int customerIdWidth = Math.max(columnNames[1].length(), maxCustomerId);
+        int vehicleIdWidth = Math.max(columnNames[2].length(), maxVehicleId);
+        int startDateWidth = Math.max(columnNames[3].length(), maxStartDate);
+        int endDateWidth = Math.max(columnNames[4].length(), maxEndDate);
+        int numberOfDaysWidth = Math.max(columnNames[5].length(), maxNumberOfDays);
+        int estimatedCostWidth = Math.max(columnNames[6].length(), maxEstimatedCost);
+        int discountWidth = Math.max(columnNames[7].length(), maxDiscount);
+        int actualCostWidth = Math.max(columnNames[8].length(), maxActualCost);
+        int statusWidth = Math.max(columnNames[9].length(), maxStatus);
+
+        int[] maxColumnWidth = {rentalIdWidth, customerIdWidth, vehicleIdWidth, startDateWidth, endDateWidth, numberOfDaysWidth, estimatedCostWidth, discountWidth, actualCostWidth, statusWidth};
+
+        int totalColumnWidth = rentalIdWidth + customerIdWidth + vehicleIdWidth + startDateWidth + endDateWidth + numberOfDaysWidth + estimatedCostWidth + discountWidth + actualCostWidth + statusWidth + (columnNames.length + 1);
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n|");
+
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNamesLength[i] >= maxColumnWidth[i]) {
+                System.out.print(columnNames[i] + "|");
+            } else {
+                System.out.print(columnNames[i]);
+                for (int k = 0; k < (maxColumnWidth[i] - columnNamesLength[i]); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        for (Rental rent : rentalCars) {
+
+            // Rental ID
+            if (rent.getRentalId().length() >= rentalIdWidth) {
+                System.out.print("\n|" + rent.getRentalId() + "|");
+            } else {
+                System.out.print("\n|");
+                for (int k = 0; k < (rentalIdWidth - rent.getRentalId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalId() + "|");
+            }
+
+            // Customer ID
+            if (rent.getCustomerId().length() >= customerIdWidth) {
+                System.out.print(rent.getCustomerId() + "|");
+            } else {
+                for (int k = 0; k < (customerIdWidth - rent.getCustomerId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getCustomerId() + "|");
+            }
+
+            // Vehicle ID
+            if (rent.getVehicleId().length() >= vehicleIdWidth) {
+                System.out.print(rent.getVehicleId() + "|");
+            } else {
+                for (int k = 0; k < (vehicleIdWidth - rent.getVehicleId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getVehicleId() + "|");
+            }
+
+            // Start Date
+            if (rent.getRentalStartDate().length() >= startDateWidth) {
+                System.out.print(rent.getRentalStartDate() + "|");
+            } else {
+                for (int k = 0; k < (startDateWidth - rent.getRentalStartDate().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalStartDate() + "|");
+            }
+
+            // End Date
+            if (rent.getRentalEndDate().length() >= endDateWidth) {
+                System.out.print(rent.getRentalEndDate() + "|");
+            } else {
+                for (int k = 0; k < (endDateWidth - rent.getRentalEndDate().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalEndDate() + "|");
+            }
+
+            // Number of Days
+            if ((String.valueOf(rent.getNumberOfRentalDays())).length() >= numberOfDaysWidth) {
+                System.out.print(rent.getNumberOfRentalDays() + "|");
+            } else {
+                for (int k = 0; k < (numberOfDaysWidth - (String.valueOf(rent.getNumberOfRentalDays())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getNumberOfRentalDays() + "|");
+            }
+
+            // Estimated Cost
+            if ((String.valueOf(rent.getRentalEstimatedCost())).length() >= estimatedCostWidth) {
+                System.out.print(rent.getRentalEstimatedCost() + "|");
+            } else {
+                for (int k = 0; k < (estimatedCostWidth - (String.valueOf(rent.getRentalEstimatedCost())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalEstimatedCost() + "|");
+            }
+
+            // Discount
+            if ((String.valueOf(rent.getDiscount())).length() >= discountWidth) {
+                System.out.print(rent.getDiscount() + "|");
+            } else {
+                for (int k = 0; k < (discountWidth - (String.valueOf(rent.getDiscount())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getDiscount() + "|");
+            }
+
+            // Actual Cost
+            if ((String.valueOf(rent.getRentalActualCost())).length() >= actualCostWidth) {
+                System.out.print(rent.getRentalActualCost() + "|");
+            } else {
+                for (int k = 0; k < (actualCostWidth - (String.valueOf(rent.getRentalActualCost())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalActualCost() + "|");
+            }
+
+            // Rental Status
+            if (rent.getRentalStatus().length() >= statusWidth) {
+                System.out.print(rent.getRentalStatus() + "|");
+            } else {
+                for (int k = 0; k < (statusWidth - rent.getRentalStatus().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalStatus() + "|");
+            }
+
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n");
+
+        // 02. View All Vans
         System.out.println("\n========");
         System.out.println("All Vans");
         System.out.println("========\n");
 
-        printTable(columnNames, buildRentalRows(rentalVans));
+        columnNames = new String[]{"Rental ID", "Customer ID", "Vehicle ID", "Start Date", "End Date", "No. of Days", "Estimated Rental Cost (Rs.)", "Discount (Rs.)", "Actual Cost (Rs. )", "Status"};
 
+        columnNamesLength = new int[10];
+
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNamesLength[i] = columnNames[i].length();
+        }
+
+        maxRentalId = Integer.MIN_VALUE;
+        maxCustomerId = Integer.MIN_VALUE;
+        maxVehicleId = Integer.MIN_VALUE;
+        maxStartDate = Integer.MIN_VALUE;
+        maxEndDate = Integer.MIN_VALUE;
+        maxNumberOfDays = Integer.MIN_VALUE;
+        maxEstimatedCost = Integer.MIN_VALUE;
+        maxDiscount = Integer.MIN_VALUE;
+        maxActualCost = Integer.MIN_VALUE;
+        maxStatus = Integer.MIN_VALUE;
+
+        for (Rental rent : rentalVans) {
+
+            if (rent.getRentalId() != null) {
+                maxRentalId = Math.max(maxRentalId, rent.getRentalId().length());
+            }
+
+            if (rent.getCustomerId() != null) {
+                maxCustomerId = Math.max(maxCustomerId, rent.getCustomerId().length());
+            }
+
+            if (rent.getVehicleId() != null) {
+                maxVehicleId = Math.max(maxVehicleId, rent.getVehicleId().length());
+            }
+
+            if (rent.getRentalStartDate() != null) {
+                maxStartDate = Math.max(maxStartDate, rent.getRentalStartDate().length());
+            }
+
+            if (rent.getRentalEndDate() != null) {
+                maxEndDate = Math.max(maxEndDate, rent.getRentalEndDate().length());
+            }
+
+            if (rent.getNumberOfRentalDays() != 0) {
+                maxNumberOfDays = Math.max(maxNumberOfDays, String.valueOf(rent.getNumberOfRentalDays()).length());
+            }
+
+            if (rent.getRentalEstimatedCost() != 0) {
+                maxEstimatedCost = Math.max(maxEstimatedCost, String.valueOf(rent.getRentalEstimatedCost()).length());
+            }
+
+            if (rent.getDiscount() != 0) {
+                maxDiscount = Math.max(maxDiscount, String.valueOf(rent.getDiscount()).length());
+            }
+
+            if (rent.getRentalActualCost() != 0) {
+                maxActualCost = Math.max(maxActualCost, String.valueOf(rent.getRentalActualCost()).length());
+            }
+
+            if (rent.getRentalStatus() != null) {
+                maxStatus = Math.max(maxStatus, rent.getRentalStatus().length());
+            }
+
+        }
+
+        rentalIdWidth = Math.max(columnNames[0].length(), maxRentalId);
+        customerIdWidth = Math.max(columnNames[1].length(), maxCustomerId);
+        vehicleIdWidth = Math.max(columnNames[2].length(), maxVehicleId);
+        startDateWidth = Math.max(columnNames[3].length(), maxStartDate);
+        endDateWidth = Math.max(columnNames[4].length(), maxEndDate);
+        numberOfDaysWidth = Math.max(columnNames[5].length(), maxNumberOfDays);
+        estimatedCostWidth = Math.max(columnNames[6].length(), maxEstimatedCost);
+        discountWidth = Math.max(columnNames[7].length(), maxDiscount);
+        actualCostWidth = Math.max(columnNames[8].length(), maxActualCost);
+        statusWidth = Math.max(columnNames[9].length(), maxStatus);
+
+        maxColumnWidth = new int[]{rentalIdWidth, customerIdWidth, vehicleIdWidth, startDateWidth, endDateWidth, numberOfDaysWidth, estimatedCostWidth, discountWidth, actualCostWidth, statusWidth};
+
+        totalColumnWidth = rentalIdWidth + customerIdWidth + vehicleIdWidth + startDateWidth + endDateWidth + numberOfDaysWidth + estimatedCostWidth + discountWidth + actualCostWidth + statusWidth + (columnNames.length + 1);
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n|");
+
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNamesLength[i] >= maxColumnWidth[i]) {
+                System.out.print(columnNames[i] + "|");
+            } else {
+                System.out.print(columnNames[i]);
+                for (int k = 0; k < (maxColumnWidth[i] - columnNamesLength[i]); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        for (Rental rent : rentalVans) {
+
+            // Rental ID
+            if (rent.getRentalId().length() >= rentalIdWidth) {
+                System.out.print("\n|" + rent.getRentalId() + "|");
+            } else {
+                System.out.print("\n|");
+                for (int k = 0; k < (rentalIdWidth - rent.getRentalId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalId() + "|");
+            }
+
+            // Customer ID
+            if (rent.getCustomerId().length() >= customerIdWidth) {
+                System.out.print(rent.getCustomerId() + "|");
+            } else {
+                for (int k = 0; k < (customerIdWidth - rent.getCustomerId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getCustomerId() + "|");
+            }
+
+            // Vehicle ID
+            if (rent.getVehicleId().length() >= vehicleIdWidth) {
+                System.out.print(rent.getVehicleId() + "|");
+            } else {
+                for (int k = 0; k < (vehicleIdWidth - rent.getVehicleId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getVehicleId() + "|");
+            }
+
+            // Start Date
+            if (rent.getRentalStartDate().length() >= startDateWidth) {
+                System.out.print(rent.getRentalStartDate() + "|");
+            } else {
+                for (int k = 0; k < (startDateWidth - rent.getRentalStartDate().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalStartDate() + "|");
+            }
+
+            // End Date
+            if (rent.getRentalEndDate().length() >= endDateWidth) {
+                System.out.print(rent.getRentalEndDate() + "|");
+            } else {
+                for (int k = 0; k < (endDateWidth - rent.getRentalEndDate().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalEndDate() + "|");
+            }
+
+            // Number of Days
+            if ((String.valueOf(rent.getNumberOfRentalDays())).length() >= numberOfDaysWidth) {
+                System.out.print(rent.getNumberOfRentalDays() + "|");
+            } else {
+                for (int k = 0; k < (numberOfDaysWidth - (String.valueOf(rent.getNumberOfRentalDays())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getNumberOfRentalDays() + "|");
+            }
+
+            // Estimated Cost
+            if ((String.valueOf(rent.getRentalEstimatedCost())).length() >= estimatedCostWidth) {
+                System.out.print(rent.getRentalEstimatedCost() + "|");
+            } else {
+                for (int k = 0; k < (estimatedCostWidth - (String.valueOf(rent.getRentalEstimatedCost())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalEstimatedCost() + "|");
+            }
+
+            // Discount
+            if ((String.valueOf(rent.getDiscount())).length() >= discountWidth) {
+                System.out.print(rent.getDiscount() + "|");
+            } else {
+                for (int k = 0; k < (discountWidth - (String.valueOf(rent.getDiscount())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getDiscount() + "|");
+            }
+
+            // Actual Cost
+            if ((String.valueOf(rent.getRentalActualCost())).length() >= actualCostWidth) {
+                System.out.print(rent.getRentalActualCost() + "|");
+            } else {
+                for (int k = 0; k < (actualCostWidth - (String.valueOf(rent.getRentalActualCost())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalActualCost() + "|");
+            }
+
+            // Rental Status
+            if (rent.getRentalStatus().length() >= statusWidth) {
+                System.out.print(rent.getRentalStatus() + "|");
+            } else {
+                for (int k = 0; k < (statusWidth - rent.getRentalStatus().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalStatus() + "|");
+            }
+
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n");
+
+        // 03. View All Motorcycles
         System.out.println("\n===============");
         System.out.println("All Motorcycles");
         System.out.println("===============\n");
 
-        printTable(columnNames, buildRentalRows(rentalMotorcycles));
+        columnNames = new String[]{"Rental ID", "Customer ID", "Vehicle ID", "Start Date", "End Date", "No. of Days", "Estimated Rental Cost (Rs.)", "Discount (Rs.)", "Actual Cost (Rs. )", "Status"};
+
+        columnNamesLength = new int[10];
+
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNamesLength[i] = columnNames[i].length();
+        }
+
+        maxRentalId = Integer.MIN_VALUE;
+        maxCustomerId = Integer.MIN_VALUE;
+        maxVehicleId = Integer.MIN_VALUE;
+        maxStartDate = Integer.MIN_VALUE;
+        maxEndDate = Integer.MIN_VALUE;
+        maxNumberOfDays = Integer.MIN_VALUE;
+        maxEstimatedCost = Integer.MIN_VALUE;
+        maxDiscount = Integer.MIN_VALUE;
+        maxActualCost = Integer.MIN_VALUE;
+        maxStatus = Integer.MIN_VALUE;
+
+        for (Rental rent : rentalMotorcycles) {
+
+            if (rent.getRentalId() != null) {
+                maxRentalId = Math.max(maxRentalId, rent.getRentalId().length());
+            }
+
+            if (rent.getCustomerId() != null) {
+                maxCustomerId = Math.max(maxCustomerId, rent.getCustomerId().length());
+            }
+
+            if (rent.getVehicleId() != null) {
+                maxVehicleId = Math.max(maxVehicleId, rent.getVehicleId().length());
+            }
+
+            if (rent.getRentalStartDate() != null) {
+                maxStartDate = Math.max(maxStartDate, rent.getRentalStartDate().length());
+            }
+
+            if (rent.getRentalEndDate() != null) {
+                maxEndDate = Math.max(maxEndDate, rent.getRentalEndDate().length());
+            }
+
+            if (rent.getNumberOfRentalDays() != 0) {
+                maxNumberOfDays = Math.max(maxNumberOfDays, String.valueOf(rent.getNumberOfRentalDays()).length());
+            }
+
+            if (rent.getRentalEstimatedCost() != 0) {
+                maxEstimatedCost = Math.max(maxEstimatedCost, String.valueOf(rent.getRentalEstimatedCost()).length());
+            }
+
+            if (rent.getDiscount() != 0) {
+                maxDiscount = Math.max(maxDiscount, String.valueOf(rent.getDiscount()).length());
+            }
+
+            if (rent.getRentalActualCost() != 0) {
+                maxActualCost = Math.max(maxActualCost, String.valueOf(rent.getRentalActualCost()).length());
+            }
+
+            if (rent.getRentalStatus() != null) {
+                maxStatus = Math.max(maxStatus, rent.getRentalStatus().length());
+            }
+
+        }
+
+        rentalIdWidth = Math.max(columnNames[0].length(), maxRentalId);
+        customerIdWidth = Math.max(columnNames[1].length(), maxCustomerId);
+        vehicleIdWidth = Math.max(columnNames[2].length(), maxVehicleId);
+        startDateWidth = Math.max(columnNames[3].length(), maxStartDate);
+        endDateWidth = Math.max(columnNames[4].length(), maxEndDate);
+        numberOfDaysWidth = Math.max(columnNames[5].length(), maxNumberOfDays);
+        estimatedCostWidth = Math.max(columnNames[6].length(), maxEstimatedCost);
+        discountWidth = Math.max(columnNames[7].length(), maxDiscount);
+        actualCostWidth = Math.max(columnNames[8].length(), maxActualCost);
+        statusWidth = Math.max(columnNames[9].length(), maxStatus);
+
+        maxColumnWidth = new int[]{rentalIdWidth, customerIdWidth, vehicleIdWidth, startDateWidth, endDateWidth, numberOfDaysWidth, estimatedCostWidth, discountWidth, actualCostWidth, statusWidth};
+
+        totalColumnWidth = rentalIdWidth + customerIdWidth + vehicleIdWidth + startDateWidth + endDateWidth + numberOfDaysWidth + estimatedCostWidth + discountWidth + actualCostWidth + statusWidth + (columnNames.length + 1);
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n|");
+
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNamesLength[i] >= maxColumnWidth[i]) {
+                System.out.print(columnNames[i] + "|");
+            } else {
+                System.out.print(columnNames[i]);
+                for (int k = 0; k < (maxColumnWidth[i] - columnNamesLength[i]); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|");
+            }
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+
+        for (Rental rent : rentalMotorcycles) {
+
+            // Rental ID
+            if (rent.getRentalId().length() >= rentalIdWidth) {
+                System.out.print("\n|" + rent.getRentalId() + "|");
+            } else {
+                System.out.print("\n|");
+                for (int k = 0; k < (rentalIdWidth - rent.getRentalId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalId() + "|");
+            }
+
+            // Customer ID
+            if (rent.getCustomerId().length() >= customerIdWidth) {
+                System.out.print(rent.getCustomerId() + "|");
+            } else {
+                for (int k = 0; k < (customerIdWidth - rent.getCustomerId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getCustomerId() + "|");
+            }
+
+            // Vehicle ID
+            if (rent.getVehicleId().length() >= vehicleIdWidth) {
+                System.out.print(rent.getVehicleId() + "|");
+            } else {
+                for (int k = 0; k < (vehicleIdWidth - rent.getVehicleId().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getVehicleId() + "|");
+            }
+
+            // Start Date
+            if (rent.getRentalStartDate().length() >= startDateWidth) {
+                System.out.print(rent.getRentalStartDate() + "|");
+            } else {
+                for (int k = 0; k < (startDateWidth - rent.getRentalStartDate().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalStartDate() + "|");
+            }
+
+            // End Date
+            if (rent.getRentalEndDate().length() >= endDateWidth) {
+                System.out.print(rent.getRentalEndDate() + "|");
+            } else {
+                for (int k = 0; k < (endDateWidth - rent.getRentalEndDate().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalEndDate() + "|");
+            }
+
+            // Number of Days
+            if ((String.valueOf(rent.getNumberOfRentalDays())).length() >= numberOfDaysWidth) {
+                System.out.print(rent.getNumberOfRentalDays() + "|");
+            } else {
+                for (int k = 0; k < (numberOfDaysWidth - (String.valueOf(rent.getNumberOfRentalDays())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getNumberOfRentalDays() + "|");
+            }
+
+            // Estimated Cost
+            if ((String.valueOf(rent.getRentalEstimatedCost())).length() >= estimatedCostWidth) {
+                System.out.print(rent.getRentalEstimatedCost() + "|");
+            } else {
+                for (int k = 0; k < (estimatedCostWidth - (String.valueOf(rent.getRentalEstimatedCost())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalEstimatedCost() + "|");
+            }
+
+            // Discount
+            if ((String.valueOf(rent.getDiscount())).length() >= discountWidth) {
+                System.out.print(rent.getDiscount() + "|");
+            } else {
+                for (int k = 0; k < (discountWidth - (String.valueOf(rent.getDiscount())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getDiscount() + "|");
+            }
+
+            // Actual Cost
+            if ((String.valueOf(rent.getRentalActualCost())).length() >= actualCostWidth) {
+                System.out.print(rent.getRentalActualCost() + "|");
+            } else {
+                for (int k = 0; k < (actualCostWidth - (String.valueOf(rent.getRentalActualCost())).length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalActualCost() + "|");
+            }
+
+            // Rental Status
+            if (rent.getRentalStatus().length() >= statusWidth) {
+                System.out.print(rent.getRentalStatus() + "|");
+            } else {
+                for (int k = 0; k < (statusWidth - rent.getRentalStatus().length()); k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(rent.getRentalStatus() + "|");
+            }
+
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < totalColumnWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.print("\n");
 
         askWantToExit();
 
